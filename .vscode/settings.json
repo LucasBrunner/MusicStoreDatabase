@@ -1,0 +1,9 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "maven.terminal.favorites": [
+    {
+      "alias": "Execute",
+      "command": "exec:java",
+    },
+  ],
+}
