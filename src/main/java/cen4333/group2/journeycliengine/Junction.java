@@ -13,6 +13,8 @@ public abstract class Junction {
    */
   public abstract Junction newJunction();
 
+  public abstract String getName();
+
   public Path selectPath() throws JunctionNotFoundException {
     Path output = null;
 

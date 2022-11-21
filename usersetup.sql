@@ -74,7 +74,7 @@ GRANT SELECT, INSERT, UPDATE
 ON musicstore.person
 TO musicstore_clerk;
 
-GRANT SELECT, INSERT
+GRANT SELECT, INSERT, UPDATE
 ON musicstore.customer
 TO musicstore_clerk;
 
@@ -115,10 +115,16 @@ ON musicstore.product_type
 TO musicstore_clerk;
 
 # create test user
-DROP USER IF EXISTS musicstore_test;
+DROP USER IF EXISTS musicstore_test@'localhost';
 
-CREATE USER musicstore_test
+CREATE USER musicstore_test@'localhost'
 IDENTIFIED BY "s3cret";
 
 GRANT musicstore_clerk
-TO musicstore_test;
+TO musicstore_test@'localhost';
+
+FLUSH PRIVILEGES;
+SET DEFAULT ROLE ALL TO 
+	musicstore_clerk@'localhost',
+	musicstore_test@'localhost';
+SHOW GRANTS FOR musicstore_test@'localhost';
