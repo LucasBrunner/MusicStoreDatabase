@@ -77,7 +77,7 @@ public class PersonAccess {
 
     try {
       PreparedStatement update = con.prepareStatement("""
-        DELETE person
+        DELETE FROM person
         WHERE person.PersonID = ?;
       """);
 

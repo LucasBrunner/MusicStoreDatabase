@@ -23,7 +23,7 @@ CREATE TABLE employee(
     CheckingNumber VARCHAR(20),
     
     FOREIGN KEY(PersonID) REFERENCES person(PersonID)
-		ON DELETE SET NULL
+		ON DELETE RESTRICT
 		ON UPDATE RESTRICT,    
     PRIMARY KEY(EmployeeID)
 );
