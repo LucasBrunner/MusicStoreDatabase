@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import cen4333.group2.dbaccess.DbAccess;
 import cen4333.group2.dbaccess.UserAccess;
-import cen4333.group2.dbaccess.UserAccess.UserType;
+import cen4333.group2.Enums.UserType;
 import cen4333.group2.journeycliengine.Junction;
 import cen4333.group2.journeycliengine.Path;
 import cen4333.group2.journeycliengine.UserInput;

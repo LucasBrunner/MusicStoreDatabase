@@ -5,13 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
 
-public class UserAccess {
-  public enum UserType {
-    CLERK,
-    MANAGER,
-    ERROR
-  }
+import cen4333.group2.Enums.UserType;
 
+public class UserAccess {
   public static HashSet<UserType> getUserType(Connection con, String username, String hostname) {
     HashSet<UserType> output = new HashSet<UserType>();
 
