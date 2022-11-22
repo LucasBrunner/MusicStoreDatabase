@@ -76,14 +76,14 @@ public class PersonAccess {
     String output = null;
 
     try {
-      PreparedStatement update = con.prepareStatement("""
+      PreparedStatement delete = con.prepareStatement("""
         DELETE FROM person
         WHERE person.PersonID = ?;
       """);
 
-      update.setInt(1, personID);
+      delete.setInt(1, personID);
 
-      update.executeUpdate();
+      delete.executeUpdate();
     } catch (Exception e) {
       output = "cannot delete person";
     }
