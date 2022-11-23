@@ -52,30 +52,54 @@ public class CustomerAccess {
     return !checkResult.wasNull();
   }
 
-  public static void createCustomer(Connection con, Person person) throws SQLException {
-    try {
-      con.setAutoCommit(false);
-
-      PreparedStatement update = con.prepareStatement("""
-        INSERT INTO customer (PersonID)
-        VALUES (?);
-      """);
-      update.setInt(1, person.getId());
-      update.executeUpdate();
-
-      PreparedStatement select = con.prepareStatement("""
-        SELECT MAX(CustomerID)
-        FROM customer;
-      """);
-      ResultSet result = select.executeQuery();
-      result.next();
-      person.toCustomer(result.getInt(1));
-
-      con.setAutoCommit(true);
-    } catch (Exception e) {
-      con.setAutoCommit(true);
-      throw e;
+  public static Customer createCustomer(Connection con, Person person) throws SQLException {
+    Customer output = null;
+    int customerId = PersonToCustomerId(con, person);
+    if (customerId != -1) {
+      output = getCustomer(con, customerId);
+    } else {
+      try {
+        con.setAutoCommit(false);
+  
+        PreparedStatement update = con.prepareStatement("""
+          INSERT INTO customer (PersonID)
+          VALUES (?);
+        """);
+        update.setInt(1, person.getId());
+        update.executeUpdate();
+  
+        PreparedStatement select = con.prepareStatement("""
+          SELECT MAX(CustomerID)
+          FROM customer;
+        """);
+        ResultSet result = select.executeQuery();
+        result.next();
+        output = person.toCustomer(result.getInt(1));
+  
+        con.setAutoCommit(true);
+      } catch (Exception e) {
+        con.setAutoCommit(true);
+        throw e;
+      }
     }
+
+    return output;
+  }
+
+  public static int PersonToCustomerId(Connection con, Person person) throws SQLException {
+    PreparedStatement select = con.prepareStatement("""
+      SELECT CustomerId
+      FROM customer
+      WHERE PersonID = ?;
+    """);
+    select.setInt(1, person.getId());
+    ResultSet result = select.executeQuery();
+    result.next();
+    int output = result.getInt(1);
+    if (result.wasNull()) {
+      output = -1;
+    }
+    return output;
   }
 
   public static Customer getCustomer(Connection con, int customerId) throws SQLException {

@@ -3,6 +3,9 @@ package cen4333.group2.journeycliengine;
 import cen4333.group2.errors.JunctionNotFoundException;
 
 public abstract class Junction {
+
+  protected boolean displayMessageOnAutoContinue = true;
+
   /**
    * @return An array of paths which lead out from this junction.
    */
@@ -24,7 +27,9 @@ public abstract class Junction {
     Path[] paths = paths();
 
     if ( paths.length == 1 ) {
-      System.out.printf("Continuing to path \"%s\".\n", paths[0].getName());
+      if (displayMessageOnAutoContinue) {
+        System.out.printf("Continuing to path \"%s\".\n", paths[0].getName());
+      }
       output = paths[0];
     } else {
       for (int i = 0; i < paths.length; i++) {

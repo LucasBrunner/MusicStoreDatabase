@@ -29,6 +29,7 @@ public class UserTypeSelectJunction extends Junction {
         paths.add(new GoToPath(new ManagerJunction()));
       }
     }
+    displayMessageOnAutoContinue = false;
   }
 
   @Override
