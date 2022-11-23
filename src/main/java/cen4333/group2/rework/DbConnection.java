@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import cen4333.group2.rework.errors.AccessNotAllowedException;
 import cen4333.group2.rework.errors.DbConnectException;
@@ -19,7 +17,20 @@ public class DbConnection {
 
   public enum ConnectionType {
     CLERK,
-    MANAGER
+    MANAGER;
+
+    @Override
+    public String toString() {
+      switch (this) {
+        case CLERK:
+          return "Clerk";
+        case MANAGER:
+          return "Manager";
+        default:
+          return "";
+
+      }
+    }
   };
 
   private Connection con;
@@ -69,8 +80,7 @@ public class DbConnection {
   }
 
   private static ConnectionType selectConnectionType(HashSet<ConnectionType> connectionTypes) throws NoItemsException {
-    List<ConnectionType> list = new ArrayList<ConnectionType>(connectionTypes);
-    return Utility.printAndGetSelection(list);
+    return Utility.printAndGetSelection(connectionTypes.toArray(new ConnectionType[0]));
   }
 
   private static HashSet<ConnectionType> findConnectionType(Connection con, String username, String hostname) throws AccessNotAllowedException {

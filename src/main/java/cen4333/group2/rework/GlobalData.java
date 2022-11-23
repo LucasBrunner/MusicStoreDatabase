@@ -9,4 +9,8 @@ public class GlobalData {
 
   public boolean doMainLoop = true;
   public DbConnection dbConnection = null;
+
+  public void clear() {
+    dbConnection = null;
+  }
 }

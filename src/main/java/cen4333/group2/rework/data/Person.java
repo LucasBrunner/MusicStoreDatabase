@@ -1,4 +1,4 @@
-package cen4333.group2.data;
+package cen4333.group2.rework.data;
 
 public class Person {
   private int id = -1;
@@ -21,8 +21,6 @@ public class Person {
   }
 
   public Customer toCustomer(int id) {
-    Customer output = new Customer(id);
-    output.person = this;
-    return output;
+    return new Customer(id, this);
   }
 }

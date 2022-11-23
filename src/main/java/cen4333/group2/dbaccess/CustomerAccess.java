@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import cen4333.group2.data.Customer;
-import cen4333.group2.data.Person;
+import cen4333.group2.rework.data.Customer;
+import cen4333.group2.rework.data.Person;
 
 public class CustomerAccess {
   /**

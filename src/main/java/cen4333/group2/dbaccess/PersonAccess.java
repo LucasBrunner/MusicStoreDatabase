@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import cen4333.group2.Enums.Result;
-import cen4333.group2.data.Person;
-import cen4333.group2.data.PersonData;
+import cen4333.group2.rework.data.Person;
+import cen4333.group2.rework.data.PersonData;
 
 public class PersonAccess {
   /**
