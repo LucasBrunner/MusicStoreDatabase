@@ -7,10 +7,10 @@ import java.util.List;
 import cen4333.group2.Enums.UserType;
 import cen4333.group2.journeycliengine.Junction;
 import cen4333.group2.journeycliengine.Path;
-import cen4333.group2.junctions.customerjunctions.AddCustomerPath;
-import cen4333.group2.junctions.customerjunctions.RemoveCustomerDataPath;
-import cen4333.group2.junctions.customerjunctions.SearchCustomersPath;
-import cen4333.group2.junctions.customerjunctions.ViewCustomersPath;
+import cen4333.group2.paths.customerpaths.AddCustomerPath;
+import cen4333.group2.paths.customerpaths.RemoveCustomerDataPath;
+import cen4333.group2.paths.customerpaths.SearchCustomersPath;
+import cen4333.group2.paths.customerpaths.ViewCustomersPath;
 
 public class CustomerJunction extends Junction {
   

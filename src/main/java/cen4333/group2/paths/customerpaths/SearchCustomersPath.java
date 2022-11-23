@@ -1,4 +1,4 @@
-package cen4333.group2.junctions.customerjunctions;
+package cen4333.group2.paths.customerpaths;
 
 import cen4333.group2.journeycliengine.Junction;
 import cen4333.group2.journeycliengine.Path;

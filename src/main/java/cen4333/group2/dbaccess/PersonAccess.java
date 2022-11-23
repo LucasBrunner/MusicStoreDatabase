@@ -3,14 +3,24 @@ package cen4333.group2.dbaccess;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import cen4333.group2.Enums.Result;
 import cen4333.group2.data.Person;
+import cen4333.group2.data.PersonData;
 
 public class PersonAccess {
-  public static String insertPerson(Connection con, Person person) {
-    String output = null;
-
+  /**
+   * The person object will be updated with the new person's id.
+   * @param con
+   * @param data
+   * @throws SQLException
+   */
+  public static Person insertPerson(Connection con, PersonData data) throws SQLException {
+    Person output = null;
     try {
+      con.setAutoCommit(false);
+
       PreparedStatement insert = con.prepareStatement("""
         INSERT INTO person (
           FirstName,
@@ -27,101 +37,112 @@ public class PersonAccess {
           ?
         );
       """);
-
-      insert.setString(1, person.firstName);
-      insert.setString(2, person.lastName);
-      insert.setString(3, person.phoneNumber);
-      insert.setString(4, person.email);
-      insert.setString(5, person.address);
-
+  
+      insert.setString(1, data.firstName);
+      insert.setString(2, data.lastName);
+      insert.setString(3, data.phoneNumber);
+      insert.setString(4, data.email);
+      insert.setString(5, data.address);
+  
       insert.executeUpdate();
+  
+      PreparedStatement selectID = con.prepareStatement("""
+        SELECT MAX(PersonID)
+        FROM person;
+      """);
+      ResultSet results = selectID.executeQuery();
+      results.next();
+      output =  data.toPerson(results.getInt(1));
+      
+      con.setAutoCommit(true);
+      
     } catch (Exception e) {
-      output = "cannot insert person";
-    }
+      con.setAutoCommit(true);
+      throw e;
+    }        
 
     return output;
   }
 
-  public static String updatePerson(Connection con, Person person) {
-    String output = null;
+  public static void updatePerson(Connection con, Person person) throws SQLException {
+    PreparedStatement update = con.prepareStatement("""
+      UPDATE person
+      SET
+        FirstName = ?,
+        LastName = ?,
+        PhoneNumber = ?,
+        Email = ?,
+        Address = ?
+      WHERE person.PersonID = ?;
+    """);
 
-    try {
-      PreparedStatement update = con.prepareStatement("""
-        UPDATE person
-        SET
-          FirstName = ?,
-          LastName = ?,
-          PhoneNumber = ?,
-          Email = ?,
-          Address = ?
-        WHERE person.PersonID = ?;
-      """);
+    PersonData data = person.data;
+    update.setString(1, data.firstName);
+    update.setString(2, data.lastName);
+    update.setString(3, data.phoneNumber);
+    update.setString(4, data.email);
+    update.setString(5, data.address);
+    update.setInt(5, person.getId());
 
-      update.setString(1, person.firstName);
-      update.setString(2, person.lastName);
-      update.setString(3, person.phoneNumber);
-      update.setString(4, person.email);
-      update.setString(5, person.address);
-      update.setInt(5, person.id);
-
-      update.executeUpdate();
-    } catch (Exception e) {
-      output = "cannot update person";
-    }
-
-    return output;
+    update.executeUpdate();
   }
 
-  public static String deletePerson(Connection con, int personID) {
-    String output = null;
+  public static Result deletePerson(Connection con, int personID) throws SQLException {
+    PreparedStatement delete = con.prepareStatement("""
+      DELETE FROM person
+      WHERE person.PersonID = ?;
+    """);
 
-    try {
-      PreparedStatement delete = con.prepareStatement("""
-        DELETE FROM person
-        WHERE person.PersonID = ?;
-      """);
+    delete.setInt(1, personID);
 
-      delete.setInt(1, personID);
-
-      delete.executeUpdate();
-    } catch (Exception e) {
-      output = "cannot delete person";
+    if (delete.executeUpdate() > 0) {
+      return Result.Ok;
+    } else {
+      return Result.Error;
     }
-
-    return output;
   }
 
-  public static Person getPerson(Connection con, int personID) {
-    Person output = null;
+  /**
+   * Updates the data of the Person in place.
+   * @param con
+   * @param person
+   * @throws SQLException
+   */
+  public static void getPerson(Connection con, Person person) throws SQLException {
+    PreparedStatement select = con.prepareStatement("""
+      SELECT 
+        FirstName,
+        LastName,
+        PhoneNumber,
+        Email,
+        Address
+      FROM person
+      WHERE PersonID = ?;
+    """);
 
-    try {
-      PreparedStatement select = con.prepareStatement("""
-        SELECT 
-          FirstName,
-          LastName,
-          PhoneNumber,
-          Email,
-          Address
-        FROM person
-        WHERE PersonID = ?;
-      """);
+    select.setInt(1, person.getId());
 
-      select.setInt(1, personID);
-
-      ResultSet result = select.executeQuery();
-      if (result.next()) {
-        output = new Person();
-        output.id = personID;
-        output.firstName = result.getString(1);
-        output.lastName = result.getString(2);
-        output.phoneNumber = result.getString(3);
-        output.email = result.getString(4);
-        output.address = result.getString(5);
-      }
-    } catch (Exception e) {
-      output = null;
+    ResultSet result = select.executeQuery();
+    if (result.next()) {
+      PersonData data = new PersonData();
+      data.firstName = result.getString(1);
+      data.lastName = result.getString(2);
+      data.phoneNumber = result.getString(3);
+      data.email = result.getString(4);
+      data.address = result.getString(5);
     }
+  }
 
-    return output;
+  public static boolean doesPersonExist(Connection con, Person person) throws SQLException {
+    PreparedStatement select = con.prepareStatement("""
+      SELECT PersonID
+      FROM person
+      WHERE PersonID = ?;
+    """);
+
+    select.setInt(1, person.getId());
+    
+    ResultSet result = select.executeQuery();
+    return result.next();
   }
 }

@@ -28,10 +28,10 @@ public class LoginPath extends Path {
 
   @Override
   public void run() {
-    System.out.println("Enter your username: ");
+    System.out.print("Enter your username: ");
     String username = UserInput.getString();
     
-    System.out.println("Enter your password: ");
+    System.out.print("Enter your password: ");
     String password = UserInput.getString();
 
     Connection con = DbAccess.getConnection(username, password);
