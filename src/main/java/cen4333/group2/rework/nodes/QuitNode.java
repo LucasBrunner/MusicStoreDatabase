@@ -14,4 +14,9 @@ public class QuitNode extends Node {
   public void runNode() {
     Main.globalData.doMainLoop = false;
   }
+
+  @Override
+  public String toString() {
+    return "Quit app";
+  }
 }
