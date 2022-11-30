@@ -1,7 +1,7 @@
-package cen4333.group2.rework.nodes;
+package cen4333.group2.nodes;
 
 import cen4333.group2.Main;
-import cen4333.group2.rework.Node;
+import cen4333.group2.Node;
 
 public class LogoutNode extends Node {
 

@@ -1,13 +1,13 @@
-package cen4333.group2.rework.nodes;
+package cen4333.group2.nodes;
 
 import cen4333.group2.Main;
 import cen4333.group2.UserInput;
-import cen4333.group2.rework.DbConnection;
-import cen4333.group2.rework.Node;
-import cen4333.group2.rework.errors.DbConnectException;
-import cen4333.group2.rework.errors.UnreachableException;
-import cen4333.group2.rework.nodes.logintypenodes.ClerkMenu;
-import cen4333.group2.rework.nodes.logintypenodes.ManagerMenu;
+import cen4333.group2.DbConnection;
+import cen4333.group2.Node;
+import cen4333.group2.errors.DbConnectException;
+import cen4333.group2.errors.UnreachableException;
+import cen4333.group2.nodes.logintypenodes.ClerkMenu;
+import cen4333.group2.nodes.logintypenodes.ManagerMenu;
 
 public class LoginNode extends Node {
 

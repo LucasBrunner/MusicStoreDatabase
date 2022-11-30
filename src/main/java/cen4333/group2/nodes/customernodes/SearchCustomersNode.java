@@ -1,17 +1,17 @@
-package cen4333.group2.rework.nodes.customernodes;
+package cen4333.group2.nodes.customernodes;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import cen4333.group2.UserInput;
-import cen4333.group2.rework.Node;
-import cen4333.group2.rework.Utility;
-import cen4333.group2.rework.Utility.SearchType;
-import cen4333.group2.rework.daos.CustomerDao;
-import cen4333.group2.rework.data.Customer;
-import cen4333.group2.rework.data.PersonData;
-import cen4333.group2.rework.errors.NoItemsException;
+import cen4333.group2.Node;
+import cen4333.group2.Utility;
+import cen4333.group2.Utility.SearchType;
+import cen4333.group2.daos.CustomerDao;
+import cen4333.group2.data.Customer;
+import cen4333.group2.data.PersonData;
+import cen4333.group2.errors.NoItemsException;
 
 public class SearchCustomersNode extends Node {
 

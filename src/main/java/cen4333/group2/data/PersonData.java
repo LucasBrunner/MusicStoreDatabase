@@ -1,4 +1,4 @@
-package cen4333.group2.rework.data;
+package cen4333.group2.data;
 
 public class PersonData {
   public String firstName;

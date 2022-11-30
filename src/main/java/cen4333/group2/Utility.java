@@ -1,10 +1,10 @@
-package cen4333.group2.rework;
+package cen4333.group2;
 
 import java.util.HashMap;
 import java.util.List;
 
 import cen4333.group2.UserInput;
-import cen4333.group2.rework.errors.NoItemsException;
+import cen4333.group2.errors.NoItemsException;
 
 public class Utility {
   public enum SearchType {

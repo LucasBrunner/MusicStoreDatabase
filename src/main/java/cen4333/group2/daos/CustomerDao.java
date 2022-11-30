@@ -1,4 +1,4 @@
-package cen4333.group2.rework.daos;
+package cen4333.group2.daos;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import cen4333.group2.Main;
-import cen4333.group2.rework.data.Customer;
-import cen4333.group2.rework.data.Person;
-import cen4333.group2.rework.data.PersonData;
+import cen4333.group2.data.Customer;
+import cen4333.group2.data.Person;
+import cen4333.group2.data.PersonData;
 
 public class CustomerDao {
   /**

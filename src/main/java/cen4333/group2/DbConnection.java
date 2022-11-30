@@ -1,4 +1,4 @@
-package cen4333.group2.rework;
+package cen4333.group2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,9 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
 
-import cen4333.group2.rework.errors.AccessNotAllowedException;
-import cen4333.group2.rework.errors.DbConnectException;
-import cen4333.group2.rework.errors.NoItemsException;
+import cen4333.group2.errors.AccessNotAllowedException;
+import cen4333.group2.errors.DbConnectException;
+import cen4333.group2.errors.NoItemsException;
 
 public class DbConnection {
   

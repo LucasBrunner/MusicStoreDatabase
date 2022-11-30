@@ -1,6 +1,6 @@
-package cen4333.group2.rework.nodes.logintypenodes;
+package cen4333.group2.nodes.logintypenodes;
 
-import cen4333.group2.rework.Node;
+import cen4333.group2.Node;
 
 public class ManagerMenu extends Node {
 

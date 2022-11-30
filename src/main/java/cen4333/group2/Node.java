@@ -1,4 +1,4 @@
-package cen4333.group2.rework;
+package cen4333.group2;
 
 public abstract class Node {
   public abstract String getName();

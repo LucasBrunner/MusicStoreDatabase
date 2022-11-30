@@ -1,4 +1,4 @@
-package cen4333.group2.rework.nodes;
+package cen4333.group2.nodes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 
 import com.github.javafaker.Faker;
 
-import cen4333.group2.rework.Node;
+import cen4333.group2.Node;
 
 public class InsertFakeDataNode extends Node {
   

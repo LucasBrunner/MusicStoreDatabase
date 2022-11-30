@@ -1,8 +1,8 @@
-package cen4333.group2.rework.nodes.customernodes;
+package cen4333.group2.nodes.customernodes;
 
-import cen4333.group2.rework.Node;
-import cen4333.group2.rework.data.Customer;
-import cen4333.group2.rework.data.PersonData;
+import cen4333.group2.Node;
+import cen4333.group2.data.Customer;
+import cen4333.group2.data.PersonData;
 
 public class ViewCustomerNode extends Node {
 

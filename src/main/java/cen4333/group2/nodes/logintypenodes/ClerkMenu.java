@@ -1,10 +1,10 @@
-package cen4333.group2.rework.nodes.logintypenodes;
+package cen4333.group2.nodes.logintypenodes;
 
-import cen4333.group2.rework.Node;
-import cen4333.group2.rework.Utility;
-import cen4333.group2.rework.errors.NoItemsException;
-import cen4333.group2.rework.nodes.LogoutNode;
-import cen4333.group2.rework.nodes.customernodes.SearchCustomersNode;
+import cen4333.group2.Node;
+import cen4333.group2.Utility;
+import cen4333.group2.errors.NoItemsException;
+import cen4333.group2.nodes.LogoutNode;
+import cen4333.group2.nodes.customernodes.SearchCustomersNode;
 
 public class ClerkMenu extends Node {
 
