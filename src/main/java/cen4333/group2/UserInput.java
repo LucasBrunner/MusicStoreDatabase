@@ -1,4 +1,4 @@
-package cen4333.group2.journeycliengine;
+package cen4333.group2;
 
 import java.util.Scanner;
 

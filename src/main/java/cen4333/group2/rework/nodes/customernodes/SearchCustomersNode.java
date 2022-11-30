@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cen4333.group2.journeycliengine.UserInput;
+import cen4333.group2.UserInput;
 import cen4333.group2.rework.Node;
 import cen4333.group2.rework.Utility;
 import cen4333.group2.rework.Utility.SearchType;

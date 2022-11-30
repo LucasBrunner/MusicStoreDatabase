@@ -3,7 +3,7 @@ package cen4333.group2.rework;
 import java.util.HashMap;
 import java.util.List;
 
-import cen4333.group2.journeycliengine.UserInput;
+import cen4333.group2.UserInput;
 import cen4333.group2.rework.errors.NoItemsException;
 
 public class Utility {

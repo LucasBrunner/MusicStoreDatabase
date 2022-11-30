@@ -1,7 +1,7 @@
 package cen4333.group2.rework.nodes;
 
 import cen4333.group2.Main;
-import cen4333.group2.journeycliengine.UserInput;
+import cen4333.group2.UserInput;
 import cen4333.group2.rework.DbConnection;
 import cen4333.group2.rework.Node;
 import cen4333.group2.rework.errors.DbConnectException;
