@@ -4,6 +4,7 @@ import cen4333.group2.Node;
 import cen4333.group2.utility.Utility;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.PersonData;
+import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.NothingNode;
 
 public class ViewCustomerNode extends Node {
@@ -37,19 +38,27 @@ public class ViewCustomerNode extends Node {
         pd.email,
         pd.address
       ));
-        
-      try {
-        System.out.println("What would you like to do with this customer?");
-        Node n = Utility.printAndGetSelection(new Node[] {
-          new EditCustomerNode(customer),
-          new NothingNode()
-        });
-
-        n.runNode();
-      } catch (Exception e) {}
+      
+      while (loop(pd.firstName + " " + pd.lastName)) {}
     } else {
       System.out.println("Error: no customer!");
     }
+  }
+
+  private boolean loop(String name) {        
+    try {
+      System.out.println("What would you like to do with customer " + name +"?");
+      Node n = Utility.printAndGetSelection(new Node[] {
+        new EditCustomerNode(customer),
+        new NothingNode()
+      });
+
+      n.runNode();
+      if (n.getClass() == NothingNode.class) {
+        return false;
+      }
+    } catch (NoItemsException e) {}
+    return true;
   }
   
 }

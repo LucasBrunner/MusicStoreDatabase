@@ -27,10 +27,7 @@ public class EditCustomerNode extends Node {
   
   @Override
   public void runNode() {
-    boolean continueLoop = true;
-    while (continueLoop) {
-      continueLoop = loop();
-    }
+    while (loop()) {}
   }
 
   public boolean loop() {
