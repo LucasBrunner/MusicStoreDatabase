@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFromWhere;
 
-public class Person implements QueryResult, SelectFromWhere {
+public class Person implements QueryResult, SelectFromWhere, Prototype {
   public String firstName;
   public String lastName;
   public String phoneNumber;
@@ -17,7 +17,7 @@ public class Person implements QueryResult, SelectFromWhere {
     return firstName + " " + lastName;
   }
 
-  public Person fillWithResultSet(ResultSet result) throws SQLException {
+  public void fillWithResultSet(ResultSet result) throws SQLException {
     firstName = result.getString("FirstName");
     lastName = result.getString("LastName");
     phoneNumber = result.getString("PhoneNumber");
@@ -26,24 +26,19 @@ public class Person implements QueryResult, SelectFromWhere {
     email = result.wasNull() ? null : email;
     address = result.getString("Address");
     address = result.wasNull() ? null : address;
-
-    return this;
-  }
-
-  public static Person fromResultSet(ResultSet result) throws SQLException {
-    return new Person().fillWithResultSet(result);
   }
 
   @Override
   public String getSelectFromWhereQuery(String where) {
     return """
       SELECT
+        `PersonID`,
         `FirstName`,
         `LastName`,
         `PhoneNumber`,
         `Email`,
         `Address`
-      FROM `person`
+      FROM `person`\n
     """ + where;
   }
 
@@ -51,8 +46,29 @@ public class Person implements QueryResult, SelectFromWhere {
   public String getSelectCountQuery(String where) {
     return """
       SELECT
-        COUNT(`FirstName`)
-      FROM `person`
+        COUNT(`PersonID`)
+      FROM `person`\n
     """ + where;
+  }
+
+  @Override
+  public Prototype duplicate() {
+    Person person = new Person();
+    person.firstName = firstName;
+    person.lastName = lastName;
+    person.phoneNumber = phoneNumber;
+    person.email = email;
+    person.address = address;
+    return person;
+  }
+
+  @Override
+  public Prototype duplicateEmpty() {
+    return new Person();
+  }
+
+  @Override
+  public String getIdColumnName() {
+    return "PersonID";
   }
 }

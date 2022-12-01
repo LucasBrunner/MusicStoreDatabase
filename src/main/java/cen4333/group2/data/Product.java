@@ -6,8 +6,8 @@ import cen4333.group2.utility.Utility;
 
 public class Product {
   public String name;
-  public DataWithId<String> instrumentType;
-  public DataWithId<String> productType;
+  public DataWithId<DataString> instrumentType;
+  public DataWithId<DataString> productType;
   public BigDecimal retailPrice;
   public BigDecimal wholesalePrice;
 

@@ -10,6 +10,7 @@ import cen4333.group2.Node;
 import cen4333.group2.utility.Utility;
 import cen4333.group2.utility.Utility.SearchType;
 import cen4333.group2.daos.CustomerDao;
+import cen4333.group2.daos.sqlutilities.SelectFromWhereIter;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.DataWithId;
 import cen4333.group2.data.Person;
@@ -51,12 +52,22 @@ public class SearchCustomersNode extends Node {
   }
 
   private void searchByName(String name) {
-    displaySearch(new CustomerSearchInterface(getResultsAmount()) {
-      @Override
-      public boolean getCustomersFromDb(int offset, int amount, List<DataWithId<Customer>> customers) throws SQLException {
-        return CustomerDao.searchCustomersByName(name, amount, offset, customers);
-      }            
-    });
+    try {
+      displaySearch(new SelectFromWhereIter<Customer>(
+        String.format("WHERE CONCAT(`FirstName`, \" \", `LastName`) LIKE \"%%%s%%\"", name), 
+        new Customer(), 
+        getResultsAmount()
+      ));
+    } catch (SQLException e) {
+      System.out.println("There was a database error!");
+      e.printStackTrace();
+    }
+    // displaySearch(new CustomerSearchInterface(getResultsAmount()) {
+    //   @Override
+    //   public boolean getCustomersFromDb(int offset, int amount, List<DataWithId<Customer>> customers) throws SQLException {
+    //     return CustomerDao.searchCustomersByName(name, amount, offset, customers);
+    //   }            
+    // });
   }
 
   private void searchById(int customerId) {
@@ -82,6 +93,57 @@ public class SearchCustomersNode extends Node {
       }
     }
     return amount;
+  }
+
+  private void displaySearch(SelectFromWhereIter<Customer> searchIter) throws ClassCastException, SQLException {
+    List<DataWithId<Customer>> customers = new ArrayList<DataWithId<Customer>>();
+    List<ObjectWithValue<String, Integer>> selections = new ArrayList<ObjectWithValue<String, Integer>>();
+    while (true) {
+      System.out.printf(
+        "\nPrinting customers %d to %d. Select one to view it:\n", 
+        searchIter.getOffset() + 1, 
+        searchIter.getOffset() + searchIter.getStepSize()
+      );
+    
+      customers = searchIter.getPage();
+      selections.clear();
+      for (int i = 0; i < customers.size(); i++) {
+        DataWithId<Customer> customer = customers.get(i);
+        DataWithId<Person> pd = customer.data.person;
+        selections.add(new ObjectWithValue<String, Integer>(
+          "ID: " + customer.id + ", Name: " + pd.data.firstName + " " + pd.data.lastName, 
+          selections.size() + 1
+          ));
+      }
+
+      if (searchIter.hasNextPage()) {
+        selections.add(new ObjectWithValue<String, Integer>("Next page", -1));
+      }
+      if (searchIter.hasPreviousPage()) {
+        selections.add(new ObjectWithValue<String, Integer>("Previous page", -2));
+      }
+      selections.add(new ObjectWithValue<String, Integer>("Cancel", -3));
+
+      Integer selection = null;
+      try {
+        selection = Utility.printAndGetSelection(selections).value;
+      } catch (NoItemsException e) {}
+
+      if (selection == -1) {
+        searchIter.nextPage();
+      } else if (selection == -2) {
+        searchIter.previousPage();
+      } else if (selection == -3) {
+        return;
+      } else if (selection >= 1 && selection <= customers.size()) {
+        ViewCustomerNode vcn = new ViewCustomerNode();
+        vcn.setCustomer(customers.get(selection - 1));
+        vcn.runNode();
+        break;
+      } else {
+        System.out.println("Invalid state! Proceeding to next valid state.");
+      }
+    }
   }
 
   private void displaySearch(CustomerSearchInterface csi) {

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cen4333.group2.Main;
+import cen4333.group2.data.DataWithId;
 import cen4333.group2.data.Prototype;
 
 public class SelectFromWhereIter <T extends QueryResult & SelectFromWhere & Prototype> {
@@ -21,16 +22,18 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFromWhere & Prot
     this.prototype = prototype;
     this.stepSize = stepSize;
 
+    // System.out.println(prototype.getSelectCountQuery(where));
     ResultSet countQueryResult = Main.globalData.dbConnection.getConnection().prepareStatement(prototype.getSelectCountQuery(where)).executeQuery();
     countQueryResult.next();
     this.rowCount = countQueryResult.getInt(1);
   }
 
+  @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
   /**
    * Gets the current page.
    * @return 
    */
-  public List<T> getPage() throws SQLException, ClassCastException {
+  public List<DataWithId<T>> getPage() throws SQLException, ClassCastException {
     String query = prototype.getSelectFromWhereQuery(where) + String.format(
       """
         \nLIMIT %d
@@ -41,12 +44,13 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFromWhere & Prot
     );
     ResultSet results = Main.globalData.dbConnection.getConnection().prepareStatement(query).executeQuery();
     
-    List<T> output = new ArrayList<T>();
+    List<DataWithId<T>> output = new ArrayList<DataWithId<T>>();
     while (results.next()) {
-      @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
-      T nextResult = (T) prototype.duplicate();
-      nextResult.fillWithResultSet(results);
-      output.add(nextResult);
+      DataWithId<T> nextItem = new DataWithId<T>();
+      nextItem.data = (T) prototype.duplicateEmpty();
+      nextItem.data.fillWithResultSet(results);
+      nextItem.id = results.getInt(prototype.getIdColumnName());
+      output.add(nextItem);
     }
     while (output.size() > stepSize) {
       output.remove(output.size() - 1);
@@ -75,10 +79,18 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFromWhere & Prot
   }
 
   public boolean hasNextPage() {
-    return (rowCount % stepSize) > currentPosition;
+    return (rowCount / stepSize) > currentPosition;
   }
 
   public boolean hasPreviousPage() {
     return currentPosition > 0;
+  }
+
+  public int getOffset() {
+    return currentPosition * stepSize;
+  }
+
+  public int getStepSize() {
+    return stepSize;
   }
 }

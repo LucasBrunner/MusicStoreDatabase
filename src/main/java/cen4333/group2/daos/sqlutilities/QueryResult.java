@@ -4,5 +4,5 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface QueryResult {
-  public QueryResult fillWithResultSet(ResultSet results) throws SQLException;
+  public void fillWithResultSet(ResultSet results) throws SQLException;
 }
