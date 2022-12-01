@@ -11,7 +11,8 @@ import cen4333.group2.utility.Utility;
 import cen4333.group2.utility.Utility.SearchType;
 import cen4333.group2.daos.CustomerDao;
 import cen4333.group2.data.Customer;
-import cen4333.group2.data.PersonData;
+import cen4333.group2.data.DataWithId;
+import cen4333.group2.data.Person;
 import cen4333.group2.errors.NoItemsException;
 
 public class SearchCustomersNode extends Node {
@@ -52,7 +53,7 @@ public class SearchCustomersNode extends Node {
   private void searchByName(String name) {
     displaySearch(new CustomerSearchInterface(getResultsAmount()) {
       @Override
-      public boolean getCustomersFromDb(int offset, int amount, List<Customer> customers) throws SQLException {
+      public boolean getCustomersFromDb(int offset, int amount, List<DataWithId<Customer>> customers) throws SQLException {
         return CustomerDao.searchCustomersByName(name, amount, offset, customers);
       }            
     });
@@ -61,7 +62,7 @@ public class SearchCustomersNode extends Node {
   private void searchById(int customerId) {
     displaySearch(new CustomerSearchInterface(1) {
       @Override
-      public boolean getCustomersFromDb(int offset, int amount, List<Customer> customers) throws SQLException {
+      public boolean getCustomersFromDb(int offset, int amount, List<DataWithId<Customer>> customers) throws SQLException {
         return CustomerDao.searchCustomersById(customerId, amount, offset, customers);
       }            
     });
@@ -85,7 +86,7 @@ public class SearchCustomersNode extends Node {
 
   private void displaySearch(CustomerSearchInterface csi) {
     int offset = 0;
-    List<Customer> customers = new ArrayList<Customer>();
+    List<DataWithId<Customer>> customers = new ArrayList<DataWithId<Customer>>();
     List<ObjectWithValue<String, Integer>> selections = new ArrayList<ObjectWithValue<String, Integer>>();
     while (true) {
       try {
@@ -94,10 +95,10 @@ public class SearchCustomersNode extends Node {
 
         selections.clear();
         for (int i = 0; i < customers.size(); i++) {
-          Customer customer = customers.get(i);
-          PersonData pd = customer.getPersonData();
+          DataWithId<Customer> customer = customers.get(i);
+          DataWithId<Person> pd = customer.data.person;
           selections.add(new ObjectWithValue<String, Integer>(
-            "ID: " + customer.getId() + ", Name: " + pd.firstName + " " + pd.lastName, 
+            "ID: " + customer.id + ", Name: " + pd.data.firstName + " " + pd.data.lastName, 
             selections.size() + 1
             ));
         }
@@ -145,5 +146,5 @@ abstract class CustomerSearchInterface {
     this.amount = amount;
   }
 
-  public abstract boolean getCustomersFromDb(int offset, int amount, List<Customer> customers) throws SQLException;
+  public abstract boolean getCustomersFromDb(int offset, int amount, List<DataWithId<Customer>> customers) throws SQLException;
 }

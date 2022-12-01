@@ -9,8 +9,8 @@ import java.util.List;
 import cen4333.group2.Main;
 import cen4333.group2.Enums.Result;
 import cen4333.group2.data.Customer;
+import cen4333.group2.data.DataWithId;
 import cen4333.group2.data.Person;
-import cen4333.group2.data.PersonData;
 
 public class CustomerDao {
   /**
@@ -23,7 +23,7 @@ public class CustomerDao {
    * @return true if there were more items in the query than fit in the return amount specified.
    * @throws SQLException
    */
-  public static boolean searchCustomersByName(String name, int amount, int offset, List<Customer> output) throws SQLException {
+  public static boolean searchCustomersByName(String name, int amount, int offset, List<DataWithId<Customer>> output) throws SQLException {
     return searchCustomers(String.format("WHERE CONCAT(FirstName, \" \", LastName) LIKE \"%%%s%%\"", name), amount, offset, output);
   }
   /**
@@ -36,11 +36,11 @@ public class CustomerDao {
    * @return true if there were more items in the query than fit in the return amount specified.
    * @throws SQLException
    */
-  public static boolean searchCustomersById(int customerId, int amount, int offset, List<Customer> output) throws SQLException {
+  public static boolean searchCustomersById(int customerId, int amount, int offset, List<DataWithId<Customer>> output) throws SQLException {
     return searchCustomers("WHERE CustomerID = " + customerId, amount, offset, output);
   }
 
-  private static boolean searchCustomers(String whereClause, int amount, int offset, List<Customer> output) throws SQLException {
+  private static boolean searchCustomers(String whereClause, int amount, int offset, List<DataWithId<Customer>> output) throws SQLException {
     output.clear();
     boolean outputBool = false;
 
@@ -71,17 +71,22 @@ public class CustomerDao {
     ResultSet results = query.executeQuery();
 
     while (results.next()) {
-      PersonData pd = new PersonData();
-      pd.firstName   = results.getString(3);
-      pd.lastName    = results.getString(4);
-      pd.phoneNumber = results.getString(5);
-      pd.email       = results.getString(6);
-      pd.address     = results.getString(7);
+      Person person = new Person();
+      person.firstName   = results.getString(3);
+      person.lastName    = results.getString(4);
+      person.phoneNumber = results.getString(5);
+      person.email       = results.getString(6);
+      person.address     = results.getString(7);
 
-      Person p = pd.toPerson(results.getInt(1));
+      DataWithId<Person> personWithId = new DataWithId<Person>();
+      personWithId.data = person;
+      personWithId.id = results.getInt(1);
     
-      Customer c = p.toCustomer(results.getInt(2));
-      output.add(c);
+      DataWithId<Customer> customer = new DataWithId<Customer>();
+      customer.data = new Customer();
+      customer.data.person = personWithId;
+      customer.id = results.getInt(2);
+      output.add(customer);
     }
 
     while (output.size() > amount) {
@@ -92,7 +97,7 @@ public class CustomerDao {
     return outputBool;
   }
 
-  public static Result updateCustomer(Customer customer) throws SQLException {
+  public static Result updateCustomer(DataWithId<Customer> customer) throws SQLException {
     Connection con = Main.globalData.dbConnection.getConnection();
     
     PreparedStatement update = con.prepareStatement("""
@@ -108,14 +113,14 @@ public class CustomerDao {
       WHERE CustomerID = ?;
     """);
 
-    PersonData p = customer.getPersonData();
-    update.setString(1, p.firstName);
-    update.setString(2, p.lastName);
-    update.setString(3, p.phoneNumber);
-    update.setString(4, p.email);
-    update.setString(5, p.address);
+    Person person = customer.data.person.data;
+    update.setString(1, person.firstName);
+    update.setString(2, person.lastName);
+    update.setString(3, person.phoneNumber);
+    update.setString(4, person.email);
+    update.setString(5, person.address);
     
-    update.setInt(6, customer.getId());
+    update.setInt(6, customer.id);
 
     update.executeUpdate();
 

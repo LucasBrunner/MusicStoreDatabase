@@ -3,17 +3,18 @@ package cen4333.group2.nodes.customernodes;
 import cen4333.group2.Node;
 import cen4333.group2.utility.Utility;
 import cen4333.group2.data.Customer;
-import cen4333.group2.data.PersonData;
+import cen4333.group2.data.DataWithId;
+import cen4333.group2.data.Person;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.NothingNode;
 import cen4333.group2.nodes.purchasenodes.CreatePurchaseNode;
 
 public class ViewCustomerNode extends Node {
 
-  private Customer customer;
+  private DataWithId<Customer> customerWithId;
 
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
+  public void setCustomer(DataWithId<Customer> customer) {
+    this.customerWithId = customer;
   }
 
   @Override
@@ -23,8 +24,8 @@ public class ViewCustomerNode extends Node {
 
   @Override
   public void runNode() {
-    if (customer != null) {
-      PersonData pd = customer.getPersonData();
+    if (customerWithId != null) {
+      DataWithId<Person> personWithId = customerWithId.data.person;
       System.out.println(String.format(
         """
           CustomerID: %d
@@ -33,14 +34,14 @@ public class ViewCustomerNode extends Node {
           Email: %s
           Address: %s
         """, 
-        customer.getId(),
-        pd.firstName + " " + pd.lastName,
-        pd.phoneNumber,
-        pd.email,
-        pd.address
+        customerWithId.id,
+        personWithId.data.firstName + " " + personWithId.data.lastName,
+        personWithId.data.phoneNumber,
+        personWithId.data.email,
+        personWithId.data.address
       ));
       
-      while (loop(pd.firstName + " " + pd.lastName)) {}
+      while (loop(personWithId.data.fullName())) {}
     } else {
       System.out.println("Error: no customer!");
     }
@@ -50,9 +51,9 @@ public class ViewCustomerNode extends Node {
     try {
       System.out.println("What would you like to do with customer " + name +"?");
       Node n = Utility.printAndGetSelection(new Node[] {
-        new EditCustomerNode(customer),
-        new CreatePurchaseNode(customer),
-        new ViewPurchasesNode(customer),
+        new EditCustomerNode(customerWithId),
+        new CreatePurchaseNode(customerWithId),
+        new ViewPurchasesNode(customerWithId),
         new NothingNode()
       });
 

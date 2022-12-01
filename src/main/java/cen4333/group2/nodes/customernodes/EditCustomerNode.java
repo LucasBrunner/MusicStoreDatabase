@@ -7,16 +7,17 @@ import java.util.List;
 import cen4333.group2.Node;
 import cen4333.group2.daos.CustomerDao;
 import cen4333.group2.data.Customer;
-import cen4333.group2.data.PersonData;
+import cen4333.group2.data.DataWithId;
+import cen4333.group2.data.Person;
 import cen4333.group2.utility.ObjectWithValue;
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.utility.Utility;
 
 public class EditCustomerNode extends Node {
 
-  private Customer customer;
+  private DataWithId<Customer> customer;
 
-  public EditCustomerNode(Customer customer) {
+  public EditCustomerNode(DataWithId<Customer> customer) {
     this.customer = customer;
   }
 
@@ -34,7 +35,7 @@ public class EditCustomerNode extends Node {
     System.out.println("Which field would you like to edit?");
 
     List<ObjectWithValue<String, Integer>> fields = new ArrayList<ObjectWithValue<String, Integer>>();
-    PersonData p = customer.getPersonData();
+    Person p = customer.data.person.data;
     fields.add(ObjectWithValue.stringWithInt("First name: " + p.firstName, fields.size() + 1));
     fields.add(ObjectWithValue.stringWithInt("Last name: " + p.lastName, fields.size() + 1));
     fields.add(ObjectWithValue.stringWithInt("Phone number: " + p.phoneNumber, fields.size() + 1));

@@ -2,13 +2,14 @@ package cen4333.group2.nodes.customernodes;
 
 import cen4333.group2.Node;
 import cen4333.group2.data.Customer;
+import cen4333.group2.data.DataWithId;
 
 public class ViewPurchasesNode extends Node {
 
-  private Customer customer;
+  private DataWithId<Customer> customer;
 
-  public ViewPurchasesNode(Customer customer) {
-    this.customer = customer;
+  public ViewPurchasesNode(DataWithId<Customer> customerWithId) {
+    this.customer = customerWithId;
   }
 
   @Override
