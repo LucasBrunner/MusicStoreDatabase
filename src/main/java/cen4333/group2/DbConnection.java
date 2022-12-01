@@ -32,6 +32,15 @@ public class DbConnection {
 
       }
     }
+
+    public boolean showWholesalePrices() {
+      switch (this) {
+        case MANAGER:
+          return true;
+        default:
+          return false;
+      }
+    }
   };
 
   private Connection con;

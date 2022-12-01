@@ -1,5 +1,8 @@
 package cen4333.group2.utility;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 import cen4333.group2.errors.NoItemsException;
@@ -26,6 +29,10 @@ public class Utility {
           return "";
       }
     }
+  }
+
+  public static String bigDecimalAsCurrencyString(BigDecimal value) {
+    return NumberFormat.getCurrencyInstance().format(value);
   }
 
   public static <T> T printAndGetSelection(T[] items) throws NoItemsException {
