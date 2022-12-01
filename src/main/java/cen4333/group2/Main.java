@@ -1,12 +1,10 @@
 package cen4333.group2;
 
-import cen4333.group2.GlobalData;
-import cen4333.group2.Node;
-import cen4333.group2.Utility;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.InsertFakeDataNode;
 import cen4333.group2.nodes.LoginNode;
 import cen4333.group2.nodes.QuitNode;
+import cen4333.group2.utility.Utility;
 
 public class Main {
   public static GlobalData globalData = new GlobalData();

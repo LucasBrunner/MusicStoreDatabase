@@ -1,7 +1,7 @@
 package cen4333.group2.nodes;
 
 import cen4333.group2.Main;
-import cen4333.group2.UserInput;
+import cen4333.group2.utility.UserInput;
 import cen4333.group2.DbConnection;
 import cen4333.group2.Node;
 import cen4333.group2.errors.DbConnectException;

@@ -1,8 +1,10 @@
 package cen4333.group2.nodes.customernodes;
 
 import cen4333.group2.Node;
+import cen4333.group2.utility.Utility;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.PersonData;
+import cen4333.group2.nodes.NothingNode;
 
 public class ViewCustomerNode extends Node {
 
@@ -35,6 +37,16 @@ public class ViewCustomerNode extends Node {
         pd.email,
         pd.address
       ));
+        
+      try {
+        System.out.println("What would you like to do with this customer?");
+        Node n = Utility.printAndGetSelection(new Node[] {
+          new EditCustomerNode(customer),
+          new NothingNode()
+        });
+      } catch (Exception e) {
+        // TODO: handle exception
+      }
     } else {
       System.out.println("Error: no customer!");
     }

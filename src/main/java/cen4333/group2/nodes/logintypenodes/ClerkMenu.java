@@ -1,7 +1,7 @@
 package cen4333.group2.nodes.logintypenodes;
 
 import cen4333.group2.Node;
-import cen4333.group2.Utility;
+import cen4333.group2.utility.Utility;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.LogoutNode;
 import cen4333.group2.nodes.customernodes.SearchCustomersNode;

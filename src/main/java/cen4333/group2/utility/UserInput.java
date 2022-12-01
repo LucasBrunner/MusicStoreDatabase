@@ -1,4 +1,4 @@
-package cen4333.group2;
+package cen4333.group2.utility;
 
 import java.util.Scanner;
 

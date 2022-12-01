@@ -4,10 +4,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cen4333.group2.UserInput;
+import cen4333.group2.utility.ObjectWithValue;
+import cen4333.group2.utility.UserInput;
 import cen4333.group2.Node;
-import cen4333.group2.Utility;
-import cen4333.group2.Utility.SearchType;
+import cen4333.group2.utility.Utility;
+import cen4333.group2.utility.Utility.SearchType;
 import cen4333.group2.daos.CustomerDao;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.PersonData;
@@ -85,58 +86,42 @@ public class SearchCustomersNode extends Node {
   private void displaySearch(CustomerSearchInterface csi) {
     int offset = 0;
     List<Customer> customers = new ArrayList<Customer>();
-    List<String> selections = new ArrayList<String>();
+    List<ObjectWithValue<String, Integer>> selections = new ArrayList<ObjectWithValue<String, Integer>>();
     while (true) {
       try {
         System.out.printf("\nPrinting customers %d to %d. Select one to view it:\n", offset, offset + csi.amount);
         boolean moredata = csi.getCustomersFromDb(offset, csi.amount, customers);
 
         selections.clear();
-        for (Customer customer : customers) {
+        for (int i = 0; i < customers.size(); i++) {
+          Customer customer = customers.get(i);
           PersonData pd = customer.getPersonData();
-          selections.add("ID: " + customer.getId() + ", Name: " + pd.firstName + " " + pd.lastName);
+          selections.add(new ObjectWithValue<String, Integer>(
+            "ID: " + customer.getId() + ", Name: " + pd.firstName + " " + pd.lastName, 
+            selections.size()
+            ));
         }
 
+        // The IDs should always be positive so unless something went very wrong this is safe.
         if (moredata) {
-          selections.add("Next page");
+          selections.add(new ObjectWithValue<String, Integer>("Next page", -1));
         }
         if (offset > 0) {
-          selections.add("Previous page");
+          selections.add(new ObjectWithValue<String, Integer>("Previous page", -2));
         }
-        selections.add("Cancel");
+        selections.add(new ObjectWithValue<String, Integer>("Cancel", -3));
 
-        String selection = Utility.printAndGetSelection(selections);
+        ObjectWithValue<String, Integer> selection = Utility.printAndGetSelection(selections);
 
-        if (selection == "Next page") {
+        if (selection.value == -1) {
           offset += csi.amount;
-        } else if (selection == "Previous page") {
+        } else if (selection.value == -2) {
           offset -= csi.amount;
-        } else if (selection == "Cancel") {
+        } else if (selection.value == -3) {
           return;
         } else {
-          // This code gets the id number from a string with the format of "ID: 2, Name: Chi Littel".
-          boolean foundNum = false;
-          String num = "";
-          for (char c : selection.toCharArray()) {
-            if (Character.isDigit(c)) {
-              foundNum = true;
-              num = num + c;
-            } else if (foundNum) {
-              break;
-            }
-          }
-          int selectedId = Integer.parseInt(num);
-  
-          int i = 0; 
-          while (i < customers.size()) {
-            if (customers.get(i).getId() == selectedId) {
-              break;
-            }
-            i += 1;
-          }
-
           ViewCustomerNode vcn = new ViewCustomerNode();
-          vcn.setCustomer(customers.get(i));
+          vcn.setCustomer(customers.get(selection.value));
           vcn.runNode();
           break;
         }

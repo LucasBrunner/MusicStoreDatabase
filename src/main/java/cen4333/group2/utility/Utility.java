@@ -1,9 +1,7 @@
-package cen4333.group2;
+package cen4333.group2.utility;
 
-import java.util.HashMap;
 import java.util.List;
 
-import cen4333.group2.UserInput;
 import cen4333.group2.errors.NoItemsException;
 
 public class Utility {

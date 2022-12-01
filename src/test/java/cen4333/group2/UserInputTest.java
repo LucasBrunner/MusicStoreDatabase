@@ -10,8 +10,8 @@ import java.io.PrintStream;
 
 import org.junit.Test;
 
-import cen4333.group2.UserInput;
-import cen4333.group2.UserInput.YesNo;
+import cen4333.group2.utility.UserInput;
+import cen4333.group2.utility.UserInput.YesNo;
 
 public class UserInputTest {
 
