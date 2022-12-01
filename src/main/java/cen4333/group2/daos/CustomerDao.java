@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import cen4333.group2.Main;
+import cen4333.group2.Enums.Result;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.Person;
 import cen4333.group2.data.PersonData;
@@ -89,5 +90,35 @@ public class CustomerDao {
     }
 
     return outputBool;
+  }
+
+  public static Result updateCustomer(Customer customer) throws SQLException {
+    Connection con = Main.globalData.dbConnection.getConnection();
+    
+    PreparedStatement update = con.prepareStatement("""
+      UPDATE 
+        `person`
+        INNER JOIN `customer` USING (PersonID)
+      SET
+        `FirstName` = ?,
+        `LastName` = ?,
+        `PhoneNumber` = ?,
+        `Email` = ?,
+        `Address` = ?
+      WHERE CustomerID = ?;
+    """);
+
+    PersonData p = customer.getPersonData();
+    update.setString(1, p.firstName);
+    update.setString(2, p.lastName);
+    update.setString(3, p.phoneNumber);
+    update.setString(4, p.email);
+    update.setString(5, p.address);
+    
+    update.setInt(6, customer.getId());
+
+    update.executeUpdate();
+
+    return Result.Ok;
   }
 }

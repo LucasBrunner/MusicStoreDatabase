@@ -13,4 +13,8 @@ public class ObjectWithValue<T, U> {
   public String toString() {
     return object.toString();
   }
+
+  public static ObjectWithValue<String, Integer> stringWithInt(String string, Integer integer) {
+    return new ObjectWithValue<String,Integer>(string, integer);
+  }
 }

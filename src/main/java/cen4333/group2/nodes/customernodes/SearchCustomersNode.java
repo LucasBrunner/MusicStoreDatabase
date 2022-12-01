@@ -98,7 +98,7 @@ public class SearchCustomersNode extends Node {
           PersonData pd = customer.getPersonData();
           selections.add(new ObjectWithValue<String, Integer>(
             "ID: " + customer.getId() + ", Name: " + pd.firstName + " " + pd.lastName, 
-            selections.size()
+            selections.size() + 1
             ));
         }
 
@@ -111,19 +111,21 @@ public class SearchCustomersNode extends Node {
         }
         selections.add(new ObjectWithValue<String, Integer>("Cancel", -3));
 
-        ObjectWithValue<String, Integer> selection = Utility.printAndGetSelection(selections);
+        Integer selection = Utility.printAndGetSelection(selections).value;
 
-        if (selection.value == -1) {
+        if (selection == -1) {
           offset += csi.amount;
-        } else if (selection.value == -2) {
+        } else if (selection == -2) {
           offset -= csi.amount;
-        } else if (selection.value == -3) {
+        } else if (selection == -3) {
           return;
-        } else {
+        } else if (selection >= 1 && selection <= customers.size()) {
           ViewCustomerNode vcn = new ViewCustomerNode();
-          vcn.setCustomer(customers.get(selection.value));
+          vcn.setCustomer(customers.get(selection - 1));
           vcn.runNode();
           break;
+        } else {
+          System.out.println("Invalid state! Proceeding to next valid state.");
         }
 
       } catch (SQLException e) {

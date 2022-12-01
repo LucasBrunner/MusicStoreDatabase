@@ -44,9 +44,9 @@ public class ViewCustomerNode extends Node {
           new EditCustomerNode(customer),
           new NothingNode()
         });
-      } catch (Exception e) {
-        // TODO: handle exception
-      }
+
+        n.runNode();
+      } catch (Exception e) {}
     } else {
       System.out.println("Error: no customer!");
     }
