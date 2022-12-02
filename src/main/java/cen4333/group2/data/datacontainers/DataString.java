@@ -1,4 +1,6 @@
-package cen4333.group2.data;
+package cen4333.group2.data.datacontainers;
+
+import cen4333.group2.data.datainterfaces.Prototype;
 
 public class DataString implements Prototype {
 

@@ -8,7 +8,7 @@ import cen4333.group2.utility.Utility;
 import cen4333.group2.utility.Utility.SearchType;
 import cen4333.group2.daos.sqlutilities.SelectFromWhereIter;
 import cen4333.group2.data.Customer;
-import cen4333.group2.data.DataWithId;
+import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.errors.NoItemsException;
 
 public class SearchCustomersNode extends Node {

@@ -1,4 +1,4 @@
-package cen4333.group2.utility;
+package cen4333.group2.data.datacontainers;
 
 public class ObjectWithValue<T, U> {
   public T object;

@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
+import cen4333.group2.data.datainterfaces.Prototype;
 
 public class Person implements QueryResult, SelectFrom, Prototype {
   public String firstName;

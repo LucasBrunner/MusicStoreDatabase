@@ -1,9 +1,10 @@
-package cen4333.group2.data;
+package cen4333.group2.data.datacontainers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
+import cen4333.group2.data.datainterfaces.Prototype;
 
 public class DataList<T extends Prototype & QueryResult> implements Prototype {
 

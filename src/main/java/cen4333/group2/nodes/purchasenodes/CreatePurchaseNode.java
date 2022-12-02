@@ -2,7 +2,7 @@ package cen4333.group2.nodes.purchasenodes;
 
 import cen4333.group2.Node;
 import cen4333.group2.data.Customer;
-import cen4333.group2.data.DataWithId;
+import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.Purchase;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.NothingNode;

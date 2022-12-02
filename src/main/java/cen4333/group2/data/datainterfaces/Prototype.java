@@ -1,4 +1,4 @@
-package cen4333.group2.data;
+package cen4333.group2.data.datainterfaces;
 
 public interface Prototype {
   /**

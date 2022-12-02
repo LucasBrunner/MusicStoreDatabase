@@ -5,6 +5,9 @@ import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
+import cen4333.group2.data.datacontainers.DataWithId;
+import cen4333.group2.data.datainterfaces.GetInfo;
+import cen4333.group2.data.datainterfaces.Prototype;
 
 public class Customer implements QueryResult, SelectFrom, Prototype, GetInfo {
   public DataWithId<Person> person;

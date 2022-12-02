@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import cen4333.group2.Node;
 import cen4333.group2.daos.sqlutilities.SelectFromWhereIter;
 import cen4333.group2.data.Customer;
-import cen4333.group2.data.DataWithId;
+import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.PurchaseAndCustomer;
 import cen4333.group2.nodes.purchasenodes.ViewPurchaseNode;
 

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
+import cen4333.group2.data.datainterfaces.Prototype;
 
 public class Discount implements Prototype, QueryResult, SelectFrom {
   public static final Discount PROTOTYPE_DISCOUNT = new Discount();

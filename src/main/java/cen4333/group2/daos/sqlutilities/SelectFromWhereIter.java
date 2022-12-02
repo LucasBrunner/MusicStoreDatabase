@@ -5,11 +5,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cen4333.group2.data.DataWithId;
-import cen4333.group2.data.GetInfo;
-import cen4333.group2.data.Prototype;
+import cen4333.group2.data.datacontainers.DataWithId;
+import cen4333.group2.data.datacontainers.ObjectWithValue;
+import cen4333.group2.data.datainterfaces.GetInfo;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.errors.NoItemsException;
-import cen4333.group2.utility.ObjectWithValue;
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.utility.Utility;
 
