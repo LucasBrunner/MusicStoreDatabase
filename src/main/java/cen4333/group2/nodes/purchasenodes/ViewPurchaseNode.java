@@ -6,17 +6,18 @@ import cen4333.group2.DbConnection.ConnectionType;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.utility.UserInput.YesNo;
+import cen4333.group2.data.Customer;
 import cen4333.group2.data.Purchase;
 import cen4333.group2.data.Purchase.CountOrValues;
 
 public class ViewPurchaseNode extends Node {
 
   private DataWithId<Purchase> purchase;
-  private String customerName;
+  private DataWithId<Customer> customer;
 
-  public ViewPurchaseNode(DataWithId<Purchase> purchase, String customerName) {
+  public ViewPurchaseNode(DataWithId<Purchase> purchase, DataWithId<Customer> customer) {
     this.purchase = purchase;
-    this.customerName = customerName;
+    this.customer = customer;
   }
 
   @Override
@@ -34,7 +35,7 @@ public class ViewPurchaseNode extends Node {
       \nCustomer: %s
       %s
       """, 
-      customerName,
+      customer.data.person.data.fullName(),
       Purchase.toString(
         purchase, 
         countOrValues, 

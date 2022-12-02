@@ -33,7 +33,7 @@ public class SelectPurchasesOfCustomerNode extends Node {
           pageSize
         ).userSelect(true, "purchase", true);
         if (selectedPurchase != null) {
-          new ViewPurchaseNode(selectedPurchase.data.purchase, selectedPurchase.data.customer.data.person.data.fullName()).runNode();
+          new ViewPurchaseNode(selectedPurchase.data.purchase, selectedPurchase.data.customer).runNode();
         } else {
           break;
         }

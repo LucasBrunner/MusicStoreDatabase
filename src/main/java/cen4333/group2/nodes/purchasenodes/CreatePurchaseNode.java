@@ -1,5 +1,8 @@
 package cen4333.group2.nodes.purchasenodes;
 
+import java.sql.Date;
+import java.time.Instant;
+
 import cen4333.group2.Node;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.datacontainers.DataWithId;
@@ -24,18 +27,24 @@ public class CreatePurchaseNode extends Node {
 
   @Override
   public void runNode() {
+    purchase.date = new Date(Instant.now().getEpochSecond());
     while(loop()) {}
+        
+    new ViewPurchaseNode(new DataWithId<Purchase>(purchase), customer).runNode();
   }
 
   public boolean loop() {
     System.out.println("What would you like to do to the order?");
     try {
-      ObjectSelector.printAndGetSelection(new Node[] {
-        new ViewPurchaseNode(new DataWithId<Purchase>(purchase), customer.data.person.data.fullName()),
+      Node selectedNode = ObjectSelector.printAndGetSelection(new Node[] {
+        new ViewPurchaseNode(new DataWithId<Purchase>(purchase), customer),
         new AddProductNode(purchase),
         new AddDiscountNode(purchase),
         new NothingNode("Commit order")
       });
+      if (selectedNode.getClass() == NothingNode.class) {
+        return false;
+      }
     } catch (NoItemsException e) {}
 
     return true;

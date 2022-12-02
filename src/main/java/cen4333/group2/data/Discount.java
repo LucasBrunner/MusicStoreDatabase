@@ -28,7 +28,7 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, SelectF
       name,
       startDate.toLocalDate().toString(),
       endDate.toLocalDate().toString()
-    );
+    ).trim();
   }
 
   public String toString(boolean showDates) {

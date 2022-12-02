@@ -1,7 +1,9 @@
 package cen4333.group2.data;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
@@ -11,6 +13,7 @@ import cen4333.group2.data.datainterfaces.Duplicate;
 public class PurchaseDiscount implements CreateInstance, QueryResult, SelectFrom, Duplicate {
 
   public Discount discount;
+  public BigDecimal discountAmount;
 
   public PurchaseDiscount(Discount discount) {
     this.discount = discount;
@@ -21,6 +24,7 @@ public class PurchaseDiscount implements CreateInstance, QueryResult, SelectFrom
     return """
       SELECT 
         `PurchaseID`,
+        `DiscountAmount`,
         `DiscountID`,
         `Name`,
         `StartDate`,
@@ -50,6 +54,7 @@ public class PurchaseDiscount implements CreateInstance, QueryResult, SelectFrom
   @Override
   public void fillWithResultSet(ResultSet results) throws SQLException {
     discount.fillWithResultSet(results);
+    discountAmount = results.getBigDecimal("DiscountAmount");
   }
 
   @Override
@@ -60,5 +65,26 @@ public class PurchaseDiscount implements CreateInstance, QueryResult, SelectFrom
   @Override
   public CreateInstance createInstance() {
     return new Discount();
+  }
+
+  @Override
+  public String toString() {
+    return (discount.toString() + getDiscountAmountIfAny()).trim();
+  }
+
+  public String toString(boolean showDates) {
+    if (showDates) {
+      return toString();
+    } else {
+      return (discount.toString(showDates) + getDiscountAmountIfAny()).trim();
+    }
+  }
+
+  public String getDiscountAmountIfAny() {
+    if (discountAmount == null) {
+      return "";
+    } else {
+      return "\nDiscount amount: " + NumberFormat.getCurrencyInstance().format(discountAmount);
+    }
   }
 }

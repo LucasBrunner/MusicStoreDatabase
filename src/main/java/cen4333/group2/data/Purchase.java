@@ -19,15 +19,15 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
   }
 
   public Date date;
-  private DataList<Product> products;
-  private DataList<Discount> discounts;
+  private DataList<PurchaseProduct> products;
+  private DataList<PurchaseDiscount> discounts;
 
-  public DataList<Product> getProducts(int purchaseId) throws SQLException {
+  public DataList<PurchaseProduct> getProducts(int purchaseId) throws SQLException {
     if (products == null) {
-      products = new DataList<Product>();
+      products = new DataList<PurchaseProduct>();
       ResultSet results = new PurchaseProduct(null).getSelectFrom("WHERE `PurchaseID` = " + purchaseId);
       while (results.next()) {
-        Product product = new Product();
+        PurchaseProduct product = new PurchaseProduct(new Product());
         product.fillWithResultSet(results);
         products.data.add(product);
       }
@@ -35,12 +35,12 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
     return products;
   }
 
-  public DataList<Discount> getDiscounts(int purchaseId) throws SQLException {
+  public DataList<PurchaseDiscount> getDiscounts(int purchaseId) throws SQLException {
     if (discounts == null) {
-      discounts = new DataList<Discount>();
+      discounts = new DataList<PurchaseDiscount>();
       ResultSet results = new PurchaseDiscount(null).getSelectFrom("WHERE `PurchaseID` = " + purchaseId);
       while (results.next()) {
-        Discount discount = new Discount();
+        PurchaseDiscount discount = new PurchaseDiscount(new Discount());
         discount.fillWithResultSet(results);
         discounts.data.add(discount);
       }
@@ -48,24 +48,24 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
     return discounts;
   }
 
-  public DataList<Product> getProductsOrNull() {
+  public DataList<PurchaseProduct> getProductsOrNull() {
     return products;
   }
 
-  public DataList<Discount> getDiscountsOrNull() {
+  public DataList<PurchaseDiscount> getDiscountsOrNull() {
     return discounts;
   }
 
   public String productsAsString(boolean showWholesalePrice, int purchaseId) throws SQLException {
     StringBuilder output = new StringBuilder();
-    List<Product> products = getProducts(purchaseId).data;
+    List<PurchaseProduct> products = getProducts(purchaseId).data;
     if (products.size() > 0) {
       for (int i = 0; i < products.size(); i++) {
         String product = products.get(i).toString(showWholesalePrice);
         product = product.replace("\n", "\n  ");
         output.append("Product " + (i + 1) + ":\n  ");
         output.append(product);
-        output.append("");
+        output.append("\n");
       }
     } else {
       output.append("No products");
@@ -75,14 +75,14 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
 
   public String discountsAsString(boolean showDates, int purchaseId) throws SQLException {
     StringBuilder output = new StringBuilder();
-    List<Discount> discounts = getDiscounts(purchaseId).data;
+    List<PurchaseDiscount> discounts = getDiscounts(purchaseId).data;
     if (discounts.size() > 0) {
       for (int i = 0; i < discounts.size(); i++) {
         String discount = discounts.get(i).toString(showDates);
         discount = discount.replace("\n", "\n  ");
         output.append("Discount " + (i + 1) + ":\n  ");
         output.append(discount);
-        output.append("");
+        output.append("\n");
       }
     } else {
       output.append("No discounts");
@@ -150,8 +150,8 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
   public Duplicate duplicate() {
     Purchase purchase = new Purchase();
     purchase.date = (Date) date.clone();
-    purchase.products = (DataList<Product>) products.duplicate();
-    purchase.discounts = (DataList<Discount>) products.duplicate();
+    purchase.products = (DataList<PurchaseProduct>) products.duplicate();
+    purchase.discounts = (DataList<PurchaseDiscount>) products.duplicate();
     return null;
   }
 
