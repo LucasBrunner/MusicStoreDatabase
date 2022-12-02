@@ -25,7 +25,7 @@ public class Customer implements QueryResult, SelectFrom, Prototype, GetInfo {
   }
 
   @Override
-  public String getSelectFromQuery(String where) {
+  public String getSelectFromQuery() {
     return """
     SELECT
       `CustomerID`,
@@ -38,18 +38,18 @@ public class Customer implements QueryResult, SelectFrom, Prototype, GetInfo {
     FROM 
       `customer`
       INNER JOIN `person` USING(`PersonID`)\n
-    """ + where;
+    """;
   }
 
   @Override
-  public String getSelectCountQuery(String where) {
+  public String getSelectCountQuery() {
     return """
       SELECT
         COUNT(`CustomerID`)
       FROM 
         `customer`
         INNER JOIN `person` USING(`PersonID`)\n
-    """ + where;
+    """;
   }
 
   @Override

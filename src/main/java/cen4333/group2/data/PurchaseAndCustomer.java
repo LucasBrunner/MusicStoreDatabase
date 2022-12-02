@@ -26,7 +26,7 @@ public class PurchaseAndCustomer implements QueryResult, SelectFrom, Prototype, 
   }
 
   @Override
-  public String getSelectFromQuery(String where) {
+  public String getSelectFromQuery() {
     return """
       SELECT 
         `CustomerID`,
@@ -43,12 +43,12 @@ public class PurchaseAndCustomer implements QueryResult, SelectFrom, Prototype, 
         `purchase`
         INNER JOIN `customer` USING(`CustomerID`)
         INNER JOIN `person` USING(`PersonID`)
-      """ + where;
+      """;
   }
 
   @Override
-  public String getSelectCountQuery(String where) {
-    return new Purchase().getSelectCountQuery(where);
+  public String getSelectCountQuery() {
+    return new Purchase().getSelectCountQuery();
   }
 
   @Override

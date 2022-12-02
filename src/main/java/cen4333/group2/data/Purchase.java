@@ -98,22 +98,22 @@ public class Purchase implements QueryResult, SelectFrom, Prototype, GetInfo {
   }
 
   @Override
-  public String getSelectFromQuery(String where) {
+  public String getSelectFromQuery() {
     return """
       SELECT 
         `PurchaseID`,
         `CustomerID`,
         `Date`
       FROM `purchase`
-    """ + where;
+    """;
   }
 
   @Override
-  public String getSelectCountQuery(String where) {
+  public String getSelectCountQuery() {
     return """
       SELECT COUNT(`purchase`.`PurchaseID`)
       FROM `purchase`
-    """ + where;
+    """;
   }
 
   @Override

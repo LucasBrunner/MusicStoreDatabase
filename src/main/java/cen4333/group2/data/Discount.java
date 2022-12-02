@@ -43,7 +43,7 @@ public class Discount implements Prototype, QueryResult, SelectFrom {
   }
 
   @Override
-  public String getSelectFromQuery(String where) {
+  public String getSelectFromQuery() {
     return """
       SELECT 
         `PurchaseID`,
@@ -55,15 +55,15 @@ public class Discount implements Prototype, QueryResult, SelectFrom {
       FROM 
         `discount`
         OUTER LEFT JOIN `purchase_discount` USING(`PurchaseID`)\n
-    """ + where;
+    """;
   }
 
   @Override
-  public String getSelectCountQuery(String where) {
+  public String getSelectCountQuery() {
     return """
       SELECT Count(`DiscountID`)
       FROM `discount`\n
-    """ + where;
+    """;
   }
 
   @Override

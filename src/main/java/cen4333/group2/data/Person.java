@@ -29,7 +29,7 @@ public class Person implements QueryResult, SelectFrom, Prototype {
   }
 
   @Override
-  public String getSelectFromQuery(String where) {
+  public String getSelectFromQuery() {
     return """
       SELECT
         `PersonID`,
@@ -39,16 +39,16 @@ public class Person implements QueryResult, SelectFrom, Prototype {
         `Email`,
         `Address`
       FROM `person`\n
-    """ + where;
+    """;
   }
 
   @Override
-  public String getSelectCountQuery(String where) {
+  public String getSelectCountQuery() {
     return """
       SELECT
         COUNT(`PersonID`)
       FROM `person`\n
-    """ + where;
+    """;
   }
 
   @Override

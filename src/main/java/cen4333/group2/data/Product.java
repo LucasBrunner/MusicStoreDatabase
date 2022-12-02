@@ -86,7 +86,7 @@ public class Product implements Prototype, QueryResult, SelectFrom {
   }
 
   @Override
-  public String getSelectFromQuery(String where) {
+  public String getSelectFromQuery() {
     return """
       SELECT
         `PurchaseID`,
@@ -104,15 +104,15 @@ public class Product implements Prototype, QueryResult, SelectFrom {
         INNER JOIN `product_type` USING(`ProductTypeID`)
         OUTER LEFT JOIN `product_purchase` USING(`PurchaseID`)
         
-    """ + where;
+    """;
   }
 
   @Override
-  public String getSelectCountQuery(String where) {
+  public String getSelectCountQuery() {
     return """
       SELECT COUNT(ProductID)
       FROM product  
-    """ + where;
+    """;
   }
 
   @Override
