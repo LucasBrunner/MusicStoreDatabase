@@ -4,14 +4,35 @@ import java.sql.SQLException;
 
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.Node;
-import cen4333.group2.utility.Utility;
-import cen4333.group2.utility.Utility.SearchType;
 import cen4333.group2.daos.sqlutilities.SelectFromWhereIter;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.errors.NoItemsException;
+import cen4333.group2.utility.ObjectSelector;
 
 public class SearchCustomersNode extends Node {
+  public enum SearchType {
+    Name,
+    CustomerId,
+    PersonId;
+
+    @Override
+    public String toString() {
+      switch (this) {
+        case Name:
+          return "Name";
+      
+        case CustomerId:
+          return "Customer ID";
+    
+        case PersonId:
+          return "Person ID";
+    
+        default:
+          return "";
+      }
+    }
+  }
 
   @Override
   public String getName() {
@@ -22,7 +43,7 @@ public class SearchCustomersNode extends Node {
   public void runNode() {
     System.out.println("How would you like to search by?");
     try {
-      SearchType searchType = Utility.printAndGetSelection(new SearchType[] {
+      SearchType searchType = ObjectSelector.printAndGetSelection(new SearchType[] {
         SearchType.Name,
         SearchType.CustomerId
       });

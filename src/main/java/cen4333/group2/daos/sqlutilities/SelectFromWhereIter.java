@@ -11,7 +11,7 @@ import cen4333.group2.data.datainterfaces.GetInfo;
 import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.UserInput;
-import cen4333.group2.utility.Utility;
+import cen4333.group2.utility.ObjectSelector;
 
 public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype & GetInfo> {
   private String where;
@@ -149,7 +149,7 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype
 
       Integer selection = null;
       try {
-        selection = Utility.printAndGetSelection(selections).value;
+        selection = ObjectSelector.printAndGetSelection(selections).value;
       } catch (NoItemsException e) {}
 
       if (selection == -1) {

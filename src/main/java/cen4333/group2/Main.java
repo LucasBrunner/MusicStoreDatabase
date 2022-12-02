@@ -4,7 +4,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.InsertFakeDataNode;
 import cen4333.group2.nodes.LoginNode;
 import cen4333.group2.nodes.QuitNode;
-import cen4333.group2.utility.Utility;
+import cen4333.group2.utility.ObjectSelector;
 
 public class Main {
   public static GlobalData globalData = new GlobalData();
@@ -12,7 +12,7 @@ public class Main {
   public static void main(String[] args) {
     while (globalData.doMainLoop) {
       try {
-        Utility.printAndGetSelection(new Node[] {
+        ObjectSelector.printAndGetSelection(new Node[] {
           new LoginNode(),
           new QuitNode(),
           new InsertFakeDataNode()

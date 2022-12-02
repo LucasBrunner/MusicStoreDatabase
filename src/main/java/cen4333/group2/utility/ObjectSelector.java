@@ -1,38 +1,10 @@
 package cen4333.group2.utility;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.List;
 
 import cen4333.group2.errors.NoItemsException;
 
-public class Utility {
-  public enum SearchType {
-    Name,
-    CustomerId,
-    PersonId;
-
-    @Override
-    public String toString() {
-      switch (this) {
-        case Name:
-          return "Name";
-      
-        case CustomerId:
-          return "Customer ID";
-    
-        case PersonId:
-          return "Person ID";
-    
-        default:
-          return "";
-      }
-    }
-  }
-
-  public static String bigDecimalAsCurrencyString(BigDecimal value) {
-    return NumberFormat.getCurrencyInstance().format(value);
-  }
+public class ObjectSelector {
 
   public static <T> T printAndGetSelection(T[] items) throws NoItemsException {
     if (items == null || items.length <= 0) {
@@ -76,9 +48,5 @@ public class Utility {
       }
     }
     return items.get(selected - 1);
-  }
-
-  public static String addWildcards(String input) {
-    return String.format("%%%s%%", input);
   }
 }

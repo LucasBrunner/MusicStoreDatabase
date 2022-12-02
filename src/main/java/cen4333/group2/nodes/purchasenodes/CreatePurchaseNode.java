@@ -6,7 +6,7 @@ import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.Purchase;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.NothingNode;
-import cen4333.group2.utility.Utility;
+import cen4333.group2.utility.ObjectSelector;
 
 public class CreatePurchaseNode extends Node {
 
@@ -30,7 +30,7 @@ public class CreatePurchaseNode extends Node {
   public boolean loop() {
     System.out.println("What would you like to do to the order?");
     try {
-      Utility.printAndGetSelection(new Node[] {
+      ObjectSelector.printAndGetSelection(new Node[] {
         new ViewPurchaseNode(new DataWithId<Purchase>(purchase), customer.data.person.data.fullName()),
         new AddProductNode(purchase),
         new AddDiscountNode(purchase),

@@ -10,8 +10,8 @@ import cen4333.group2.data.Customer;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.Person;
+import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.UserInput;
-import cen4333.group2.utility.Utility;
 
 public class EditCustomerNode extends Node {
 
@@ -47,7 +47,7 @@ public class EditCustomerNode extends Node {
     Integer selection = null;
 
     try {
-      selection = Utility.printAndGetSelection(fields).value;
+      selection = ObjectSelector.printAndGetSelection(fields).value;
     } catch (Exception e) {}
     
     if (selection == -1) {

@@ -3,13 +3,13 @@ package cen4333.group2.data;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
 import cen4333.group2.data.datacontainers.DataString;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.Prototype;
-import cen4333.group2.utility.Utility;
 
 public class Product implements Prototype, QueryResult, SelectFrom {
 
@@ -33,7 +33,7 @@ public class Product implements Prototype, QueryResult, SelectFrom {
       name,
       instrumentType.data,
       productType.data,
-      Utility.bigDecimalAsCurrencyString(retailPrice)
+      NumberFormat.getCurrencyInstance().format(retailPrice)
     );
   }
 
@@ -50,8 +50,8 @@ public class Product implements Prototype, QueryResult, SelectFrom {
         name,
         instrumentType.data,
         productType.data,
-        Utility.bigDecimalAsCurrencyString(retailPrice),
-        Utility.bigDecimalAsCurrencyString(wholesalePrice)
+        NumberFormat.getCurrencyInstance().format(retailPrice),
+        NumberFormat.getCurrencyInstance().format(wholesalePrice)
       );
     } else {
       return toString();

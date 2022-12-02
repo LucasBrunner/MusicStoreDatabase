@@ -6,10 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
 
-import cen4333.group2.utility.Utility;
 import cen4333.group2.errors.AccessNotAllowedException;
 import cen4333.group2.errors.DbConnectException;
 import cen4333.group2.errors.NoItemsException;
+import cen4333.group2.utility.ObjectSelector;
 
 public class DbConnection {
   
@@ -90,7 +90,7 @@ public class DbConnection {
   }
 
   private static ConnectionType selectConnectionType(HashSet<ConnectionType> connectionTypes) throws NoItemsException {
-    return Utility.printAndGetSelection(connectionTypes.toArray(new ConnectionType[0]));
+    return ObjectSelector.printAndGetSelection(connectionTypes.toArray(new ConnectionType[0]));
   }
 
   private static HashSet<ConnectionType> findConnectionType(Connection con, String username, String hostname) throws AccessNotAllowedException {
