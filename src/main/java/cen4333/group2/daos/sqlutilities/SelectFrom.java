@@ -17,9 +17,13 @@ public interface SelectFrom {
   public String getSelectCountQuery(String where);
   public String getIdColumnName();
 
-  public static int getCount(SelectFrom object, String where) throws SQLException {
-    ResultSet countQueryResult = Main.globalData.dbConnection.getConnection().prepareStatement(object.getSelectCountQuery(where)).executeQuery();
+  default public int getCount(String where) throws SQLException {
+    ResultSet countQueryResult = Main.globalData.dbConnection.getConnection().prepareStatement(this.getSelectCountQuery(where)).executeQuery();
     countQueryResult.next();
     return countQueryResult.getInt(1);
+  }
+
+  default public ResultSet getSelectFrom(String where) throws SQLException {
+    return Main.globalData.dbConnection.getConnection().prepareStatement(this.getSelectFromQuery(where)).executeQuery();
   }
 }

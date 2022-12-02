@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cen4333.group2.Main;
 import cen4333.group2.data.DataWithId;
 import cen4333.group2.data.GetInfo;
 import cen4333.group2.data.Prototype;
@@ -27,7 +26,7 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype
     this.prototype = prototype;
     this.stepSize = stepSize;
 
-    this.rowCount = SelectFrom.getCount(prototype, where);
+    this.rowCount = prototype.getCount(where);
   }
 
   public static int getResultsAmount() {
@@ -52,7 +51,7 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype
    * @return 
    */
   public List<DataWithId<T>> getPage() throws SQLException, ClassCastException {
-    String query = prototype.getSelectFromQuery(where) + String.format(
+    String limit = String.format(
       """
         \nLIMIT %d
         OFFSET %d
@@ -60,7 +59,7 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype
       stepSize + 1,
       currentPosition * stepSize
     );
-    ResultSet results = Main.globalData.dbConnection.getConnection().prepareStatement(query).executeQuery();
+    ResultSet results = prototype.getSelectFrom(where + limit);
     
     List<DataWithId<T>> output = new ArrayList<DataWithId<T>>();
     while (results.next()) {
@@ -118,13 +117,13 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype
    * @throws SQLException
    * @throws ClassCastException
    */
-  public DataWithId<T> userSelect(boolean allowCancel, String pluralObjectName, boolean displayIds) throws ClassCastException, SQLException {
+  public DataWithId<T> userSelect(boolean allowCancel, String objectName, boolean displayIds) throws ClassCastException, SQLException {
     List<DataWithId<T>> page = new ArrayList<DataWithId<T>>();
     List<ObjectWithValue<String, Integer>> selections = new ArrayList<ObjectWithValue<String, Integer>>();
     while (true) {
       System.out.printf(
         "\nPrinting %s %d to %d. Select one to view it:\n", 
-        pluralObjectName,
+        objectName,
         getOffset() + 1, 
         getOffset() + getStepSize()
       );
@@ -159,7 +158,7 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype
         previousPage();
       } else if (selection == -3) {
         return null;
-      } else if (selection >= 1 && selection <= page.size()) {
+      } else if (selection >= 0 && selection <= page.size()) {
         return page.get(selection);
       } else {
         System.out.println("Invalid state! Proceeding to next valid state.");

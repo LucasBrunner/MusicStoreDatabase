@@ -43,7 +43,7 @@ public class Purchase implements QueryResult, SelectFrom, Prototype, GetInfo {
 
   public static String toString(DataWithId<Purchase> purchase, CountOrValues showProducts, boolean showWholesalePrices, CountOrValues showDiscounts, boolean showDiscountDates) {
     StringBuilder output = new StringBuilder();
-    output.append("Date: " + purchase.data.date.toString());
+    output.append("Date of purchase: " + purchase.data.date.toString());
 
     // products
     if (showProducts == CountOrValues.Count) {
@@ -52,7 +52,7 @@ public class Purchase implements QueryResult, SelectFrom, Prototype, GetInfo {
         productCount = purchase.data.products.data.size();
       } else {
         try {
-          productCount = SelectFrom.getCount(Product.PROTOTYPE_PRODUCT, "WHERE 'PurchaseID' = " + purchase.id);
+          productCount = Product.PROTOTYPE_PRODUCT.getCount("WHERE 'PurchaseID' = " + purchase.id);
         } catch (Exception e) {
           productCount = 0;
         }
@@ -69,7 +69,7 @@ public class Purchase implements QueryResult, SelectFrom, Prototype, GetInfo {
         discountCount = purchase.data.discounts.data.size();
       } else {
         try {
-          discountCount = SelectFrom.getCount(Discount.PROTOTYPE_DISCOUNT, "WHERE 'PurchaseID' = " + purchase.id);
+          discountCount = Discount.PROTOTYPE_DISCOUNT.getCount("WHERE 'PurchaseID' = " + purchase.id);
         } catch (Exception e) {
           discountCount = 0;
         }

@@ -4,6 +4,12 @@ public class DataWithId<T extends Prototype> implements Prototype {
   public int id;
   public T data;
 
+  public DataWithId() {}
+
+  public DataWithId(T data) {
+    this.data = data;
+  }
+
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
   @Override
   public Prototype duplicate() {

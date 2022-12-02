@@ -53,7 +53,7 @@ public class ViewCustomerNode extends Node {
       Node n = Utility.printAndGetSelection(new Node[] {
         new EditCustomerNode(customerWithId),
         new CreatePurchaseNode(customerWithId),
-        new ViewPurchasesNode(customerWithId),
+        new SelectPurchasesOfCustomerNode(customerWithId),
         new NothingNode()
       });
 

@@ -31,7 +31,7 @@ public class CreatePurchaseNode extends Node {
     System.out.println("What would you like to do to the order?");
     try {
       Utility.printAndGetSelection(new Node[] {
-        new ViewPurchaseNode(purchase, customer.data.person.data.fullName()),
+        new ViewPurchaseNode(new DataWithId<Purchase>(purchase), customer.data.person.data.fullName()),
         new AddProductNode(purchase),
         new AddDiscountNode(purchase),
         new NothingNode("Commit order")
@@ -40,5 +40,4 @@ public class CreatePurchaseNode extends Node {
 
     return true;
   }
-  
 }
