@@ -4,9 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.daos.sqlutilities.SelectFromWhere;
+import cen4333.group2.daos.sqlutilities.SelectFrom;
 
-public class Person implements QueryResult, SelectFromWhere, Prototype {
+public class Person implements QueryResult, SelectFrom, Prototype {
   public String firstName;
   public String lastName;
   public String phoneNumber;
@@ -29,7 +29,7 @@ public class Person implements QueryResult, SelectFromWhere, Prototype {
   }
 
   @Override
-  public String getSelectFromWhereQuery(String where) {
+  public String getSelectFromQuery(String where) {
     return """
       SELECT
         `PersonID`,

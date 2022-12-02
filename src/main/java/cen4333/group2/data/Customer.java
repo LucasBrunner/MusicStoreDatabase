@@ -4,9 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.daos.sqlutilities.SelectFromWhere;
+import cen4333.group2.daos.sqlutilities.SelectFrom;
 
-public class Customer implements QueryResult, SelectFromWhere, Prototype {
+public class Customer implements QueryResult, SelectFrom, Prototype, GetInfo {
   public DataWithId<Person> person;
 
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
@@ -25,7 +25,7 @@ public class Customer implements QueryResult, SelectFromWhere, Prototype {
   }
 
   @Override
-  public String getSelectFromWhereQuery(String where) {
+  public String getSelectFromQuery(String where) {
     return """
     SELECT
       `CustomerID`,
@@ -64,5 +64,10 @@ public class Customer implements QueryResult, SelectFromWhere, Prototype {
   @Override
   public String getIdColumnName() {
     return "CustomerID";
+  }
+
+  @Override
+  public String getDisplayName() {
+    return "Name: " + person.data != null ? person.data.fullName() : "{Error: no data!}";
   }
 }

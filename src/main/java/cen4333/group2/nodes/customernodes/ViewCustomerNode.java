@@ -13,7 +13,7 @@ public class ViewCustomerNode extends Node {
 
   private DataWithId<Customer> customerWithId;
 
-  public void setCustomer(DataWithId<Customer> customer) {
+  public ViewCustomerNode(DataWithId<Customer> customer) {
     this.customerWithId = customer;
   }
 

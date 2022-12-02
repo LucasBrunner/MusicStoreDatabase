@@ -20,7 +20,6 @@ public class DataString implements Prototype {
 
   @Override
   public Prototype duplicateEmpty() {
-    // TODO Auto-generated method stub
     return new DataString(null);
   }
   
