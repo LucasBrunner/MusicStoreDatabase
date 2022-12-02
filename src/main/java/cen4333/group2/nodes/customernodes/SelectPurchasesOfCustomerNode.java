@@ -3,7 +3,7 @@ package cen4333.group2.nodes.customernodes;
 import java.sql.SQLException;
 
 import cen4333.group2.Node;
-import cen4333.group2.daos.sqlutilities.SelectFromWhereIter;
+import cen4333.group2.daos.sqlutilities.SelectFromIter;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.PurchaseAndCustomer;
@@ -24,10 +24,10 @@ public class SelectPurchasesOfCustomerNode extends Node {
 
   @Override
   public void runNode() {
-    int pageSize = SelectFromWhereIter.getResultsAmount();
+    int pageSize = SelectFromIter.getResultsAmount();
     while (true) {
       try {
-        DataWithId<PurchaseAndCustomer> selectedPurchase = new SelectFromWhereIter<PurchaseAndCustomer>(
+        DataWithId<PurchaseAndCustomer> selectedPurchase = new SelectFromIter<PurchaseAndCustomer>(
           "WHERE `CustomerID` = " + customerWithId.id,
           new PurchaseAndCustomer(),
           pageSize
