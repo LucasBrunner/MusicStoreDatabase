@@ -7,14 +7,15 @@ import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.DisplayText;
-import cen4333.group2.data.datainterfaces.Prototype;
+import cen4333.group2.data.datainterfaces.Duplicate;
+import cen4333.group2.data.datainterfaces.CreateInstance;
 
-public class Customer implements QueryResult, SelectFrom, Prototype, DisplayText {
+public class Customer implements QueryResult, SelectFrom, CreateInstance, Duplicate, DisplayText {
   public DataWithId<Person> person;
 
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
   @Override
-  public Prototype duplicate() {
+  public Duplicate duplicate() {
     Customer customer = new Customer();
     if (person != null) {
       customer.person = (DataWithId<Person>) person.duplicate();
@@ -23,7 +24,7 @@ public class Customer implements QueryResult, SelectFrom, Prototype, DisplayText
   }
 
   @Override
-  public Prototype duplicateEmpty() {
+  public CreateInstance createInstance() {
     return new Customer();
   }
 

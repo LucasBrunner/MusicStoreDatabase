@@ -7,16 +7,17 @@ import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.DisplayText;
-import cen4333.group2.data.datainterfaces.Prototype;
+import cen4333.group2.data.datainterfaces.Duplicate;
+import cen4333.group2.data.datainterfaces.CreateInstance;
 
-public class PurchaseAndCustomer implements QueryResult, SelectFrom, Prototype, DisplayText {
+public class PurchaseAndCustomer implements QueryResult, SelectFrom, CreateInstance, Duplicate, DisplayText {
 
   public DataWithId<Purchase> purchase;
   public DataWithId<Customer> customer;
 
   @SuppressWarnings("unchecked")
   @Override
-  public Prototype duplicate() {
+  public Duplicate duplicate() {
     PurchaseAndCustomer purchaseAndPerson = new PurchaseAndCustomer();
     purchaseAndPerson.purchase = (DataWithId<Purchase>) purchase.duplicate();
     purchaseAndPerson.customer = (DataWithId<Customer>) customer.duplicate();
@@ -24,7 +25,7 @@ public class PurchaseAndCustomer implements QueryResult, SelectFrom, Prototype, 
   }
 
   @Override
-  public Prototype duplicateEmpty() {
+  public CreateInstance createInstance() {
     return new PurchaseAndCustomer();
   }
 

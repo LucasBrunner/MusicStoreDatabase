@@ -9,11 +9,12 @@ import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
 import cen4333.group2.data.datacontainers.DataString;
 import cen4333.group2.data.datacontainers.DataWithId;
-import cen4333.group2.data.datainterfaces.Prototype;
+import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Product implements Prototype, QueryResult, SelectFrom {
+public class Product implements CreateInstance, QueryResult, SelectFrom, Duplicate {
 
-  public static final Product PROTOTYPE_PRODUCT = new Product();
+  public static final Product CreateInstance_PRODUCT = new Product();
 
   public String name;
   public DataWithId<DataString> instrumentType;
@@ -73,7 +74,7 @@ public class Product implements Prototype, QueryResult, SelectFrom {
 
   @SuppressWarnings("unchecked")
   @Override
-  public Prototype duplicate() {
+  public Duplicate duplicate() {
     Product product = new Product();
     product.name = name;
     product.instrumentType = (DataWithId<DataString>) instrumentType.duplicate();
@@ -84,7 +85,7 @@ public class Product implements Prototype, QueryResult, SelectFrom {
   }
 
   @Override
-  public Prototype duplicateEmpty() {
+  public CreateInstance createInstance() {
     return new Product();
   }
 

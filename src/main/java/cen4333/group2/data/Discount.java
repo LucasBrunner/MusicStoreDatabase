@@ -6,10 +6,11 @@ import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
-import cen4333.group2.data.datainterfaces.Prototype;
+import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Discount implements Prototype, QueryResult, SelectFrom {
-  public static final Discount PROTOTYPE_DISCOUNT = new Discount();
+public class Discount implements CreateInstance, Duplicate, QueryResult, SelectFrom {
+  public static final Discount CreateInstance_DISCOUNT = new Discount();
 
   public String name;
   public Date startDate;
@@ -81,7 +82,7 @@ public class Discount implements Prototype, QueryResult, SelectFrom {
   }
 
   @Override
-  public Prototype duplicate() {
+  public Duplicate duplicate() {
     Discount discount = new Discount();
     discount.name = name;
     discount.startDate = startDate;
@@ -91,7 +92,7 @@ public class Discount implements Prototype, QueryResult, SelectFrom {
   }
 
   @Override
-  public Prototype duplicateEmpty() {
+  public CreateInstance createInstance() {
     return new Discount();
   }
 }

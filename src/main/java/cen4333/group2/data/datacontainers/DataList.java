@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.data.datainterfaces.Prototype;
+import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class DataList<T extends Prototype & QueryResult> implements Prototype {
+public class DataList<T extends CreateInstance & QueryResult & Duplicate> implements CreateInstance, Duplicate {
 
   public List<T> data = new ArrayList<T>();
 
@@ -14,7 +15,7 @@ public class DataList<T extends Prototype & QueryResult> implements Prototype {
 
   @SuppressWarnings("unchecked")
   @Override
-  public Prototype duplicate() {
+  public Duplicate duplicate() {
     DataList<T> dataList = new DataList<T>();
     for (T dataItem : data) {
       dataList.data.add((T) dataItem.duplicate());
@@ -23,7 +24,7 @@ public class DataList<T extends Prototype & QueryResult> implements Prototype {
   }
 
   @Override
-  public Prototype duplicateEmpty() {
+  public CreateInstance createInstance() {
     return new DataList<T>();
   }
   

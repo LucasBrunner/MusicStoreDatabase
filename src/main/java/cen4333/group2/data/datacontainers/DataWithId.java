@@ -1,8 +1,9 @@
 package cen4333.group2.data.datacontainers;
 
-import cen4333.group2.data.datainterfaces.Prototype;
+import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class DataWithId<T extends Prototype> implements Prototype {
+public class DataWithId<T extends CreateInstance & Duplicate> implements CreateInstance, Duplicate {
   public int id;
   public T data;
 
@@ -14,7 +15,7 @@ public class DataWithId<T extends Prototype> implements Prototype {
 
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
   @Override
-  public Prototype duplicate() {
+  public Duplicate duplicate() {
     DataWithId<T> dataWithId = new DataWithId<T>();
     dataWithId.id = id;
     if (data != null) {
@@ -23,7 +24,7 @@ public class DataWithId<T extends Prototype> implements Prototype {
     return null;
   }
   @Override
-  public Prototype duplicateEmpty() {
+  public CreateInstance createInstance() {
     return new DataWithId<T>();
   }
 }

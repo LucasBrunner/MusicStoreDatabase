@@ -8,9 +8,10 @@ import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
 import cen4333.group2.data.datacontainers.DataList;
 import cen4333.group2.data.datacontainers.DataWithId;
-import cen4333.group2.data.datainterfaces.Prototype;
+import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Purchase implements QueryResult, SelectFrom, Prototype {
+public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplicate {
   public enum CountOrValues {
     Count,
     Values
@@ -55,7 +56,7 @@ public class Purchase implements QueryResult, SelectFrom, Prototype {
         productCount = purchase.data.products.data.size();
       } else {
         try {
-          productCount = Product.PROTOTYPE_PRODUCT.getCount("WHERE 'PurchaseID' = " + purchase.id);
+          productCount = Product.CreateInstance_PRODUCT.getCount("WHERE 'PurchaseID' = " + purchase.id);
         } catch (Exception e) {
           productCount = 0;
         }
@@ -72,7 +73,7 @@ public class Purchase implements QueryResult, SelectFrom, Prototype {
         discountCount = purchase.data.discounts.data.size();
       } else {
         try {
-          discountCount = Discount.PROTOTYPE_DISCOUNT.getCount("WHERE 'PurchaseID' = " + purchase.id);
+          discountCount = Discount.CreateInstance_DISCOUNT.getCount("WHERE 'PurchaseID' = " + purchase.id);
         } catch (Exception e) {
           discountCount = 0;
         }
@@ -87,7 +88,7 @@ public class Purchase implements QueryResult, SelectFrom, Prototype {
 
   @SuppressWarnings("unchecked")
   @Override
-  public Prototype duplicate() {
+  public Duplicate duplicate() {
     Purchase purchase = new Purchase();
     purchase.date = (Date) date.clone();
     purchase.products = (DataList<Product>) products.duplicate();
@@ -96,7 +97,7 @@ public class Purchase implements QueryResult, SelectFrom, Prototype {
   }
 
   @Override
-  public Prototype duplicateEmpty() {
+  public CreateInstance createInstance() {
     return new Purchase();
   }
 

@@ -5,9 +5,10 @@ import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
-import cen4333.group2.data.datainterfaces.Prototype;
+import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Person implements QueryResult, SelectFrom, Prototype {
+public class Person implements QueryResult, SelectFrom, CreateInstance, Duplicate {
   public String firstName;
   public String lastName;
   public String phoneNumber;
@@ -53,7 +54,7 @@ public class Person implements QueryResult, SelectFrom, Prototype {
   }
 
   @Override
-  public Prototype duplicate() {
+  public Duplicate duplicate() {
     Person person = new Person();
     person.firstName = firstName;
     person.lastName = lastName;
@@ -64,7 +65,7 @@ public class Person implements QueryResult, SelectFrom, Prototype {
   }
 
   @Override
-  public Prototype duplicateEmpty() {
+  public CreateInstance createInstance() {
     return new Person();
   }
 

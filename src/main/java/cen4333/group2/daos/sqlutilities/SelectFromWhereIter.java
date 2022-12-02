@@ -8,25 +8,26 @@ import java.util.List;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.DisplayText;
-import cen4333.group2.data.datainterfaces.Prototype;
+import cen4333.group2.data.datainterfaces.Duplicate;
+import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.utility.ObjectSelector;
 
-public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype & DisplayText> {
+public class SelectFromWhereIter <T extends QueryResult & SelectFrom & CreateInstance & DisplayText & Duplicate> {
   private String where;
-  private T prototype;
+  private T CreateInstance;
   private int stepSize;
 
   private int currentPosition = 0;
   private int rowCount;
 
-  public SelectFromWhereIter(String where, T prototype, int stepSize) throws SQLException {
+  public SelectFromWhereIter(String where, T CreateInstance, int stepSize) throws SQLException {
     this.where = where;
-    this.prototype = prototype;
+    this.CreateInstance = CreateInstance;
     this.stepSize = stepSize;
 
-    this.rowCount = prototype.getCount(where);
+    this.rowCount = CreateInstance.getCount(where);
   }
 
   public static int getResultsAmount() {
@@ -59,14 +60,14 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype
       stepSize + 1,
       currentPosition * stepSize
     );
-    ResultSet results = prototype.getSelectFrom(where + limit);
+    ResultSet results = CreateInstance.getSelectFrom(where + limit);
     
     List<DataWithId<T>> output = new ArrayList<DataWithId<T>>();
     while (results.next()) {
       DataWithId<T> nextItem = new DataWithId<T>();
-      nextItem.data = (T) prototype.duplicateEmpty();
+      nextItem.data = (T) CreateInstance.createInstance();
       nextItem.data.fillWithResultSet(results);
-      nextItem.id = results.getInt(prototype.getIdColumnName());
+      nextItem.id = results.getInt(CreateInstance.getIdColumnName());
       output.add(nextItem);
     }
     while (output.size() > stepSize) {
