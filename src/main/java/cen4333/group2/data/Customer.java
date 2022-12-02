@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
 import cen4333.group2.data.datacontainers.DataWithId;
-import cen4333.group2.data.datainterfaces.GetInfo;
+import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Prototype;
 
-public class Customer implements QueryResult, SelectFrom, Prototype, GetInfo {
+public class Customer implements QueryResult, SelectFrom, Prototype, DisplayText {
   public DataWithId<Person> person;
 
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
@@ -70,7 +70,7 @@ public class Customer implements QueryResult, SelectFrom, Prototype, GetInfo {
   }
 
   @Override
-  public String getDisplayName() {
+  public String getDisplayText() {
     return "Name: " + person.data != null ? person.data.fullName() : "{Error: no data!}";
   }
 }

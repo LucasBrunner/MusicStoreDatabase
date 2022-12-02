@@ -7,13 +7,13 @@ import java.util.List;
 
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
-import cen4333.group2.data.datainterfaces.GetInfo;
+import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.utility.ObjectSelector;
 
-public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype & GetInfo> {
+public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype & DisplayText> {
   private String where;
   private T prototype;
   private int stepSize;
@@ -132,7 +132,7 @@ public class SelectFromWhereIter <T extends QueryResult & SelectFrom & Prototype
       selections.clear();
       for (int i = 0; i < page.size(); i++) {
         String displayString = displayIds ? "ID: " + page.get(i).id + ", " : "";
-        displayString = displayString + page.get(i).data.getDisplayName();
+        displayString = displayString + page.get(i).data.getDisplayText();
         selections.add(new ObjectWithValue<String, Integer>(
           displayString, 
           selections.size()

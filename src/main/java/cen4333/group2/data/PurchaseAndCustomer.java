@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
 import cen4333.group2.data.datacontainers.DataWithId;
-import cen4333.group2.data.datainterfaces.GetInfo;
+import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Prototype;
 
-public class PurchaseAndCustomer implements QueryResult, SelectFrom, Prototype, GetInfo {
+public class PurchaseAndCustomer implements QueryResult, SelectFrom, Prototype, DisplayText {
 
   public DataWithId<Purchase> purchase;
   public DataWithId<Customer> customer;
@@ -73,7 +73,7 @@ public class PurchaseAndCustomer implements QueryResult, SelectFrom, Prototype, 
   }
 
   @Override
-  public String getDisplayName() {
+  public String getDisplayText() {
     return String.format(
       """
       %s's %s order""",
