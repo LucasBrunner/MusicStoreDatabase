@@ -26,10 +26,10 @@ public class Product implements CreateInstance, QueryResult, SelectFrom, Duplica
   public String toString() {
     return String.format(
       """
-        Name: %s
-        Instrument type: %s
-        Product type: %s
-        Retail price: %f\n
+      Name: %s
+      Instrument type: %s
+      Product type: %s
+      Retail price: %s
       """, 
       name,
       instrumentType.data,
@@ -42,11 +42,11 @@ public class Product implements CreateInstance, QueryResult, SelectFrom, Duplica
     if (showWholesalePrice) {
       return String.format(
         """
-          Name: %s
-          Instrument type: %s
-          Product type: %s
-          Retail price: %f
-          Wholesale price: %f\n
+        Name: %s
+        Instrument type: %s
+        Product type: %s
+        Retail price: %s
+        Wholesale price: %s
         """, 
         name,
         instrumentType.data,
@@ -64,10 +64,10 @@ public class Product implements CreateInstance, QueryResult, SelectFrom, Duplica
     name = results.getString("Name");
     instrumentType = new DataWithId<DataString>();
     instrumentType.id = results.getInt("InstrumentTypeID");
-    instrumentType.data = new DataString(results.getString("`product_type`.`Type`"));
+    instrumentType.data = new DataString(results.getString("InstrumentType"));
     productType = new DataWithId<DataString>();
     productType.id = results.getInt("ProductTypeID");
-    productType.data = new DataString(results.getString("`product_type`.`Type`"));
+    productType.data = new DataString(results.getString("ProductType"));
     retailPrice = results.getBigDecimal("RetailPrice");
     wholesalePrice = results.getBigDecimal("WholesalePrice");
   }
@@ -93,21 +93,18 @@ public class Product implements CreateInstance, QueryResult, SelectFrom, Duplica
   public String getSelectFromQuery() {
     return """
       SELECT
-        `PurchaseID`,
         `ProductID`,
         `Name`,
         `InsturmentTypeID`,
-        `instrument_type`.`Type`,
+        `instrument_type`.`Type` AS 'InstrumentType',
         `ProductTypeID`,
-        `product_type`.`Type`,
+        `product_type`.`Type` AS 'ProductType',
         `RetailPrice`,
         `WholesalePrice`
       FROM
         `product`
         INNER JOIN `instrument_type` USING(`InsturmentTypeID`)
         INNER JOIN `product_type` USING(`ProductTypeID`)
-        OUTER LEFT JOIN `product_purchase` USING(`PurchaseID`)
-        
     """;
   }
 
@@ -115,7 +112,7 @@ public class Product implements CreateInstance, QueryResult, SelectFrom, Duplica
   public String getSelectCountQuery() {
     return """
       SELECT COUNT(ProductID)
-      FROM product  
+      FROM product
     """;
   }
 

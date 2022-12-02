@@ -3,6 +3,7 @@ package cen4333.group2.data;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
@@ -18,31 +19,89 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
   }
 
   public Date date;
-  public DataList<Product> products;
-  public DataList<Discount> discounts;
+  private DataList<Product> products;
+  private DataList<Discount> discounts;
 
-  public String productsAsString(boolean showWholesalePrice) {
+  public DataList<Product> getProducts(int purchaseId) throws SQLException {
+    if (products == null) {
+      products = new DataList<Product>();
+      ResultSet results = new PurchaseProduct(null).getSelectFrom("WHERE `PurchaseID` = " + purchaseId);
+      while (results.next()) {
+        Product product = new Product();
+        product.fillWithResultSet(results);
+        products.data.add(product);
+      }
+    }
+    return products;
+  }
+
+  public DataList<Discount> getDiscounts(int purchaseId) throws SQLException {
+    if (discounts == null) {
+      discounts = new DataList<Discount>();
+      ResultSet results = new PurchaseDiscount(null).getSelectFrom("WHERE `PurchaseID` = " + purchaseId);
+      while (results.next()) {
+        Discount discount = new Discount();
+        discount.fillWithResultSet(results);
+        discounts.data.add(discount);
+      }
+    }
+    return discounts;
+  }
+
+  public DataList<Product> getProductsOrNull() {
+    return products;
+  }
+
+  public DataList<Discount> getDiscountsOrNull() {
+    return discounts;
+  }
+
+  public String productsAsString(boolean showWholesalePrice, int purchaseId) throws SQLException {
     StringBuilder output = new StringBuilder();
-    for (int i = 0; i < products.data.size(); i++) {
-      String product = products.data.get(i).toString(showWholesalePrice);
-      product = product.replace("\n", "\n  ");
-      output.append("Product " + (i + 1) + ":\n  ");
-      output.append(product);
-      output.append("\n");
+    List<Product> products = getProducts(purchaseId).data;
+    if (products.size() > 0) {
+      for (int i = 0; i < products.size(); i++) {
+        String product = products.get(i).toString(showWholesalePrice);
+        product = product.replace("\n", "\n  ");
+        output.append("Product " + (i + 1) + ":\n  ");
+        output.append(product);
+        output.append("");
+      }
+    } else {
+      output.append("No products");
     }
     return output.toString();
   }
 
-  public String discountsAsString(boolean showDates) {
+  public String discountsAsString(boolean showDates, int purchaseId) throws SQLException {
     StringBuilder output = new StringBuilder();
-    for (int i = 0; i < discounts.data.size(); i++) {
-      String discount = discounts.data.get(i).toString(showDates);
-      discount = discount.replace("\n", "\n  ");
-      output.append("Discount " + (i + 1) + ":\n  ");
-      output.append(discount);
-      output.append("\n");
+    List<Discount> discounts = getDiscounts(purchaseId).data;
+    if (discounts.size() > 0) {
+      for (int i = 0; i < discounts.size(); i++) {
+        String discount = discounts.get(i).toString(showDates);
+        discount = discount.replace("\n", "\n  ");
+        output.append("Discount " + (i + 1) + ":\n  ");
+        output.append(discount);
+        output.append("");
+      }
+    } else {
+      output.append("No discounts");
     }
     return output.toString();
+  }
+
+  public int productCount(int purchaseId) throws SQLException {
+    if (products == null) {
+      getProducts(purchaseId);
+    }
+    return products.data.size();
+  }
+
+  public int discountCount(int purchaseId) throws SQLException {
+    if (discounts == null) {
+      getDiscounts(purchaseId);
+    } 
+    return discounts.data.size();
   }
 
   public static String toString(DataWithId<Purchase> purchase, CountOrValues showProducts, boolean showWholesalePrices, CountOrValues showDiscounts, boolean showDiscountDates) {
@@ -50,37 +109,37 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
     output.append("Date of purchase: " + purchase.data.date.toString());
 
     // products
-    if (showProducts == CountOrValues.Count) {
-      int productCount; 
-      if (purchase.data.products != null) {
-        productCount = purchase.data.products.data.size();
-      } else {
-        try {
-          productCount = Product.CreateInstance_PRODUCT.getCount("WHERE 'PurchaseID' = " + purchase.id);
-        } catch (Exception e) {
-          productCount = 0;
-        }
+    boolean productsAdded = false;
+    if (showProducts == CountOrValues.Values) {
+      try {
+        output.append("\n" + purchase.data.productsAsString(showWholesalePrices, purchase.id));
+        productsAdded = true;
+      } catch (SQLException e) {
+        productsAdded = false;
       }
-      output.append("\nProduct count: " + productCount);
-    } else {
-      output.append("\n" + purchase.data.productsAsString(showWholesalePrices));
+    } else if (purchase.data.products != null || productsAdded == false) {
+      try {
+        output.append("\nProduct count: " + purchase.data.productCount(purchase.id));
+      } catch (Exception e) {
+        output.append("\nProduct count: {Error displaying count}");
+      }
     }
 
     // discounts
-    if (showDiscounts == CountOrValues.Count) {
-      int discountCount; 
-      if (purchase.data.discounts != null) {
-        discountCount = purchase.data.discounts.data.size();
-      } else {
-        try {
-          discountCount = Discount.CreateInstance_DISCOUNT.getCount("WHERE 'PurchaseID' = " + purchase.id);
-        } catch (Exception e) {
-          discountCount = 0;
-        }
+    boolean discountsAdded = false;
+    if (showDiscounts == CountOrValues.Values) {
+      try {
+        output.append("\n" + purchase.data.discountsAsString(showDiscountDates, purchase.id));
+        discountsAdded = true;
+      } catch (SQLException e) {
+        discountsAdded = false;
       }
-      output.append("\nDiscount count: " + discountCount);
-    } else {
-      output.append("\n" + purchase.data.discountsAsString(showDiscountDates));
+    } else if (purchase.data.discounts != null || discountsAdded == false) {
+      try {
+        output.append("\nDiscount count: " + purchase.data.discountCount(purchase.id));
+      } catch (Exception e) {
+        output.append("\nDiscount count: {Error displaying count}");
+      }
     }
 
     return output.toString();
@@ -108,7 +167,7 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
         `PurchaseID`,
         `CustomerID`,
         `Date`
-      FROM `purchase`
+      FROM `purchase` 
     """;
   }
 
@@ -116,7 +175,7 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
   public String getSelectCountQuery() {
     return """
       SELECT COUNT(`purchase`.`PurchaseID`)
-      FROM `purchase`
+      FROM `purchase` 
     """;
   }
 

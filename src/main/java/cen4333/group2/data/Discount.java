@@ -21,9 +21,9 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, SelectF
   public String toString() {
     return String.format(
       """
-        Name: %s
-        Start date: %s
-        End date: %s
+      Name: %s
+      Start date: %s
+      End date: %s
       """, 
       name,
       startDate.toLocalDate().toString(),
@@ -37,7 +37,7 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, SelectF
     } else {
       return String.format(
         """
-          Name: %s
+        Name: %s
         """, 
         name
       );
@@ -48,15 +48,13 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, SelectF
   public String getSelectFromQuery() {
     return """
       SELECT 
-        `PurchaseID`,
         `DiscountID`,
         `Name`,
         `StartDate`,
         `EndDate`,
-        `DiscoutJson`
+        `DiscountJson`
       FROM 
         `discount`
-        OUTER LEFT JOIN `purchase_discount` USING(`PurchaseID`)\n
     """;
   }
 
@@ -64,7 +62,7 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, SelectF
   public String getSelectCountQuery() {
     return """
       SELECT Count(`DiscountID`)
-      FROM `discount`\n
+      FROM `discount`
     """;
   }
 

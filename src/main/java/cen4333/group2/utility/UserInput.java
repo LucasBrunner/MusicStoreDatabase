@@ -49,7 +49,7 @@ public class UserInput {
   }
 
   public static char getChar() {
-    return getString().charAt(0);
+    return getString().trim().charAt(0);
   }
 
   public enum YesNo {
@@ -59,13 +59,13 @@ public class UserInput {
 
   public static YesNo getYesNo() {
     while (true) {
+      System.out.print("Please enter either yes or no: ");
       char input = Character.toLowerCase(getChar());
       if (input == 'y') {
         return YesNo.YES;
       } else if (input == 'n') {
         return YesNo.NO;
       }
-      System.out.print("Please enter either yes or no: ");
     }
   }
 

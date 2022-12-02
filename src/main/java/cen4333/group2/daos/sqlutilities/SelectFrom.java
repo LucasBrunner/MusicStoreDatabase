@@ -17,12 +17,12 @@ public interface SelectFrom {
   public String getIdColumnName();
 
   default public int getCount(String where) throws SQLException {
-    ResultSet countQueryResult = Main.globalData.dbConnection.getConnection().prepareStatement(this.getSelectCountQuery() + where).executeQuery();
+    ResultSet countQueryResult = Main.globalData.dbConnection.getConnection().prepareStatement(this.getSelectCountQuery() + " \n " + where).executeQuery();
     countQueryResult.next();
     return countQueryResult.getInt(1);
   }
 
   default public ResultSet getSelectFrom(String where) throws SQLException {
-    return Main.globalData.dbConnection.getConnection().prepareStatement(this.getSelectFromQuery() + where).executeQuery();
+    return Main.globalData.dbConnection.getConnection().prepareStatement(this.getSelectFromQuery() + " \n " + where).executeQuery();
   }
 }
