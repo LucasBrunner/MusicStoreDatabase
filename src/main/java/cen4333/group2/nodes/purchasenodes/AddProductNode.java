@@ -3,7 +3,6 @@ package cen4333.group2.nodes.purchasenodes;
 import java.sql.SQLException;
 
 import cen4333.group2.Node;
-import cen4333.group2.daos.sqlutilities.SelectFromIter;
 import cen4333.group2.data.Product;
 import cen4333.group2.data.Purchase;
 import cen4333.group2.data.PurchaseProduct;

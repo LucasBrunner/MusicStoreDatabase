@@ -3,13 +3,23 @@ package cen4333.group2.data;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
+import cen4333.group2.daos.sqlutilities.SelectFromIter;
+import cen4333.group2.data.datacontainers.DataWithId;
+import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
+import cen4333.group2.errors.NoItemsException;
+import cen4333.group2.utility.ObjectSelector;
+import cen4333.group2.utility.UserInput;
 
-public class Discount implements CreateInstance, Duplicate, QueryResult, SelectFrom {
+public class Discount implements CreateInstance, Duplicate, QueryResult, SelectFrom, DisplayText {
   public static final Discount CreateInstance_DISCOUNT = new Discount();
 
   public String name;
@@ -92,5 +102,87 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, SelectF
   @Override
   public CreateInstance createInstance() {
     return new Discount();
+  }
+
+  @Override
+  public String getDisplayText() {
+    return "Name: " + name;
+  }
+
+  public static String getWhereStatement(boolean doShowUnavailableDiscounts) {  
+    String now = new Date(Instant.now().getEpochSecond()).toString();  
+    return String.format(
+      """
+      WHERE
+        AND `StartDate` < \"%s\"
+        AND `EndDate` > \"%s\"
+      """,
+      now,
+      now
+    );
+  }
+
+  public static DataWithId<Discount> selectDiscount(boolean doShowUnavailableDiscounts) throws SQLException {   
+    return new SelectFromIter<Discount>(
+      getWhereStatement(doShowUnavailableDiscounts), 
+      new Discount(), 
+      SelectFromIter.getResultsAmount()
+    ).userSelect(
+      true, 
+      "product", 
+      true
+    );
+  }
+
+  public static DataWithId<Discount> searchDiscounts(String discountName, boolean doShowUnavailableDiscounts) throws SQLException {
+    return new SelectFromIter<Discount>(
+      getWhereStatement(doShowUnavailableDiscounts) + "\n  AND `Name` LIKE %" + discountName + "%",
+      new Discount(), 
+      SelectFromIter.getResultsAmount()
+    ).userSelect(
+      true, 
+      "product", 
+      false
+    );
+  }
+
+  public static DataWithId<Discount> searchDiscounts(int discountId, boolean doShowUnavailableDiscounts) throws SQLException {
+    return new SelectFromIter<Discount>(
+      getWhereStatement(doShowUnavailableDiscounts) + "\n  AND `DiscountID` = " + discountId,
+      new Discount(), 
+      1
+    ).userSelect(
+      true, 
+      "product", 
+      true
+    );
+  }
+
+  public static DataWithId<Discount> searchDiscountsAllMethods(boolean doShowUnavailableDiscounts) throws SQLException {
+    List<ObjectWithValue<String, Integer>> selectionList = new ArrayList<ObjectWithValue<String, Integer>>();
+    selectionList.add(new ObjectWithValue<String,Integer>("Search by name", 1));
+    selectionList.add(new ObjectWithValue<String,Integer>("Search by ID", 2));
+    selectionList.add(new ObjectWithValue<String,Integer>("View all", 3));
+    int selction = -1;
+    try {
+      selction = ObjectSelector.printAndGetSelection(selectionList).value;
+    } catch (NoItemsException e) {}
+
+    switch (selction) {
+      case 1:
+        System.out.print("Enter the name you would like to search: ");
+        return searchDiscounts(UserInput.getString(), doShowUnavailableDiscounts);
+
+      case 2:
+        System.out.print("Enter the ID you would like to search: ");
+        return searchDiscounts(UserInput.getInt(), doShowUnavailableDiscounts);
+
+      case 3:
+        return selectDiscount(doShowUnavailableDiscounts);
+    
+      default:
+        System.out.println("Invalid state! Returning to valid state...");
+        return null;
+    }
   }
 }

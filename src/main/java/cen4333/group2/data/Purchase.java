@@ -40,7 +40,7 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
       discounts = new DataList<PurchaseDiscount>();
       ResultSet results = new PurchaseDiscount(null).getSelectFrom("WHERE `PurchaseID` = " + purchaseId);
       while (results.next()) {
-        PurchaseDiscount discount = new PurchaseDiscount(new Discount());
+        PurchaseDiscount discount = new PurchaseDiscount(new DataWithId<Discount>());
         discount.fillWithResultSet(results);
         discounts.data.add(discount);
       }

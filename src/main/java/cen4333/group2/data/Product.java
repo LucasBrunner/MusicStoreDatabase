@@ -134,7 +134,7 @@ public class Product implements CreateInstance, QueryResult, SelectFrom, Duplica
     return "Name: " + name;
   }
 
-  public static DataWithId<Product> selectProduct() throws ClassCastException, SQLException {    
+  public static DataWithId<Product> selectProduct() throws SQLException {    
     return new SelectFromIter<Product>(
       "", 
       new Product(), 
