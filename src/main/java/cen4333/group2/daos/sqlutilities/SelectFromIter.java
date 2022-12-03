@@ -118,7 +118,7 @@ public class SelectFromIter <T extends QueryResult & SelectFrom & CreateInstance
    * @throws SQLException
    * @throws ClassCastException
    */
-  public DataWithId<T> userSelect(boolean allowCancel, String objectName, boolean displayIds) throws ClassCastException, SQLException {
+  public DataWithId<T> userSelect(boolean cancelable, String objectName, boolean displayIds) throws ClassCastException, SQLException {
     List<DataWithId<T>> page = new ArrayList<DataWithId<T>>();
     List<ObjectWithValue<String, Integer>> selections = new ArrayList<ObjectWithValue<String, Integer>>();
     while (true) {

@@ -4,15 +4,23 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
+import cen4333.group2.daos.sqlutilities.SelectFromIter;
 import cen4333.group2.data.datacontainers.DataString;
 import cen4333.group2.data.datacontainers.DataWithId;
+import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
+import cen4333.group2.errors.NoItemsException;
+import cen4333.group2.utility.ObjectSelector;
+import cen4333.group2.utility.UserInput;
 
-public class Product implements CreateInstance, QueryResult, SelectFrom, Duplicate {
+public class Product implements CreateInstance, QueryResult, SelectFrom, Duplicate, DisplayText {
 
   public static final Product CreateInstance_PRODUCT = new Product();
 
@@ -119,5 +127,74 @@ public class Product implements CreateInstance, QueryResult, SelectFrom, Duplica
   @Override
   public String getIdColumnName() {
     return "ProductID";
+  }
+
+  @Override
+  public String getDisplayText() {
+    return "Name: " + name;
+  }
+
+  public static DataWithId<Product> selectProduct() throws ClassCastException, SQLException {    
+    return new SelectFromIter<Product>(
+      "", 
+      new Product(), 
+      SelectFromIter.getResultsAmount()
+    ).userSelect(
+      true, 
+      "product", 
+      true
+    );
+  }
+
+  public static DataWithId<Product> searchProducts(String productName) throws SQLException {    
+    return new SelectFromIter<Product>(
+      "WHERE `Name` LIKE %" + productName + "%", 
+      new Product(), 
+      SelectFromIter.getResultsAmount()
+    ).userSelect(
+      true, 
+      "product", 
+      false
+    );
+  }
+
+  public static DataWithId<Product> searchProducts(int productId) throws SQLException {    
+    return new SelectFromIter<Product>(
+      "WHERE `ProductID` = " + productId + "", 
+      new Product(), 
+      1
+    ).userSelect(
+      true, 
+      "product", 
+      true
+    );
+  }
+
+  public static DataWithId<Product> searchProductsAllMethods() throws SQLException {
+    List<ObjectWithValue<String, Integer>> selectionList = new ArrayList<ObjectWithValue<String, Integer>>();
+    selectionList.add(new ObjectWithValue<String,Integer>("Search by name", 1));
+    selectionList.add(new ObjectWithValue<String,Integer>("Search by ID", 2));
+    selectionList.add(new ObjectWithValue<String,Integer>("View all", 3));
+    int selction = -1;
+    try {
+      selction = ObjectSelector.printAndGetSelection(selectionList).value;
+    } catch (NoItemsException e) {}
+
+    switch (selction) {
+      case 1:
+        System.out.print("Enter the name you would like to search: ");
+        return searchProducts(UserInput.getString());
+
+      case 2:
+        System.out.print("Enter the ID you would like to search: ");
+        return searchProducts(UserInput.getInt());
+
+      case 3:
+        return selectProduct();
+    
+      default:
+        System.out.println("Invalid state! Returning to valid state...");
+        return null;
+    }
   }
 }

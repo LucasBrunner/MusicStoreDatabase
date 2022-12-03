@@ -27,7 +27,7 @@ public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplic
       products = new DataList<PurchaseProduct>();
       ResultSet results = new PurchaseProduct(null).getSelectFrom("WHERE `PurchaseID` = " + purchaseId);
       while (results.next()) {
-        PurchaseProduct product = new PurchaseProduct(new Product());
+        PurchaseProduct product = new PurchaseProduct(new DataWithId<Product>());
         product.fillWithResultSet(results);
         products.data.add(product);
       }

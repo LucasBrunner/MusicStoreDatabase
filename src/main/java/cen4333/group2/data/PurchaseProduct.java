@@ -5,20 +5,27 @@ import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.SelectFrom;
+import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
 public class PurchaseProduct implements CreateInstance, QueryResult, SelectFrom, Duplicate {
-  public Product product;
+  public DataWithId<Product> product;
   public int amountOfProducts = 0;
 
-  public PurchaseProduct(Product product) {
+  public PurchaseProduct(DataWithId<Product> product) {
     this.product = product;
   }
 
+  public PurchaseProduct(DataWithId<Product> product, int amountOfProducts) {
+    this.product = product;
+    this.amountOfProducts = amountOfProducts;
+  }
+
+  @SuppressWarnings("unchecked")
   @Override
   public Duplicate duplicate() {
-    return new PurchaseProduct((Product) product.duplicate());
+    return new PurchaseProduct((DataWithId<Product>) product.duplicate(), amountOfProducts);
   }
 
   @Override
@@ -60,13 +67,14 @@ public class PurchaseProduct implements CreateInstance, QueryResult, SelectFrom,
 
   @Override
   public void fillWithResultSet(ResultSet results) throws SQLException {
-    product.fillWithResultSet(results);
+    product.data.fillWithResultSet(results);
+    product.id = results.getInt(getIdColumnName());
     amountOfProducts = results.getInt("ProductCount");
   }
 
   @Override
   public CreateInstance createInstance() {
-    return new PurchaseProduct(new Product());
+    return new PurchaseProduct(new DataWithId<Product>(new Product()));
   }
 
   @Override
@@ -88,7 +96,7 @@ public class PurchaseProduct implements CreateInstance, QueryResult, SelectFrom,
         %s
         Product count: %s
         """, 
-        product.toString(showWholesalePrice).trim(),
+        product.data.toString(showWholesalePrice).trim(),
         amountOfProducts
       ).trim();
     } else {
