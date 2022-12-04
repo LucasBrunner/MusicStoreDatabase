@@ -13,14 +13,14 @@ import cen4333.group2.daos.sqlutilities.GetIter;
 import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.UserInput;
 
-public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Discount>, DisplayText, PrimaryKey {
+public class Discount implements Prototype<Discount>, Duplicate, QueryResult, Get<Discount>, DisplayText, PrimaryKey {
   public static final Discount CreateInstance_DISCOUNT = new Discount();
 
   public String name;
@@ -96,7 +96,7 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Dis
   }
 
   @Override
-  public CreateInstance createInstance() {
+  public Discount createInstance() {
     return new Discount();
   }
 

@@ -14,14 +14,14 @@ import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataString;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.UserInput;
 
-public class Product implements CreateInstance, QueryResult, Get<Product>, Duplicate, DisplayText, PrimaryKey {
+public class Product implements Prototype<Product>, QueryResult, Get<Product>, Duplicate, DisplayText, PrimaryKey {
 
   public static final Product CreateInstance_PRODUCT = new Product();
 
@@ -94,7 +94,7 @@ public class Product implements CreateInstance, QueryResult, Get<Product>, Dupli
   }
 
   @Override
-  public CreateInstance createInstance() {
+  public Product createInstance() {
     return new Product();
   }
 

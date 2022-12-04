@@ -1,9 +1,9 @@
 package cen4333.group2.data.datacontainers;
 
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class DataString implements CreateInstance, Duplicate {
+public class DataString implements Prototype<DataString>, Duplicate {
 
   public String value;
 
@@ -22,7 +22,7 @@ public class DataString implements CreateInstance, Duplicate {
   }
 
   @Override
-  public CreateInstance createInstance() {
+  public DataString createInstance() {
     return new DataString(null);
   }
   

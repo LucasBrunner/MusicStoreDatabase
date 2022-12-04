@@ -12,9 +12,9 @@ import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 
-public class Customer implements QueryResult, Get<Customer>, CreateInstance, Duplicate, DisplayText, PrimaryKey, Post<Integer> {
+public class Customer implements QueryResult, Get<Customer>, Prototype<Customer>, Duplicate, DisplayText, PrimaryKey, Post<Integer> {
   public DataWithId<Person> person;
 
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
@@ -28,7 +28,7 @@ public class Customer implements QueryResult, Get<Customer>, CreateInstance, Dup
   }
 
   @Override
-  public CreateInstance createInstance() {
+  public Customer createInstance() {
     return new Customer();
   }
 

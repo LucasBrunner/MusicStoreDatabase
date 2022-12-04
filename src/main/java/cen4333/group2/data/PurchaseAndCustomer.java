@@ -9,9 +9,9 @@ import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 
-public class PurchaseAndCustomer implements QueryResult, Get<PurchaseAndCustomer>, CreateInstance, Duplicate, DisplayText, PrimaryKey {
+public class PurchaseAndCustomer implements QueryResult, Get<PurchaseAndCustomer>, Prototype<PurchaseAndCustomer>, Duplicate, DisplayText, PrimaryKey {
 
   public DataWithId<Purchase> purchase;
   public DataWithId<Customer> customer;
@@ -26,7 +26,7 @@ public class PurchaseAndCustomer implements QueryResult, Get<PurchaseAndCustomer
   }
 
   @Override
-  public CreateInstance createInstance() {
+  public PurchaseAndCustomer createInstance() {
     return new PurchaseAndCustomer();
   }
 

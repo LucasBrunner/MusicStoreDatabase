@@ -13,11 +13,11 @@ import cen4333.group2.daos.sqlutilities.Post;
 import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.data.datacontainers.DataWithId;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Employee implements CreateInstance, QueryResult, Get<Employee>, Duplicate, PrimaryKey, Delete<Employee>, Post<Integer>, DisplayText {
+public class Employee implements Prototype<Employee>, QueryResult, Get<Employee>, Duplicate, PrimaryKey, Delete<Employee>, Post<Integer>, DisplayText {
   public String checkingNumber;
   public DataWithId<Person> person;
 
@@ -125,7 +125,7 @@ public class Employee implements CreateInstance, QueryResult, Get<Employee>, Dup
   }
 
   @Override
-  public CreateInstance createInstance() {
+  public Employee createInstance() {
     return new Employee();
   }
 

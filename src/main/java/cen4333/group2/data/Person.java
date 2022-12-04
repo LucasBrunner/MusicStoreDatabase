@@ -11,14 +11,14 @@ import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.daos.sqlutilities.Post;
 import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.DelayedUserInputString;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.DelayedUserInputString.UserInputType;
 
-public class Person implements QueryResult, Get<Person>, CreateInstance, Duplicate, PrimaryKey, Delete<Person>, Post<Void> {
+public class Person implements QueryResult, Get<Person>, Prototype<Person>, Duplicate, PrimaryKey, Delete<Person>, Post<Void> {
   private static final List<ObjectWithValue<String, DelayedUserInputString>> PERSON_SEARCH_METHODS = new ArrayList<ObjectWithValue<String, DelayedUserInputString>>();
 
   static {
@@ -112,7 +112,7 @@ public class Person implements QueryResult, Get<Person>, CreateInstance, Duplica
   }
 
   @Override
-  public CreateInstance createInstance() {
+  public Person createInstance() {
     return new Person();
   }
 

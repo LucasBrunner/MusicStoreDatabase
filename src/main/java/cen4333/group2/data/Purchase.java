@@ -11,10 +11,10 @@ import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.data.datacontainers.DataList;
 import cen4333.group2.data.datacontainers.DataWithId;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Purchase implements QueryResult, Get<Purchase>, CreateInstance, Duplicate, Post<Integer>, PrimaryKey {
+public class Purchase implements QueryResult, Get<Purchase>, Prototype<Purchase>, Duplicate, Post<Integer>, PrimaryKey {
   public enum CountOrValues {
     Count,
     Values
@@ -126,7 +126,7 @@ public class Purchase implements QueryResult, Get<Purchase>, CreateInstance, Dup
   }
 
   @Override
-  public CreateInstance createInstance() {
+  public Purchase createInstance() {
     return new Purchase();
   }
 

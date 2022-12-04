@@ -12,10 +12,10 @@ import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.daos.sqlutilities.Post;
 import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class PurchaseDiscount implements CreateInstance, QueryResult, Get<PurchaseDiscount>, Duplicate, Post<Void>, PrimaryKey {
+public class PurchaseDiscount implements Prototype<PurchaseDiscount>, QueryResult, Get<PurchaseDiscount>, Duplicate, Post<Void>, PrimaryKey {
 
   public DataWithId<Discount> discount;
   public BigDecimal discountAmount;
@@ -84,7 +84,7 @@ public class PurchaseDiscount implements CreateInstance, QueryResult, Get<Purcha
   }
 
   @Override
-  public CreateInstance createInstance() {
+  public PurchaseDiscount createInstance() {
     return new PurchaseDiscount(new DataWithId<Discount>());
   }
 

@@ -1,9 +1,9 @@
 package cen4333.group2.data.datacontainers;
 
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class DataWithId<T extends CreateInstance & Duplicate> implements CreateInstance, Duplicate {
+public class DataWithId<T extends Prototype<T> & Duplicate> implements Prototype<DataWithId<T>>, Duplicate {
   public int id;
   public T data;
 
@@ -29,7 +29,7 @@ public class DataWithId<T extends CreateInstance & Duplicate> implements CreateI
     return null;
   }
   @Override
-  public CreateInstance createInstance() {
+  public DataWithId<T> createInstance() {
     return new DataWithId<T>();
   }
 }

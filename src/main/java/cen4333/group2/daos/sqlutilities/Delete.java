@@ -5,10 +5,10 @@ import java.util.List;
 
 import cen4333.group2.Main;
 import cen4333.group2.data.datacontainers.DataWithId;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public interface Delete<T extends CreateInstance & Duplicate & PrimaryKey> {
+public interface Delete<T extends Prototype<T> & Duplicate & PrimaryKey> {
   public String getDeleteSQL();
 
   default public void delete(DataWithId<T> id, List<String> whereClauses) throws SQLException {

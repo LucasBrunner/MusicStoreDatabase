@@ -10,10 +10,10 @@ import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.daos.sqlutilities.Post;
 import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class PurchaseProduct implements CreateInstance, QueryResult, Get<PurchaseProduct>, Duplicate, Post<Void>, PrimaryKey {
+public class PurchaseProduct implements Prototype<PurchaseProduct>, QueryResult, Get<PurchaseProduct>, Duplicate, Post<Void>, PrimaryKey {
   public DataWithId<Product> product;
   public int productCount = 0;
 
@@ -72,7 +72,7 @@ public class PurchaseProduct implements CreateInstance, QueryResult, Get<Purchas
   }
 
   @Override
-  public CreateInstance createInstance() {
+  public PurchaseProduct createInstance() {
     return new PurchaseProduct(new DataWithId<Product>(new Product()));
   }
 

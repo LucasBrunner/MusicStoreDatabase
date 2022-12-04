@@ -8,12 +8,12 @@ import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
-import cen4333.group2.data.datainterfaces.CreateInstance;
+import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.utility.ObjectSelector;
 
-public class GetIter <T extends QueryResult & Get<T> & CreateInstance & DisplayText & Duplicate & PrimaryKey> {
+public class GetIter <T extends QueryResult & Get<T> & Prototype<T> & DisplayText & Duplicate & PrimaryKey> {
   private String where;
   private T CreateInstance;
   private int stepSize;
