@@ -36,7 +36,9 @@ public class CreatePurchaseNode extends Node {
       Node selectedNode = ObjectSelector.printAndGetSelection(new Node[] {
         new ViewPurchaseNode(new DataWithId<Purchase>(purchase), customer),
         new AddProductNode(purchase),
+        new RemoveProductNode(purchase),
         new AddDiscountNode(purchase),
+        new RemoveDiscountNode(purchase),
         new NothingNode("Cancel order"),
         new NothingNode("Commit order")
       });
