@@ -4,13 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.daos.sqlutilities.SelectFrom;
+import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 
-public class PurchaseAndCustomer implements QueryResult, SelectFrom, CreateInstance, Duplicate, DisplayText {
+public class PurchaseAndCustomer implements QueryResult, Get, CreateInstance, Duplicate, DisplayText {
 
   public DataWithId<Purchase> purchase;
   public DataWithId<Customer> customer;

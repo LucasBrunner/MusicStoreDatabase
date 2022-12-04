@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.daos.sqlutilities.SelectFrom;
-import cen4333.group2.daos.sqlutilities.SelectFromIter;
+import cen4333.group2.daos.sqlutilities.Get;
+import cen4333.group2.daos.sqlutilities.GetIter;
 import cen4333.group2.data.datacontainers.DataString;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
@@ -20,7 +20,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.UserInput;
 
-public class Product implements CreateInstance, QueryResult, SelectFrom, Duplicate, DisplayText {
+public class Product implements CreateInstance, QueryResult, Get, Duplicate, DisplayText {
 
   public static final Product CreateInstance_PRODUCT = new Product();
 
@@ -135,10 +135,10 @@ public class Product implements CreateInstance, QueryResult, SelectFrom, Duplica
   }
 
   public static DataWithId<Product> selectProduct() throws SQLException {    
-    return new SelectFromIter<Product>(
+    return new GetIter<Product>(
       "", 
       new Product(), 
-      SelectFromIter.getResultsAmount()
+      GetIter.getResultsAmount()
     ).userSelect(
       true, 
       "product", 
@@ -147,10 +147,10 @@ public class Product implements CreateInstance, QueryResult, SelectFrom, Duplica
   }
 
   public static DataWithId<Product> searchProducts(String productName) throws SQLException {    
-    return new SelectFromIter<Product>(
+    return new GetIter<Product>(
       "WHERE `Name` LIKE %" + productName + "%", 
       new Product(), 
-      SelectFromIter.getResultsAmount()
+      GetIter.getResultsAmount()
     ).userSelect(
       true, 
       "product", 
@@ -159,7 +159,7 @@ public class Product implements CreateInstance, QueryResult, SelectFrom, Duplica
   }
 
   public static DataWithId<Product> searchProducts(int productId) throws SQLException {    
-    return new SelectFromIter<Product>(
+    return new GetIter<Product>(
       "WHERE `ProductID` = " + productId + "", 
       new Product(), 
       1

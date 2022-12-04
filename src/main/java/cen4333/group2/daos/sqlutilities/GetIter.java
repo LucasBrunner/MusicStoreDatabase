@@ -14,7 +14,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.utility.ObjectSelector;
 
-public class SelectFromIter <T extends QueryResult & SelectFrom & CreateInstance & DisplayText & Duplicate> {
+public class GetIter <T extends QueryResult & Get & CreateInstance & DisplayText & Duplicate> {
   private String where;
   private T CreateInstance;
   private int stepSize;
@@ -22,7 +22,7 @@ public class SelectFromIter <T extends QueryResult & SelectFrom & CreateInstance
   private int currentPosition = 0;
   private int rowCount;
 
-  public SelectFromIter(String where, T CreateInstance, int stepSize) throws SQLException {
+  public GetIter(String where, T CreateInstance, int stepSize) throws SQLException {
     this.where = where;
     this.CreateInstance = CreateInstance;
     this.stepSize = stepSize;

@@ -5,14 +5,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import cen4333.group2.daos.sqlutilities.Post;
 import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.daos.sqlutilities.SelectFrom;
+import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.data.datacontainers.DataList;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Purchase implements QueryResult, SelectFrom, CreateInstance, Duplicate {
+public class Purchase implements QueryResult, Get, CreateInstance, Duplicate, Post {
   public enum CountOrValues {
     Count,
     Values

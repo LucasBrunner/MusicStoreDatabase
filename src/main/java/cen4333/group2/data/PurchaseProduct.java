@@ -4,12 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.daos.sqlutilities.SelectFrom;
+import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class PurchaseProduct implements CreateInstance, QueryResult, SelectFrom, Duplicate {
+public class PurchaseProduct implements CreateInstance, QueryResult, Get, Duplicate {
   public DataWithId<Product> product;
   public int amountOfProducts = 0;
 

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import cen4333.group2.Main;
 
-public interface SelectFrom {
+public interface Get {
   /**
    * 
    * @return a string with a SQL SELECT query for this object. 

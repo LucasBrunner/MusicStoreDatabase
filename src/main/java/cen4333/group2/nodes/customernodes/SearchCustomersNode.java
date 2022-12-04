@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.Node;
-import cen4333.group2.daos.sqlutilities.SelectFromIter;
+import cen4333.group2.daos.sqlutilities.GetIter;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.errors.NoItemsException;
@@ -74,10 +74,10 @@ public class SearchCustomersNode extends Node {
 
   private void searchCustomer(String where) {
     try {
-      DataWithId<Customer> selectedCustomer = new SelectFromIter<Customer>(
+      DataWithId<Customer> selectedCustomer = new GetIter<Customer>(
         where, 
         new Customer(), 
-        SelectFromIter.getResultsAmount()
+        GetIter.getResultsAmount()
       ).userSelect(true, "customer", true);
       if (selectedCustomer != null) {
         new ViewCustomerNode(selectedCustomer).runNode();

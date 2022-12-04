@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.daos.sqlutilities.SelectFrom;
-import cen4333.group2.daos.sqlutilities.SelectFromIter;
+import cen4333.group2.daos.sqlutilities.Get;
+import cen4333.group2.daos.sqlutilities.GetIter;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.CreateInstance;
@@ -19,7 +19,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.UserInput;
 
-public class Discount implements CreateInstance, Duplicate, QueryResult, SelectFrom, DisplayText {
+public class Discount implements CreateInstance, Duplicate, QueryResult, Get, DisplayText {
   public static final Discount CreateInstance_DISCOUNT = new Discount();
 
   public String name;
@@ -123,10 +123,10 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, SelectF
   }
 
   public static DataWithId<Discount> selectDiscount(boolean doShowUnavailableDiscounts) throws SQLException {   
-    return new SelectFromIter<Discount>(
+    return new GetIter<Discount>(
       getWhereStatement(doShowUnavailableDiscounts), 
       new Discount(), 
-      SelectFromIter.getResultsAmount()
+      GetIter.getResultsAmount()
     ).userSelect(
       true, 
       "product", 
@@ -135,10 +135,10 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, SelectF
   }
 
   public static DataWithId<Discount> searchDiscounts(String discountName, boolean doShowUnavailableDiscounts) throws SQLException {
-    return new SelectFromIter<Discount>(
+    return new GetIter<Discount>(
       getWhereStatement(doShowUnavailableDiscounts) + "\n  AND `Name` LIKE %" + discountName + "%",
       new Discount(), 
-      SelectFromIter.getResultsAmount()
+      GetIter.getResultsAmount()
     ).userSelect(
       true, 
       "product", 
@@ -147,7 +147,7 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, SelectF
   }
 
   public static DataWithId<Discount> searchDiscounts(int discountId, boolean doShowUnavailableDiscounts) throws SQLException {
-    return new SelectFromIter<Discount>(
+    return new GetIter<Discount>(
       getWhereStatement(doShowUnavailableDiscounts) + "\n  AND `DiscountID` = " + discountId,
       new Discount(), 
       1
