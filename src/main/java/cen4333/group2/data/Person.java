@@ -2,15 +2,43 @@ package cen4333.group2.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Delete;
 import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.daos.sqlutilities.PrimaryKey;
+import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
+import cen4333.group2.errors.NoItemsException;
+import cen4333.group2.utility.DelayedUserInputString;
+import cen4333.group2.utility.ObjectSelector;
+import cen4333.group2.utility.DelayedUserInputString.UserInputType;
 
 public class Person implements QueryResult, Get<Person>, CreateInstance, Duplicate, PrimaryKey, Delete<Person> {
+  private static final List<ObjectWithValue<String, DelayedUserInputString>> PERSON_SEARCH_METHODS = new ArrayList<ObjectWithValue<String, DelayedUserInputString>>();
+
+  static {
+    PERSON_SEARCH_METHODS.add(new ObjectWithValue<String, DelayedUserInputString>(
+      "Name", 
+      new DelayedUserInputString("WHERE CONCAT(`FirstName`, \" \", `LastName`) LIKE \"%%%s%%\"", UserInputType.STRING)
+    ));
+    PERSON_SEARCH_METHODS.add(new ObjectWithValue<String, DelayedUserInputString>(
+      "Address", 
+      new DelayedUserInputString("WHERE `Address` LIKE \"%%%s%%\"", UserInputType.STRING)
+    ));
+    PERSON_SEARCH_METHODS.add(new ObjectWithValue<String, DelayedUserInputString>(
+      "Email", 
+      new DelayedUserInputString("WHERE `Email` LIKE \"%%%s%%\"", UserInputType.STRING)
+    ));
+    PERSON_SEARCH_METHODS.add(new ObjectWithValue<String, DelayedUserInputString>(
+      "Phone number", 
+      new DelayedUserInputString("WHERE `PhoneNumber` LIKE \"%%%s%%\"", UserInputType.STRING)
+    ));
+  }
+  
   public String firstName;
   public String lastName;
   public String phoneNumber;
@@ -81,5 +109,46 @@ public class Person implements QueryResult, Get<Person>, CreateInstance, Duplica
   @Override
   public String getPrimaryColumnName() {
     return "PersonID";
+  }
+
+  @Override
+  public void generatePostSql(Void forignData, List<String> sqlCommands) {
+    sqlCommands.add(String.format(
+      """
+        INSERT INTO `musicstore`.`person`
+        (
+          `FirstName`,
+          `LastName`,
+          `PhoneNumber`,
+          `Email`,
+          `Address`
+        )
+        VALUES
+        (
+          \"%s\",
+          \"%s\",
+          \"%s\",
+          \"%s\",
+          \"%s\"
+        );
+         
+      """, 
+      firstName, 
+      lastName,
+      phoneNumber,
+      email,
+      address
+    ));
+  }
+
+  public static String personSearchString(List<ObjectWithValue<String, DelayedUserInputString>> additionOptions) {
+    System.out.println("What would you like to search by?");
+    List<ObjectWithValue<String, DelayedUserInputString>> options = new ArrayList<ObjectWithValue<String, DelayedUserInputString>>(); 
+    options.addAll(PERSON_SEARCH_METHODS);
+    options.addAll(additionOptions);
+    try {
+      return ObjectSelector.printAndGetSelection(options).value.get();
+    } catch (NoItemsException e) {}
+    return null;
   }
 }
