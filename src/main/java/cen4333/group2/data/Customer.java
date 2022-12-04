@@ -2,16 +2,19 @@ package cen4333.group2.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
+import cen4333.group2.Main;
 import cen4333.group2.daos.sqlutilities.Get;
+import cen4333.group2.daos.sqlutilities.Post;
 import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 
-public class Customer implements QueryResult, Get<Customer>, CreateInstance, Duplicate, DisplayText, PrimaryKey {
+public class Customer implements QueryResult, Get<Customer>, CreateInstance, Duplicate, DisplayText, PrimaryKey, Post<Integer> {
   public DataWithId<Person> person;
 
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
@@ -42,7 +45,7 @@ public class Customer implements QueryResult, Get<Customer>, CreateInstance, Dup
       `Address`
     FROM 
       `customer`
-      INNER JOIN `person` USING(`PersonID`)\n
+      INNER JOIN `person` USING(`PersonID`)
     """;
   }
 
@@ -53,7 +56,7 @@ public class Customer implements QueryResult, Get<Customer>, CreateInstance, Dup
         COUNT(`CustomerID`)
       FROM 
         `customer`
-        INNER JOIN `person` USING(`PersonID`)\n
+        INNER JOIN `person` USING(`PersonID`)
     """;
   }
 
@@ -74,5 +77,31 @@ public class Customer implements QueryResult, Get<Customer>, CreateInstance, Dup
   @Override
   public String getPrimaryColumnName() {
     return "CustomerID";
+  }
+
+  @Override
+  public void generatePostSql(Integer personId, List<String> sqlCommands) {
+    sqlCommands.add(String.format(
+      """
+      INSERT INTO `Customer` (
+        `PersonID`
+      )
+      VALUES (
+        %s
+      );
+      """,
+      personId
+    ));
+  }
+
+  public static void post(DataWithId<Person> personWithId) {
+    new Customer().post(personWithId.id);
+  }
+
+  public static void post(Person personData) {
+    personData.post(null);
+    // This is not multithreading safe. 
+    // The LAST_INSERT_ID() MySQL command is session based and currently all sessions use the same connection. 
+    new Customer().post(Main.globalData.dbConnection.getLastId()); 
   }
 }

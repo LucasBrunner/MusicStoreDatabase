@@ -28,13 +28,13 @@ public interface Get<T extends CreateInstance & Duplicate & QueryResult & Primar
     return countQueryResult.getInt(1);
   }
 
-  default public ResultSet getSelectFrom(String where) throws SQLException {
+  default public ResultSet getResultSet(String where) throws SQLException {
     return Main.globalData.dbConnection.getConnection().prepareStatement(this.getSelectFromQuery() + " \n " + where).executeQuery();
   }
 
   @SuppressWarnings("unchecked")
   default public List<DataWithId<T>> getList(String where, T prototype) throws SQLException {
-    ResultSet results = getSelectFrom(where);
+    ResultSet results = getResultSet(where);
     List<DataWithId<T>> output = new ArrayList<DataWithId<T>>();
     while (results.next()) {
       T data = (T) prototype.createInstance();
@@ -47,5 +47,16 @@ public interface Get<T extends CreateInstance & Duplicate & QueryResult & Primar
       output.add(newItem);
     }
     return output;
+  }
+
+  @SuppressWarnings("unchecked")
+  public default DataWithId<T> getId(int id, T prototype) throws SQLException {
+    DataWithId<T> dataWithId = new DataWithId<T>();
+    dataWithId.id = id;
+    ResultSet results = Main.globalData.dbConnection.getConnection().prepareStatement(this.getSelectFromQuery() + " \nWHERE `" + prototype.getPrimaryColumnName() + "` = " + id).executeQuery();
+    results.next();
+    dataWithId.data = (T) prototype.createInstance();
+    dataWithId.data.fillWithResultSet(results);
+    return dataWithId;
   }
 }

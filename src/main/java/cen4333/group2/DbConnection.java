@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashSet;
 
 import cen4333.group2.errors.AccessNotAllowedException;
@@ -150,5 +151,18 @@ public class DbConnection {
 
   public ConnectionType getConnectionType() {
     return conType;
+  }
+
+  /**
+   * @return null if there was an error.
+   */
+  public Integer getLastId() {
+    try {
+      ResultSet result = con.prepareStatement("SELECT LAST_INSERT_ID();").executeQuery();
+      result.next();
+      return result.getInt(1);
+    } catch (SQLException e) {
+      return null;
+    }
   }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Delete;
 import cen4333.group2.daos.sqlutilities.Get;
+import cen4333.group2.daos.sqlutilities.Post;
 import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.CreateInstance;
@@ -17,25 +18,41 @@ import cen4333.group2.utility.DelayedUserInputString;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.DelayedUserInputString.UserInputType;
 
-public class Person implements QueryResult, Get<Person>, CreateInstance, Duplicate, PrimaryKey, Delete<Person> {
+public class Person implements QueryResult, Get<Person>, CreateInstance, Duplicate, PrimaryKey, Delete<Person>, Post<Void> {
   private static final List<ObjectWithValue<String, DelayedUserInputString>> PERSON_SEARCH_METHODS = new ArrayList<ObjectWithValue<String, DelayedUserInputString>>();
 
   static {
     PERSON_SEARCH_METHODS.add(new ObjectWithValue<String, DelayedUserInputString>(
       "Name", 
-      new DelayedUserInputString("WHERE CONCAT(`FirstName`, \" \", `LastName`) LIKE \"%%%s%%\"", UserInputType.STRING)
+      new DelayedUserInputString(
+        "WHERE CONCAT(`FirstName`, \" \", `LastName`) LIKE \"%%%s%%\"", 
+        "Enter the name to search: ",
+        UserInputType.STRING
+      )
     ));
     PERSON_SEARCH_METHODS.add(new ObjectWithValue<String, DelayedUserInputString>(
       "Address", 
-      new DelayedUserInputString("WHERE `Address` LIKE \"%%%s%%\"", UserInputType.STRING)
+      new DelayedUserInputString(
+        "WHERE `Address` LIKE \"%%%s%%\"", 
+        "Enter the address to search: ",
+        UserInputType.STRING
+      )
     ));
     PERSON_SEARCH_METHODS.add(new ObjectWithValue<String, DelayedUserInputString>(
       "Email", 
-      new DelayedUserInputString("WHERE `Email` LIKE \"%%%s%%\"", UserInputType.STRING)
+      new DelayedUserInputString(
+        "WHERE `Email` LIKE \"%%%s%%\"", 
+        "Enter the email to search: ",
+        UserInputType.STRING
+      )
     ));
     PERSON_SEARCH_METHODS.add(new ObjectWithValue<String, DelayedUserInputString>(
       "Phone number", 
-      new DelayedUserInputString("WHERE `PhoneNumber` LIKE \"%%%s%%\"", UserInputType.STRING)
+      new DelayedUserInputString(
+        "WHERE `PhoneNumber` LIKE \"%%%s%%\"", 
+        "Enter the phone number to search: ",
+        UserInputType.STRING
+      )
     ));
   }
   
