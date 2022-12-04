@@ -10,7 +10,7 @@ import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 
-public class Customer implements QueryResult, Get, CreateInstance, Duplicate, DisplayText {
+public class Customer implements QueryResult, Get<Customer>, CreateInstance, Duplicate, DisplayText {
   public DataWithId<Person> person;
 
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.

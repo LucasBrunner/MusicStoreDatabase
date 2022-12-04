@@ -8,6 +8,7 @@ import cen4333.group2.data.Purchase;
 import cen4333.group2.data.PurchaseProduct;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.utility.UserInput;
+import cen4333.group2.utility.UserInput.YesNo;
 
 public class AddProductNode extends Node {
 
@@ -27,12 +28,19 @@ public class AddProductNode extends Node {
     DataWithId<Product> product = null;
     try {
       product = Product.searchProductsAllMethods();
-    } catch (SQLException e) {}
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
     if (product != null) {
-      System.out.print("How many of this item would you like to add to the purchase: ");
-      int amount = UserInput.getInt();
-      purchase.getProductsOrNull().data.add(new PurchaseProduct(product, amount));
+      product.toString();
+      System.out.print("Would you like to add this item to the purchase?");
+      if (UserInput.getYesNo() == YesNo.YES) {
+        System.out.print("How many of this item would you like to add to the purchase: ");
+        int amount = UserInput.getInt();
+        
+        purchase.getProducts().data.add(new PurchaseProduct(product, amount));
+      }
     }
   }
 }

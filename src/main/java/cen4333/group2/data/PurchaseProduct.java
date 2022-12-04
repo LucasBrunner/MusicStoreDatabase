@@ -2,16 +2,18 @@ package cen4333.group2.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Get;
+import cen4333.group2.daos.sqlutilities.Post;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class PurchaseProduct implements CreateInstance, QueryResult, Get, Duplicate {
+public class PurchaseProduct implements CreateInstance, QueryResult, Get<PurchaseProduct>, Duplicate, Post<Void> {
   public DataWithId<Product> product;
-  public int amountOfProducts = 0;
+  public int productCount = 0;
 
   public PurchaseProduct(DataWithId<Product> product) {
     this.product = product;
@@ -19,13 +21,13 @@ public class PurchaseProduct implements CreateInstance, QueryResult, Get, Duplic
 
   public PurchaseProduct(DataWithId<Product> product, int amountOfProducts) {
     this.product = product;
-    this.amountOfProducts = amountOfProducts;
+    this.productCount = amountOfProducts;
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public Duplicate duplicate() {
-    return new PurchaseProduct((DataWithId<Product>) product.duplicate(), amountOfProducts);
+    return new PurchaseProduct((DataWithId<Product>) product.duplicate(), productCount);
   }
 
   @Override
@@ -69,7 +71,7 @@ public class PurchaseProduct implements CreateInstance, QueryResult, Get, Duplic
   public void fillWithResultSet(ResultSet results) throws SQLException {
     product.data.fillWithResultSet(results);
     product.id = results.getInt(getIdColumnName());
-    amountOfProducts = results.getInt("ProductCount");
+    productCount = results.getInt("ProductCount");
   }
 
   @Override
@@ -84,8 +86,8 @@ public class PurchaseProduct implements CreateInstance, QueryResult, Get, Duplic
       %s
       Product count: %s
       """, 
-      product.toString().trim(),
-      amountOfProducts
+      product.data.toString().trim(),
+      productCount
     ).trim();
   }
 
@@ -97,10 +99,35 @@ public class PurchaseProduct implements CreateInstance, QueryResult, Get, Duplic
         Product count: %s
         """, 
         product.data.toString(showWholesalePrice).trim(),
-        amountOfProducts
+        productCount
       ).trim();
     } else {
       return toString();
     }
+  }
+
+  /**
+   * Expects the MySQL variable `@purchase_id` to be set to the id of the purchase this product is associated with.
+   * @param forignData
+   * @param sqlCommands
+   */
+  @Override
+  public void generatePostSql(Void forignData, List<String> sqlCommands) {
+    sqlCommands.add(String.format(
+      """
+      INSERT INTO `product_purchase` (
+        `product_purchase`.`PurchaseID`,
+        `product_purchase`.`ProductID`,
+        `product_purchase`.`ProductCount`
+      )
+      VALUES (
+        @purchase_id,
+        %d,
+        %d
+      );
+      """,
+      product.id,
+      productCount
+    ));
   }
 }

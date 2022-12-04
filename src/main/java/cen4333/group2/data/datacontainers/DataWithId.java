@@ -13,6 +13,11 @@ public class DataWithId<T extends CreateInstance & Duplicate> implements CreateI
     this.data = data;
   }
 
+  public DataWithId(T data, int id) {
+    this(data);
+    this.id = id;
+  }
+
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
   @Override
   public Duplicate duplicate() {

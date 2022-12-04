@@ -1,6 +1,5 @@
 package cen4333.group2.daos.sqlutilities;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.utility.ObjectSelector;
 
-public class GetIter <T extends QueryResult & Get & CreateInstance & DisplayText & Duplicate> {
+public class GetIter <T extends QueryResult & Get<T> & CreateInstance & DisplayText & Duplicate> {
   private String where;
   private T CreateInstance;
   private int stepSize;
@@ -46,7 +45,6 @@ public class GetIter <T extends QueryResult & Get & CreateInstance & DisplayText
     return amount;
   }
 
-  @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
   /**
    * Gets the current page.
    * @return 
@@ -60,16 +58,8 @@ public class GetIter <T extends QueryResult & Get & CreateInstance & DisplayText
       stepSize + 1,
       currentPosition * stepSize
     );
-    ResultSet results = CreateInstance.getSelectFrom(where + limit);
     
-    List<DataWithId<T>> output = new ArrayList<DataWithId<T>>();
-    while (results.next()) {
-      DataWithId<T> nextItem = new DataWithId<T>();
-      nextItem.data = (T) CreateInstance.createInstance();
-      nextItem.data.fillWithResultSet(results);
-      nextItem.id = results.getInt(CreateInstance.getIdColumnName());
-      output.add(nextItem);
-    }
+    List<DataWithId<T>> output = CreateInstance.getList(where + limit, CreateInstance);
     while (output.size() > stepSize) {
       output.remove(output.size() - 1);
     }

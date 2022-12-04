@@ -4,14 +4,16 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Get;
+import cen4333.group2.daos.sqlutilities.Post;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class PurchaseDiscount implements CreateInstance, QueryResult, Get, Duplicate {
+public class PurchaseDiscount implements CreateInstance, QueryResult, Get<PurchaseDiscount>, Duplicate, Post<Void> {
 
   public DataWithId<Discount> discount;
   public BigDecimal discountAmount;
@@ -57,6 +59,26 @@ public class PurchaseDiscount implements CreateInstance, QueryResult, Get, Dupli
     discount.data.fillWithResultSet(results);
     discount.id = results.getInt(getIdColumnName());
     discountAmount = results.getBigDecimal("DiscountAmount");
+  }
+
+  @Override
+  public void generatePostSql(Void forignData, List<String> sqlCommands) {
+    sqlCommands.add(String.format(
+      """
+      INSERT INTO `product_purchase` (
+        `purchase_discount`.`PurchaseID`,
+        `purchase_discount`.`DiscountID`,
+        `purchase_discount`.`DiscountAmount`
+      )
+      VALUES (
+        @purchase_id,
+        %d,
+        %s
+      );
+      """,
+      discount.id,
+      NumberFormat.getCurrencyInstance().format(discountAmount)
+    ));
   }
 
   @Override

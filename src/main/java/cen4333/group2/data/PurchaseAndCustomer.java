@@ -10,7 +10,7 @@ import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 
-public class PurchaseAndCustomer implements QueryResult, Get, CreateInstance, Duplicate, DisplayText {
+public class PurchaseAndCustomer implements QueryResult, Get<PurchaseAndCustomer>, CreateInstance, Duplicate, DisplayText {
 
   public DataWithId<Purchase> purchase;
   public DataWithId<Customer> customer;
@@ -58,6 +58,11 @@ public class PurchaseAndCustomer implements QueryResult, Get, CreateInstance, Du
   @Override
   public String getIdColumnName() {
     return "PurchaseID";
+  }
+
+  @Override
+  public void getChildren(DataWithId<PurchaseAndCustomer> self) {
+    purchase.data.getChildren(purchase);
   }
 
   @Override

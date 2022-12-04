@@ -40,9 +40,14 @@ public class CreatePurchaseNode extends Node {
         new ViewPurchaseNode(new DataWithId<Purchase>(purchase), customer),
         new AddProductNode(purchase),
         new AddDiscountNode(purchase),
+        new NothingNode("Cancel order"),
         new NothingNode("Commit order")
       });
+      selectedNode.runNode();
       if (selectedNode.getClass() == NothingNode.class) {
+        if (((NothingNode) selectedNode).getName() == "Commit order") {
+          System.out.println("Commit order");
+        }
         return false;
       }
     } catch (NoItemsException e) {}

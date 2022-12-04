@@ -19,7 +19,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.UserInput;
 
-public class Discount implements CreateInstance, Duplicate, QueryResult, Get, DisplayText {
+public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Discount>, DisplayText {
   public static final Discount CreateInstance_DISCOUNT = new Discount();
 
   public String name;

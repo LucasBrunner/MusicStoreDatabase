@@ -8,6 +8,8 @@ import cen4333.group2.data.Discount;
 import cen4333.group2.data.Purchase;
 import cen4333.group2.data.PurchaseDiscount;
 import cen4333.group2.data.datacontainers.DataWithId;
+import cen4333.group2.utility.UserInput;
+import cen4333.group2.utility.UserInput.YesNo;
 
 public class AddDiscountNode extends Node {
 
@@ -31,7 +33,11 @@ public class AddDiscountNode extends Node {
     } catch (SQLException e) {}
 
     if (discount != null) {
-      purchase.getDiscountsOrNull().data.add(new PurchaseDiscount(discount));
+      discount.toString();
+      System.out.print("Would you like to add this discount to the purchase?");
+      if (UserInput.getYesNo() == YesNo.YES) {        
+        purchase.getDiscounts().data.add(new PurchaseDiscount(discount));
+      }
     }
   }
 

@@ -20,7 +20,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.UserInput;
 
-public class Product implements CreateInstance, QueryResult, Get, Duplicate, DisplayText {
+public class Product implements CreateInstance, QueryResult, Get<Product>, Duplicate, DisplayText {
 
   public static final Product CreateInstance_PRODUCT = new Product();
 
@@ -103,7 +103,7 @@ public class Product implements CreateInstance, QueryResult, Get, Duplicate, Dis
       SELECT
         `ProductID`,
         `Name`,
-        `InsturmentTypeID`,
+        `InstrumentTypeID`,
         `instrument_type`.`Type` AS 'InstrumentType',
         `ProductTypeID`,
         `product_type`.`Type` AS 'ProductType',
@@ -111,7 +111,7 @@ public class Product implements CreateInstance, QueryResult, Get, Duplicate, Dis
         `WholesalePrice`
       FROM
         `product`
-        INNER JOIN `instrument_type` USING(`InsturmentTypeID`)
+        INNER JOIN `instrument_type` USING(`InstrumentTypeID`)
         INNER JOIN `product_type` USING(`ProductTypeID`)
     """;
   }

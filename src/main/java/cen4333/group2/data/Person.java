@@ -8,7 +8,7 @@ import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Person implements QueryResult, Get, CreateInstance, Duplicate {
+public class Person implements QueryResult, Get<Person>, CreateInstance, Duplicate {
   public String firstName;
   public String lastName;
   public String phoneNumber;

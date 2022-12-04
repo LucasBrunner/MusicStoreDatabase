@@ -13,53 +13,27 @@ import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Purchase implements QueryResult, Get, CreateInstance, Duplicate, Post {
+public class Purchase implements QueryResult, Get<Purchase>, CreateInstance, Duplicate, Post<Integer> {
   public enum CountOrValues {
     Count,
     Values
   }
 
   public Date date;
-  private DataList<PurchaseProduct> products;
-  private DataList<PurchaseDiscount> discounts;
+  private DataList<PurchaseProduct> products = new DataList<PurchaseProduct>();
+  private DataList<PurchaseDiscount> discounts = new DataList<PurchaseDiscount>();
 
-  public DataList<PurchaseProduct> getProducts(int purchaseId) throws SQLException {
-    if (products == null) {
-      products = new DataList<PurchaseProduct>();
-      ResultSet results = new PurchaseProduct(null).getSelectFrom("WHERE `PurchaseID` = " + purchaseId);
-      while (results.next()) {
-        PurchaseProduct product = new PurchaseProduct(new DataWithId<Product>());
-        product.fillWithResultSet(results);
-        products.data.add(product);
-      }
-    }
+  public DataList<PurchaseProduct> getProducts() {
     return products;
   }
 
-  public DataList<PurchaseDiscount> getDiscounts(int purchaseId) throws SQLException {
-    if (discounts == null) {
-      discounts = new DataList<PurchaseDiscount>();
-      ResultSet results = new PurchaseDiscount(null).getSelectFrom("WHERE `PurchaseID` = " + purchaseId);
-      while (results.next()) {
-        PurchaseDiscount discount = new PurchaseDiscount(new DataWithId<Discount>());
-        discount.fillWithResultSet(results);
-        discounts.data.add(discount);
-      }
-    }
-    return discounts;
-  }
-
-  public DataList<PurchaseProduct> getProductsOrNull() {
-    return products;
-  }
-
-  public DataList<PurchaseDiscount> getDiscountsOrNull() {
+  public DataList<PurchaseDiscount> getDiscounts() {
     return discounts;
   }
 
   public String productsAsString(boolean showWholesalePrice, int purchaseId) throws SQLException {
     StringBuilder output = new StringBuilder();
-    List<PurchaseProduct> products = getProducts(purchaseId).data;
+    List<PurchaseProduct> products = this.products.data;
     if (products.size() > 0) {
       for (int i = 0; i < products.size(); i++) {
         String product = products.get(i).toString(showWholesalePrice);
@@ -76,7 +50,7 @@ public class Purchase implements QueryResult, Get, CreateInstance, Duplicate, Po
 
   public String discountsAsString(boolean showDates, int purchaseId) throws SQLException {
     StringBuilder output = new StringBuilder();
-    List<PurchaseDiscount> discounts = getDiscounts(purchaseId).data;
+    List<PurchaseDiscount> discounts = this.discounts.data;
     if (discounts.size() > 0) {
       for (int i = 0; i < discounts.size(); i++) {
         String discount = discounts.get(i).toString(showDates);
@@ -92,16 +66,10 @@ public class Purchase implements QueryResult, Get, CreateInstance, Duplicate, Po
   }
 
   public int productCount(int purchaseId) throws SQLException {
-    if (products == null) {
-      getProducts(purchaseId);
-    }
     return products.data.size();
   }
 
   public int discountCount(int purchaseId) throws SQLException {
-    if (discounts == null) {
-      getDiscounts(purchaseId);
-    } 
     return discounts.data.size();
   }
 
@@ -185,8 +153,56 @@ public class Purchase implements QueryResult, Get, CreateInstance, Duplicate, Po
     return "PurchaseID";
   }
 
+  @Override 
+  public void getChildren(DataWithId<Purchase> self) {
+    try {
+      PurchaseProduct purchaseProductPrototype = new PurchaseProduct(null);
+      products.data.clear(); 
+      List<DataWithId<PurchaseProduct>> productsToInsert = purchaseProductPrototype.getList("WHERE `PurchaseID` = " + self.id, purchaseProductPrototype);
+      for (DataWithId<PurchaseProduct> purchaseProduct : productsToInsert) {
+        products.data.add(purchaseProduct.data);
+      }
+    } catch (Exception e) {}
+    try {
+      PurchaseDiscount purchaseDiscountPrototype = new PurchaseDiscount(null);
+      discounts.data.clear(); 
+      List<DataWithId<PurchaseDiscount>> productsToInsert = purchaseDiscountPrototype.getList("WHERE `PurchaseID` = " + self.id, purchaseDiscountPrototype);
+      for (DataWithId<PurchaseDiscount> purchaseDiscount : productsToInsert) {
+        discounts.data.add(purchaseDiscount.data);
+      }
+    } catch (Exception e) {}
+  }
+
   @Override
   public void fillWithResultSet(ResultSet results) throws SQLException {
     date = results.getDate("Date");
+  }
+
+  @Override
+  public void generatePostSql(Integer customerId, List<String> sqlCommands) {
+    sqlCommands.add(String.format(
+      """
+      INSERT INTO `purchase` (
+        `purchase`.`CustomerID`,
+        `purchase`.`Date`
+      ) 
+      VALUES (
+        %d,
+        %s
+      );
+      """,
+      customerId,
+      date.toString()
+    ));
+
+    sqlCommands.add("SET @purchase_id := LAST_INSERT_ID();");
+
+    for (PurchaseProduct productPurchase : products.data) {
+      productPurchase.generatePostSql(null, sqlCommands);
+    }
+
+    for (PurchaseDiscount productDiscount : discounts.data) {
+      productDiscount.generatePostSql(null, sqlCommands);
+    }
   }
 }
