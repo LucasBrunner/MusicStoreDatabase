@@ -33,8 +33,8 @@ public class AddDiscountNode extends Node {
     } catch (SQLException e) {}
 
     if (discount != null) {
-      discount.toString();
-      System.out.print("Would you like to add this discount to the purchase?");
+      System.out.println(discount.data.toString());
+      System.out.println("Would you like to add this discount to the purchase?");
       if (UserInput.getYesNo() == YesNo.YES) {        
         purchase.getDiscounts().data.add(new PurchaseDiscount(discount));
       }

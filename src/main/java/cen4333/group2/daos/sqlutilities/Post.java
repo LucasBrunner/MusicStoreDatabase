@@ -28,10 +28,13 @@ public interface Post<T> {
 
       con.setAutoCommit(true);
     } catch (SQLException e) {
+      e.printStackTrace();
       try {
         con.rollback();
         con.setAutoCommit(true);
-      } catch (Exception f) {}
+      } catch (Exception f) {
+        f.printStackTrace();
+      }
       return PostResult.FAILURE;
     }
     return PostResult.SUCCESS;

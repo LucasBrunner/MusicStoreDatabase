@@ -33,8 +33,8 @@ public class AddProductNode extends Node {
     }
 
     if (product != null) {
-      product.toString();
-      System.out.print("Would you like to add this item to the purchase?");
+      System.out.println(product.data.toString());
+      System.out.println("Would you like to add this item to the purchase?");
       if (UserInput.getYesNo() == YesNo.YES) {
         System.out.print("How many of this item would you like to add to the purchase: ");
         int amount = UserInput.getInt();

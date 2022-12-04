@@ -188,7 +188,7 @@ public class Purchase implements QueryResult, Get<Purchase>, CreateInstance, Dup
       ) 
       VALUES (
         %d,
-        %s
+        \"%s\"
       );
       """,
       customerId,
@@ -204,5 +204,10 @@ public class Purchase implements QueryResult, Get<Purchase>, CreateInstance, Dup
     for (PurchaseDiscount productDiscount : discounts.data) {
       productDiscount.generatePostSql(null, sqlCommands);
     }
+  }
+
+  @Override
+  public PostResult post(Integer customerId) {
+    return Post.super.post(customerId);
   }
 }
