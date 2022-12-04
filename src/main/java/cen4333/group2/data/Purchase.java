@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.Post;
+import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.data.datacontainers.DataList;
@@ -13,7 +14,7 @@ import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Purchase implements QueryResult, Get<Purchase>, CreateInstance, Duplicate, Post<Integer> {
+public class Purchase implements QueryResult, Get<Purchase>, CreateInstance, Duplicate, Post<Integer>, PrimaryKey {
   public enum CountOrValues {
     Count,
     Values
@@ -148,11 +149,6 @@ public class Purchase implements QueryResult, Get<Purchase>, CreateInstance, Dup
     """;
   }
 
-  @Override
-  public String getIdColumnName() {
-    return "PurchaseID";
-  }
-
   @Override 
   public void getChildren(DataWithId<Purchase> self) {
     try {
@@ -209,5 +205,10 @@ public class Purchase implements QueryResult, Get<Purchase>, CreateInstance, Dup
   @Override
   public PostResult post(Integer customerId) {
     return Post.super.post(customerId);
+  }
+
+  @Override
+  public String getPrimaryColumnName() {
+    return "PurchaseID";
   }
 }

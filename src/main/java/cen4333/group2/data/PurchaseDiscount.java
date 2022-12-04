@@ -10,11 +10,12 @@ import java.util.List;
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.daos.sqlutilities.Post;
+import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class PurchaseDiscount implements CreateInstance, QueryResult, Get<PurchaseDiscount>, Duplicate, Post<Void> {
+public class PurchaseDiscount implements CreateInstance, QueryResult, Get<PurchaseDiscount>, Duplicate, Post<Void>, PrimaryKey {
 
   public DataWithId<Discount> discount;
   public BigDecimal discountAmount;
@@ -51,14 +52,9 @@ public class PurchaseDiscount implements CreateInstance, QueryResult, Get<Purcha
   }
 
   @Override
-  public String getIdColumnName() {
-    return "DiscountID";
-  }
-
-  @Override
   public void fillWithResultSet(ResultSet results) throws SQLException {
     discount.data.fillWithResultSet(results);
-    discount.id = results.getInt(getIdColumnName());
+    discount.id = results.getInt(getPrimaryColumnName());
     discountAmount = results.getBigDecimal("DiscountAmount");
   }
 
@@ -119,5 +115,10 @@ public class PurchaseDiscount implements CreateInstance, QueryResult, Get<Purcha
       output.add(discountWithId.discount.id);
     }
     return output;
+  }
+
+  @Override
+  public String getPrimaryColumnName() {
+    return "DiscountID";
   }
 }

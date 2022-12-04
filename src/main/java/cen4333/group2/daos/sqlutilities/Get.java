@@ -10,7 +10,7 @@ import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public interface Get<T extends CreateInstance & Duplicate & QueryResult & Get<T>> {
+public interface Get<T extends CreateInstance & Duplicate & QueryResult & PrimaryKey & Get<T>> {
   /**
    * 
    * @return a string with a SQL SELECT query for this object. 
@@ -19,7 +19,6 @@ public interface Get<T extends CreateInstance & Duplicate & QueryResult & Get<T>
    */
   public String getSelectFromQuery();
   public String getSelectCountQuery();
-  public String getIdColumnName();
 
   default public void getChildren(DataWithId<T> self) {};
 
@@ -42,7 +41,7 @@ public interface Get<T extends CreateInstance & Duplicate & QueryResult & Get<T>
       data.fillWithResultSet(results);
       DataWithId<T> newItem = new DataWithId<T>(
         data,
-        results.getInt(getIdColumnName())
+        results.getInt(prototype.getPrimaryColumnName())
       );
       newItem.data.getChildren(newItem);
       output.add(newItem);

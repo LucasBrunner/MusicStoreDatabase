@@ -5,12 +5,13 @@ import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Get;
+import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 
-public class Customer implements QueryResult, Get<Customer>, CreateInstance, Duplicate, DisplayText {
+public class Customer implements QueryResult, Get<Customer>, CreateInstance, Duplicate, DisplayText, PrimaryKey {
   public DataWithId<Person> person;
 
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
@@ -66,12 +67,12 @@ public class Customer implements QueryResult, Get<Customer>, CreateInstance, Dup
   }
 
   @Override
-  public String getIdColumnName() {
-    return "CustomerID";
+  public String getDisplayText() {
+    return "Name: " + person.data != null ? person.data.fullName() : "{Error: no data!}";
   }
 
   @Override
-  public String getDisplayText() {
-    return "Name: " + person.data != null ? person.data.fullName() : "{Error: no data!}";
+  public String getPrimaryColumnName() {
+    return "CustomerID";
   }
 }

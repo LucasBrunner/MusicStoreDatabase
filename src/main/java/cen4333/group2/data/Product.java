@@ -10,6 +10,7 @@ import java.util.List;
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.daos.sqlutilities.GetIter;
+import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataString;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
@@ -20,7 +21,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.UserInput;
 
-public class Product implements CreateInstance, QueryResult, Get<Product>, Duplicate, DisplayText {
+public class Product implements CreateInstance, QueryResult, Get<Product>, Duplicate, DisplayText, PrimaryKey {
 
   public static final Product CreateInstance_PRODUCT = new Product();
 
@@ -125,11 +126,6 @@ public class Product implements CreateInstance, QueryResult, Get<Product>, Dupli
   }
 
   @Override
-  public String getIdColumnName() {
-    return "ProductID";
-  }
-
-  @Override
   public String getDisplayText() {
     return "Name: " + name;
   }
@@ -217,5 +213,10 @@ public class Product implements CreateInstance, QueryResult, Get<Product>, Dupli
         System.out.println("Invalid state! Returning to valid state...");
         return null;
     }
+  }
+
+  @Override
+  public String getPrimaryColumnName() {
+    return "ProductID";
   }
 }

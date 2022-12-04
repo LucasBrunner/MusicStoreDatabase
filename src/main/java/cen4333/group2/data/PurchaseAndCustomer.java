@@ -5,12 +5,13 @@ import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Get;
+import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 
-public class PurchaseAndCustomer implements QueryResult, Get<PurchaseAndCustomer>, CreateInstance, Duplicate, DisplayText {
+public class PurchaseAndCustomer implements QueryResult, Get<PurchaseAndCustomer>, CreateInstance, Duplicate, DisplayText, PrimaryKey {
 
   public DataWithId<Purchase> purchase;
   public DataWithId<Customer> customer;
@@ -56,11 +57,6 @@ public class PurchaseAndCustomer implements QueryResult, Get<PurchaseAndCustomer
   }
 
   @Override
-  public String getIdColumnName() {
-    return "PurchaseID";
-  }
-
-  @Override
   public void getChildren(DataWithId<PurchaseAndCustomer> self) {
     purchase.data.getChildren(purchase);
   }
@@ -86,6 +82,11 @@ public class PurchaseAndCustomer implements QueryResult, Get<PurchaseAndCustomer
       customer.data.person.data.fullName(),
       purchase.data.date.toString()
     );
+  }
+
+  @Override
+  public String getPrimaryColumnName() {
+    return "PurchaseID";
   }
   
 }

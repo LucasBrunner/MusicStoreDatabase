@@ -13,7 +13,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.UserInput;
 import cen4333.group2.utility.ObjectSelector;
 
-public class GetIter <T extends QueryResult & Get<T> & CreateInstance & DisplayText & Duplicate> {
+public class GetIter <T extends QueryResult & Get<T> & CreateInstance & DisplayText & Duplicate & PrimaryKey> {
   private String where;
   private T CreateInstance;
   private int stepSize;

@@ -8,11 +8,12 @@ import java.util.List;
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.daos.sqlutilities.Post;
+import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class PurchaseProduct implements CreateInstance, QueryResult, Get<PurchaseProduct>, Duplicate, Post<Void> {
+public class PurchaseProduct implements CreateInstance, QueryResult, Get<PurchaseProduct>, Duplicate, Post<Void>, PrimaryKey {
   public DataWithId<Product> product;
   public int productCount = 0;
 
@@ -64,14 +65,9 @@ public class PurchaseProduct implements CreateInstance, QueryResult, Get<Purchas
   }
 
   @Override
-  public String getIdColumnName() {
-    return "ProductID";
-  }
-
-  @Override
   public void fillWithResultSet(ResultSet results) throws SQLException {
     product.data.fillWithResultSet(results);
-    product.id = results.getInt(getIdColumnName());
+    product.id = results.getInt(getPrimaryColumnName());
     productCount = results.getInt("ProductCount");
   }
 
@@ -138,5 +134,10 @@ public class PurchaseProduct implements CreateInstance, QueryResult, Get<Purchas
       output.add(productWithId.product.id);
     }
     return output;
+  }
+
+  @Override
+  public String getPrimaryColumnName() {
+    return "ProductID";
   }
 }

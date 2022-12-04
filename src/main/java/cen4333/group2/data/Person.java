@@ -4,11 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
+import cen4333.group2.daos.sqlutilities.Delete;
 import cen4333.group2.daos.sqlutilities.Get;
+import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datainterfaces.CreateInstance;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Person implements QueryResult, Get<Person>, CreateInstance, Duplicate {
+public class Person implements QueryResult, Get<Person>, CreateInstance, Duplicate, PrimaryKey, Delete<Person> {
   public String firstName;
   public String lastName;
   public String phoneNumber;
@@ -70,7 +72,14 @@ public class Person implements QueryResult, Get<Person>, CreateInstance, Duplica
   }
 
   @Override
-  public String getIdColumnName() {
+  public String getDeleteSQL() {
+    return """
+    DELETE FROM `person`
+    """;
+  }
+
+  @Override
+  public String getPrimaryColumnName() {
     return "PersonID";
   }
 }

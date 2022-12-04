@@ -54,11 +54,12 @@ public class ViewCustomerNode extends Node {
         new EditCustomerNode(customerWithId),
         new CreatePurchaseNode(customerWithId),
         new SelectPurchasesOfCustomerNode(customerWithId),
+        new DeleteCustomerNode(customerWithId.data),
         new NothingNode()
       });
 
       n.runNode();
-      if (n.getClass() == NothingNode.class) {
+      if (n.getClass() == NothingNode.class || n.getClass() == DeleteCustomerNode.class) {
         return false;
       }
     } catch (NoItemsException e) {}

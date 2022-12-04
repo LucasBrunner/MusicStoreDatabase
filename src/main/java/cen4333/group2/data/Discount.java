@@ -10,6 +10,7 @@ import java.util.List;
 import cen4333.group2.daos.sqlutilities.QueryResult;
 import cen4333.group2.daos.sqlutilities.Get;
 import cen4333.group2.daos.sqlutilities.GetIter;
+import cen4333.group2.daos.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.CreateInstance;
@@ -19,7 +20,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.UserInput;
 
-public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Discount>, DisplayText {
+public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Discount>, DisplayText, PrimaryKey {
   public static final Discount CreateInstance_DISCOUNT = new Discount();
 
   public String name;
@@ -74,11 +75,6 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Dis
       SELECT Count(`DiscountID`)
       FROM `discount`
     """;
-  }
-
-  @Override
-  public String getIdColumnName() {
-    return "DiscountID";
   }
 
   @Override
@@ -207,5 +203,10 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Dis
         System.out.println("Invalid state! Returning to valid state...");
         return null;
     }
+  }
+
+  @Override
+  public String getPrimaryColumnName() {
+    return "DiscountID";
   }
 }

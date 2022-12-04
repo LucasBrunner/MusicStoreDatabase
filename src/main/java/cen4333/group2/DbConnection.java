@@ -50,6 +50,15 @@ public class DbConnection {
           return false;
       }
     }
+
+    public boolean canDeleteEmployeeData() {
+      switch (this) {
+        case MANAGER:
+          return true;
+        default:
+          return false;
+      }
+    }
   };
 
   private Connection con;
