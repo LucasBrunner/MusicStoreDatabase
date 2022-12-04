@@ -14,7 +14,10 @@ public class SearchCustomersNode extends Node {
   public enum SearchType {
     Name,
     CustomerId,
-    PersonId;
+    PersonId,
+    PhoneNumber,
+    Address,
+    Email;
 
     @Override
     public String toString() {
@@ -27,7 +30,16 @@ public class SearchCustomersNode extends Node {
     
         case PersonId:
           return "Person ID";
-    
+
+        case Address:
+          return "Address";
+          
+        case Email:
+          return "Email";
+        
+        case PhoneNumber:
+          return "Phone number";
+        
         default:
           return "";
       }
@@ -45,7 +57,10 @@ public class SearchCustomersNode extends Node {
     try {
       SearchType searchType = ObjectSelector.printAndGetSelection(new SearchType[] {
         SearchType.Name,
-        SearchType.CustomerId
+        SearchType.CustomerId,
+        SearchType.PhoneNumber,
+        SearchType.Address,
+        SearchType.Email
       });
 
       switch (searchType) {
@@ -59,10 +74,33 @@ public class SearchCustomersNode extends Node {
 
         case CustomerId:
           System.out.print("Enter the ID to search: ");
-          int customerId = UserInput.getInt();
           searchCustomer(String.format(
             "WHERE `CustomerID` = %d", 
-            customerId
+            UserInput.getInt()
+          ));
+          break;
+
+        case Address:
+          System.out.print("Enter the address to search: ");
+          searchCustomer(String.format(
+            "WHERE `Address` LIKE \"%%%s%%\"", 
+            UserInput.getString()
+          ));
+          break;
+          
+        case Email:
+          System.out.print("Enter the email to search: ");
+          searchCustomer(String.format(
+            "WHERE `Email` LIKE \"%%%s%%\"", 
+            UserInput.getString()
+          ));
+          break;
+        
+        case PhoneNumber:
+          System.out.print("Enter the phone number to search: ");
+          searchCustomer(String.format(
+            "WHERE `PhoneNumber` LIKE \"%%%s%%\"", 
+            UserInput.getString()
           ));
           break;
       
