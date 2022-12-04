@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
@@ -110,5 +111,13 @@ public class PurchaseDiscount implements CreateInstance, QueryResult, Get<Purcha
     } else {
       return "\nDiscount amount: " + NumberFormat.getCurrencyInstance().format(discountAmount);
     }
+  }
+
+  public static List<Integer> getIds(List<PurchaseDiscount> discounts) {
+    List<Integer> output = new ArrayList<Integer>();
+    for (PurchaseDiscount discountWithId : discounts) {
+      output.add(discountWithId.discount.id);
+    }
+    return output;
   }
 }

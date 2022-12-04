@@ -1,6 +1,8 @@
 package cen4333.group2.nodes.purchasenodes;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import cen4333.group2.Node;
 import cen4333.group2.data.Product;
@@ -27,7 +29,19 @@ public class AddProductNode extends Node {
   public void runNode() {
     DataWithId<Product> product = null;
     try {
-      product = Product.searchProductsAllMethods();
+      List<String> whereClauses = new ArrayList<String>();
+      List<Integer> ids = PurchaseProduct.getIds(purchase.getProducts().data);
+      if (ids.size() > 0) {
+        StringBuilder whereClause = new StringBuilder("`product`.`ProductID` NOT IN (");
+        for (int i = 0; i < ids.size() - 1; i++) {
+          whereClause.append(ids.get(i));
+          whereClause.append(",");
+        }
+        whereClause.append(ids.get(ids.size() - 1));
+        whereClause.append(")");
+        whereClauses.add(whereClause.toString());
+      }
+      product = Product.searchProductsAllMethods(whereClauses);
     } catch (SQLException e) {
       e.printStackTrace();
     }

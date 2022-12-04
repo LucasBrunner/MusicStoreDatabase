@@ -134,9 +134,16 @@ public class Product implements CreateInstance, QueryResult, Get<Product>, Dupli
     return "Name: " + name;
   }
 
-  public static DataWithId<Product> selectProduct() throws SQLException {    
+  public static DataWithId<Product> selectProduct(List<String> whereClauses) throws SQLException {  
+    StringBuilder whereClause = new StringBuilder("WHERE 1 = 1");
+    if (whereClauses != null && whereClauses.size() > 0) {
+      for (String clause : whereClauses) {
+        whereClause.append("\nAND ");
+        whereClause.append(clause);
+      }
+    }  
     return new GetIter<Product>(
-      "", 
+      whereClause.toString(), 
       new Product(), 
       GetIter.getResultsAmount()
     ).userSelect(
@@ -146,9 +153,16 @@ public class Product implements CreateInstance, QueryResult, Get<Product>, Dupli
     );
   }
 
-  public static DataWithId<Product> searchProducts(String productName) throws SQLException {    
+  public static DataWithId<Product> searchProducts(String productName, List<String> whereClauses) throws SQLException { 
+    StringBuilder whereClause = new StringBuilder("WHERE\n`Name` LIKE \"%" + productName + "%\"");
+    if (whereClauses != null && whereClauses.size() > 0) {
+      for (String clause : whereClauses) {
+        whereClause.append("\nAND ");
+        whereClause.append(clause);
+      }
+    }     
     return new GetIter<Product>(
-      "WHERE `Name` LIKE %" + productName + "%", 
+      whereClause.toString(), 
       new Product(), 
       GetIter.getResultsAmount()
     ).userSelect(
@@ -158,9 +172,16 @@ public class Product implements CreateInstance, QueryResult, Get<Product>, Dupli
     );
   }
 
-  public static DataWithId<Product> searchProducts(int productId) throws SQLException {    
+  public static DataWithId<Product> searchProducts(int productId, List<String> whereClauses) throws SQLException {  
+    StringBuilder whereClause = new StringBuilder("WHERE `ProductID` = " + productId);
+    if (whereClauses != null && whereClauses.size() > 0) {
+      for (String clause : whereClauses) {
+        whereClause.append("\nAND ");
+        whereClause.append(clause);
+      }
+    }    
     return new GetIter<Product>(
-      "WHERE `ProductID` = " + productId + "", 
+      whereClause.toString(), 
       new Product(), 
       1
     ).userSelect(
@@ -170,7 +191,7 @@ public class Product implements CreateInstance, QueryResult, Get<Product>, Dupli
     );
   }
 
-  public static DataWithId<Product> searchProductsAllMethods() throws SQLException {
+  public static DataWithId<Product> searchProductsAllMethods(List<String> whereClauses) throws SQLException {
     List<ObjectWithValue<String, Integer>> selectionList = new ArrayList<ObjectWithValue<String, Integer>>();
     selectionList.add(new ObjectWithValue<String,Integer>("Search by name", 1));
     selectionList.add(new ObjectWithValue<String,Integer>("Search by ID", 2));
@@ -183,14 +204,14 @@ public class Product implements CreateInstance, QueryResult, Get<Product>, Dupli
     switch (selction) {
       case 1:
         System.out.print("Enter the name you would like to search: ");
-        return searchProducts(UserInput.getString());
+        return searchProducts(UserInput.getString(), whereClauses);
 
       case 2:
         System.out.print("Enter the ID you would like to search: ");
-        return searchProducts(UserInput.getInt());
+        return searchProducts(UserInput.getInt(), whereClauses);
 
       case 3:
-        return selectProduct();
+        return selectProduct(whereClauses);
     
       default:
         System.out.println("Invalid state! Returning to valid state...");

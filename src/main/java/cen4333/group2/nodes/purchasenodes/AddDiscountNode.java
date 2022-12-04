@@ -1,6 +1,8 @@
 package cen4333.group2.nodes.purchasenodes;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import cen4333.group2.Main;
 import cen4333.group2.Node;
@@ -29,7 +31,19 @@ public class AddDiscountNode extends Node {
   public void runNode() {
     DataWithId<Discount> discount = null;
     try {
-      discount = Discount.searchDiscountsAllMethods(Main.globalData.dbConnection.getConnectionType().canViewUnavailableDiscounts());
+      List<String> whereClauses = new ArrayList<String>();
+      List<Integer> ids = PurchaseDiscount.getIds(purchase.getDiscounts().data);
+      if (ids.size() > 0) {
+        StringBuilder whereClause = new StringBuilder("`discount`.`DiscountID` NOT IN (");
+        for (int i = 0; i < ids.size() - 1; i++) {
+          whereClause.append(ids.get(i));
+          whereClause.append(",");
+        }
+        whereClause.append(ids.get(ids.size() - 1));
+        whereClause.append(")");
+        whereClauses.add(whereClause.toString());
+      }
+      discount = Discount.searchDiscountsAllMethods(Main.globalData.dbConnection.getConnectionType().canViewUnavailableDiscounts(), whereClauses);
     } catch (SQLException e) {}
 
     if (discount != null) {

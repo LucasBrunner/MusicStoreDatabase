@@ -2,6 +2,7 @@ package cen4333.group2.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cen4333.group2.daos.sqlutilities.QueryResult;
@@ -129,5 +130,13 @@ public class PurchaseProduct implements CreateInstance, QueryResult, Get<Purchas
       product.id,
       productCount
     ));
+  }
+
+  public static List<Integer> getIds(List<PurchaseProduct> products) {
+    List<Integer> output = new ArrayList<Integer>();
+    for (PurchaseProduct productWithId : products) {
+      output.add(productWithId.product.id);
+    }
+    return output;
   }
 }

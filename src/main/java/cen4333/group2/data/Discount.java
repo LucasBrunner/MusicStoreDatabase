@@ -122,9 +122,16 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Dis
     );
   }
 
-  public static DataWithId<Discount> selectDiscount(boolean doShowUnavailableDiscounts) throws SQLException {   
+  public static DataWithId<Discount> selectDiscount(boolean doShowUnavailableDiscounts, List<String> whereClauses) throws SQLException {   
+    StringBuilder whereClause = new StringBuilder(getWhereStatement(doShowUnavailableDiscounts));
+    if (whereClauses != null && whereClauses.size() > 0) {
+      for (String clause : whereClauses) {
+        whereClause.append("\nAND ");
+        whereClause.append(clause);
+      }
+    }
     return new GetIter<Discount>(
-      getWhereStatement(doShowUnavailableDiscounts), 
+      whereClause.toString(), 
       new Discount(), 
       GetIter.getResultsAmount()
     ).userSelect(
@@ -134,9 +141,17 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Dis
     );
   }
 
-  public static DataWithId<Discount> searchDiscounts(String discountName, boolean doShowUnavailableDiscounts) throws SQLException {
+  public static DataWithId<Discount> searchDiscounts(String discountName, boolean doShowUnavailableDiscounts, List<String> whereClauses) throws SQLException {
+    whereClauses.add("`Name` LIKE \"%" + discountName + "%\"");
+    StringBuilder whereClause = new StringBuilder(getWhereStatement(doShowUnavailableDiscounts));
+    if (whereClauses != null && whereClauses.size() > 0) {
+      for (String clause : whereClauses) {
+        whereClause.append("\nAND ");
+        whereClause.append(clause);
+      }
+    }
     return new GetIter<Discount>(
-      getWhereStatement(doShowUnavailableDiscounts) + "\n  AND `Name` LIKE %" + discountName + "%",
+      whereClause.toString(),
       new Discount(), 
       GetIter.getResultsAmount()
     ).userSelect(
@@ -146,9 +161,17 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Dis
     );
   }
 
-  public static DataWithId<Discount> searchDiscounts(int discountId, boolean doShowUnavailableDiscounts) throws SQLException {
+  public static DataWithId<Discount> searchDiscounts(int discountId, boolean doShowUnavailableDiscounts, List<String> whereClauses) throws SQLException {
+    whereClauses.add("`DiscountID` = " + discountId);
+    StringBuilder whereClause = new StringBuilder(getWhereStatement(doShowUnavailableDiscounts));
+    if (whereClauses != null && whereClauses.size() > 0) {
+      for (String clause : whereClauses) {
+        whereClause.append("\nAND ");
+        whereClause.append(clause);
+      }
+    }
     return new GetIter<Discount>(
-      getWhereStatement(doShowUnavailableDiscounts) + "\n  AND `DiscountID` = " + discountId,
+      whereClause.toString(),
       new Discount(), 
       1
     ).userSelect(
@@ -158,7 +181,7 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Dis
     );
   }
 
-  public static DataWithId<Discount> searchDiscountsAllMethods(boolean doShowUnavailableDiscounts) throws SQLException {
+  public static DataWithId<Discount> searchDiscountsAllMethods(boolean doShowUnavailableDiscounts, List<String> whereClauses) throws SQLException {
     List<ObjectWithValue<String, Integer>> selectionList = new ArrayList<ObjectWithValue<String, Integer>>();
     selectionList.add(new ObjectWithValue<String,Integer>("Search by name", 1));
     selectionList.add(new ObjectWithValue<String,Integer>("Search by ID", 2));
@@ -171,14 +194,14 @@ public class Discount implements CreateInstance, Duplicate, QueryResult, Get<Dis
     switch (selction) {
       case 1:
         System.out.print("Enter the name you would like to search: ");
-        return searchDiscounts(UserInput.getString(), doShowUnavailableDiscounts);
+        return searchDiscounts(UserInput.getString(), doShowUnavailableDiscounts, whereClauses);
 
       case 2:
         System.out.print("Enter the ID you would like to search: ");
-        return searchDiscounts(UserInput.getInt(), doShowUnavailableDiscounts);
+        return searchDiscounts(UserInput.getInt(), doShowUnavailableDiscounts, whereClauses);
 
       case 3:
-        return selectDiscount(doShowUnavailableDiscounts);
+        return selectDiscount(doShowUnavailableDiscounts, whereClauses);
     
       default:
         System.out.println("Invalid state! Returning to valid state...");
