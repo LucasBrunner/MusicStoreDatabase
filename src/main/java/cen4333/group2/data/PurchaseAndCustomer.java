@@ -3,9 +3,9 @@ package cen4333.group2.data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.daos.sqlutilities.Get;
-import cen4333.group2.daos.sqlutilities.PrimaryKey;
+import cen4333.group2.sqlutilities.QueryResult;
+import cen4333.group2.sqlutilities.Get;
+import cen4333.group2.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;

@@ -1,4 +1,4 @@
-package cen4333.group2.daos.sqlutilities;
+package cen4333.group2.sqlutilities;
 
 import java.sql.SQLException;
 import java.util.List;

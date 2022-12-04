@@ -4,17 +4,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import cen4333.group2.daos.sqlutilities.QueryResult;
+import cen4333.group2.sqlutilities.QueryResult;
 import cen4333.group2.Main;
-import cen4333.group2.daos.sqlutilities.Get;
-import cen4333.group2.daos.sqlutilities.Post;
-import cen4333.group2.daos.sqlutilities.PrimaryKey;
+import cen4333.group2.sqlutilities.Get;
+import cen4333.group2.sqlutilities.Post;
+import cen4333.group2.sqlutilities.PrimaryKey;
+import cen4333.group2.sqlutilities.Put;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.data.datainterfaces.Prototype;
 
-public class Customer implements QueryResult, Get<Customer>, Prototype<Customer>, Duplicate, DisplayText, PrimaryKey, Post<Integer> {
+public class Customer implements QueryResult, Get<Customer>, Prototype<Customer>, Duplicate, DisplayText, PrimaryKey, Post<Integer>, Put<Customer> {
   public DataWithId<Person> person;
 
   @SuppressWarnings("unchecked") // This wouldn't have to be here in Rust.
@@ -103,5 +104,10 @@ public class Customer implements QueryResult, Get<Customer>, Prototype<Customer>
     // This is not multithreading safe. 
     // The LAST_INSERT_ID() MySQL command is session based and currently all sessions use the same connection. 
     new Customer().post(Main.globalData.dbConnection.getLastId()); 
+  }
+
+  @Override
+  public void putSql(List<String> sqlCommands, DataWithId<Customer> customerWithId) {
+    customerWithId.data.person.data.putSql(sqlCommands, customerWithId.data.person);
   }
 }

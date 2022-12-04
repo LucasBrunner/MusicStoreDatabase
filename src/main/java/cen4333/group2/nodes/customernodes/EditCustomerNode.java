@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cen4333.group2.Node;
-import cen4333.group2.daos.CustomerDao;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
@@ -53,7 +52,7 @@ public class EditCustomerNode extends Node {
     if (selection == -1) {
       System.out.println("Finished editing customer.");
       try {
-        CustomerDao.updateCustomer(customer);
+        customer.data.put(customer);
         return false;
       } catch (SQLException e) {
         e.printStackTrace();

@@ -7,10 +7,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.daos.sqlutilities.Get;
-import cen4333.group2.daos.sqlutilities.GetIter;
-import cen4333.group2.daos.sqlutilities.PrimaryKey;
+import cen4333.group2.sqlutilities.QueryResult;
+import cen4333.group2.sqlutilities.Get;
+import cen4333.group2.sqlutilities.GetIter;
+import cen4333.group2.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.Prototype;

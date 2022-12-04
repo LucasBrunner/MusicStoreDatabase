@@ -6,7 +6,7 @@ import java.util.List;
 
 import cen4333.group2.utility.DelayedUserInputString.UserInputType;
 import cen4333.group2.Node;
-import cen4333.group2.daos.sqlutilities.GetIter;
+import cen4333.group2.sqlutilities.GetIter;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.Person;
 import cen4333.group2.data.datacontainers.DataWithId;

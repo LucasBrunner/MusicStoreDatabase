@@ -3,7 +3,7 @@ package cen4333.group2.data.datacontainers;
 import java.util.ArrayList;
 import java.util.List;
 
-import cen4333.group2.daos.sqlutilities.QueryResult;
+import cen4333.group2.sqlutilities.QueryResult;
 import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.Duplicate;
 

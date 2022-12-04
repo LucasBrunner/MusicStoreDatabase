@@ -5,11 +5,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cen4333.group2.daos.sqlutilities.QueryResult;
-import cen4333.group2.daos.sqlutilities.Delete;
-import cen4333.group2.daos.sqlutilities.Get;
-import cen4333.group2.daos.sqlutilities.Post;
-import cen4333.group2.daos.sqlutilities.PrimaryKey;
+import cen4333.group2.sqlutilities.QueryResult;
+import cen4333.group2.sqlutilities.Delete;
+import cen4333.group2.sqlutilities.Get;
+import cen4333.group2.sqlutilities.Post;
+import cen4333.group2.sqlutilities.PrimaryKey;
+import cen4333.group2.sqlutilities.Put;
+import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.Duplicate;
@@ -18,7 +20,7 @@ import cen4333.group2.utility.DelayedUserInputString;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.DelayedUserInputString.UserInputType;
 
-public class Person implements QueryResult, Get<Person>, Prototype<Person>, Duplicate, PrimaryKey, Delete<Person>, Post<Void> {
+public class Person implements QueryResult, Get<Person>, Prototype<Person>, Duplicate, PrimaryKey, Delete<Person>, Post<Void>, Put<Person> {
   private static final List<ObjectWithValue<String, DelayedUserInputString>> PERSON_SEARCH_METHODS = new ArrayList<ObjectWithValue<String, DelayedUserInputString>>();
 
   static {
@@ -167,5 +169,27 @@ public class Person implements QueryResult, Get<Person>, Prototype<Person>, Dupl
       return ObjectSelector.printAndGetSelection(options).value.get();
     } catch (NoItemsException e) {}
     return null;
+  }
+
+  @Override
+  public void putSql(List<String> sqlCommands, DataWithId<Person> dataWithId) {
+    sqlCommands.add(String.format(
+      """
+      UPDATE `person`
+      SET
+        `FirstName` = \"%s\",
+        `LastName` = \"%s\",
+        `PhoneNumber` = \"%s\",
+        `Email` = \"%s\",
+        `Address` = \"%s\"
+      WHERE `PersonID` = %d
+      """,
+      dataWithId.data.firstName,
+      dataWithId.data.lastName,
+      dataWithId.data.phoneNumber,
+      dataWithId.data.email,
+      dataWithId.data.address,
+      dataWithId.id
+    ));
   }
 }

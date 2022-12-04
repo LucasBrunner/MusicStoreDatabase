@@ -1,6 +1,7 @@
 package cen4333.group2.data.datacontainers;
 
 import cen4333.group2.data.datainterfaces.Prototype;
+
 import cen4333.group2.data.datainterfaces.Duplicate;
 
 public class DataWithId<T extends Prototype<T> & Duplicate> implements Prototype<DataWithId<T>>, Duplicate {

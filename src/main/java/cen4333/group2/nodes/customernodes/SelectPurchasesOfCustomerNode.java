@@ -3,7 +3,7 @@ package cen4333.group2.nodes.customernodes;
 import java.sql.SQLException;
 
 import cen4333.group2.Node;
-import cen4333.group2.daos.sqlutilities.GetIter;
+import cen4333.group2.sqlutilities.GetIter;
 import cen4333.group2.data.Customer;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.PurchaseAndCustomer;
