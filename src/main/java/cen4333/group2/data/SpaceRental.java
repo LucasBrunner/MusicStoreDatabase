@@ -1,25 +1,41 @@
 package cen4333.group2.data;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
 import cen4333.group2.data.datacontainers.DataWithId;
+import cen4333.group2.data.datacontainers.ObjectWithValue;
+import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.sqlutilities.Get;
 import cen4333.group2.sqlutilities.Post;
 import cen4333.group2.sqlutilities.PrimaryKey;
 import cen4333.group2.sqlutilities.QueryResult;
+import cen4333.group2.utility.DelayedUserInputString;
 
-public class SpaceRental implements QueryResult, Get<SpaceRental>, Prototype<SpaceRental>, Duplicate, Post<Integer>, PrimaryKey {
+public class SpaceRental implements QueryResult, Get<SpaceRental>, Prototype<SpaceRental>, Duplicate, Post<Integer>, PrimaryKey, DisplayText {
 
   public DataWithId<Space> space;
   public DataWithId<Customer> customer;
   public Timestamp startTimestamp;
   public Timestamp endTimestamp;
+
+  public BigDecimal totalCost() {
+    Duration duration = Duration.ofMillis(endTimestamp.getTime() - startTimestamp.getTime());
+    long hours = duration.toHours();
+    if (duration.toMinutesPart() > 15) {
+      hours += 1;
+    } else if (hours == 0) {
+      hours += 1;
+    }
+    return space.data.hourlyCost.multiply(new BigDecimal(hours));
+  }
 
   public SpaceRental(DataWithId<Space> space, DataWithId<Customer> customer, Timestamp startTimestamp, Timestamp endTimestamp) {
     this.space = space;
@@ -80,6 +96,15 @@ public class SpaceRental implements QueryResult, Get<SpaceRental>, Prototype<Spa
     );
   }
 
+  public static SpaceRental createInstanceStatic() {
+    return new SpaceRental(
+      new DataWithId<Space>(Space.createInstanceStatic()), 
+      new DataWithId<Customer>(Customer.createInstanceStatic()), 
+      Timestamp.from(Instant.now()), 
+      Timestamp.from(Instant.now())
+    );
+  }
+
   @Override
   public String getSelectFromQuery() {
     return """
@@ -127,6 +152,11 @@ public class SpaceRental implements QueryResult, Get<SpaceRental>, Prototype<Spa
 
     startTimestamp = results.getTimestamp("StartTimestamp");
     endTimestamp = results.getTimestamp("EndTimestamp");
+  }
+
+  @Override
+  public String getDisplayText() {
+    return "Space: " + space.data.name + ", Name: " + customer.data.person.data.fullName();
   }
   
 }

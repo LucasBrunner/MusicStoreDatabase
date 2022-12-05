@@ -1,5 +1,8 @@
 package cen4333.group2.utility;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class UserInput {
@@ -113,6 +116,15 @@ public class UserInput {
         }
       }
       System.out.printf("Please enter either %s or %s.\n", trueString, falseString);
+    }
+  }
+
+  public static Date getSqlDate(String dateFormat) {
+    while (true) {
+      try {
+        System.out.print("Please enter a date in the format \"" + dateFormat + "\": ");
+        return new Date(new SimpleDateFormat(dateFormat).parse(getString()).getTime());
+      } catch (ParseException e) {}
     }
   }
   

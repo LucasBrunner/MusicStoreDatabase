@@ -8,6 +8,7 @@ import cen4333.group2.data.Person;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.NothingNode;
 import cen4333.group2.nodes.purchasenodes.CreatePurchaseNode;
+import cen4333.group2.nodes.rentalnodes.CreateRentalNode;
 
 public class ViewCustomerNode extends Node {
 
@@ -55,6 +56,8 @@ public class ViewCustomerNode extends Node {
         new CreatePurchaseNode(customerWithId),
         new SelectPurchasesOfCustomerNode(customerWithId),
         new DeleteCustomerNode(customerWithId.data),
+        new CreateRentalNode(customerWithId),
+        new SelectRentalsOfCustomer(customerWithId),
         new NothingNode()
       });
 

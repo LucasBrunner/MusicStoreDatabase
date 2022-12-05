@@ -85,7 +85,7 @@ public class PurchaseDiscount implements Prototype<PurchaseDiscount>, QueryResul
 
   @Override
   public PurchaseDiscount createInstance() {
-    return new PurchaseDiscount(new DataWithId<Discount>());
+    return new PurchaseDiscount(new DataWithId<Discount>(new Discount()));
   }
 
   @Override

@@ -33,4 +33,12 @@ public class DataWithId<T extends Prototype<T> & Duplicate> implements Prototype
   public DataWithId<T> createInstance() {
     return new DataWithId<T>();
   }
+
+  @Override
+  public String toString() {
+    if (data != null) {
+      return data.toString();
+    }
+    return "{Error: No data}";
+  }
 }

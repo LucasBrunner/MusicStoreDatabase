@@ -6,7 +6,8 @@ public class DelayedUserInputString {
     INTEGER,
     BOOLEAN,
     DOUBLE,
-    CHAR
+    CHAR,
+    DATE_AS_SQL_STRING
   }
 
   private String outerStringValue;
@@ -51,6 +52,12 @@ public class DelayedUserInputString {
           outerStringValue, 
           UserInput.getChar()
         );
+        case DATE_AS_SQL_STRING:
+          System.out.print(prompt);
+          return String.format(
+            outerStringValue, 
+            UserInput.getSqlDate("yyyy-mm-dd").toString()
+          );
       default:
         return "";
 

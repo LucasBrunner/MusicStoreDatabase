@@ -115,13 +115,18 @@ ON musicstore.product_type
 TO musicstore_clerk;
 
 # create test user
-DROP USER IF EXISTS musicstore_test@'localhost';
+DROP USER IF EXISTS clerk1@'localhost';
+DROP USER IF EXISTS clerk1;
 
-CREATE USER musicstore_test@'localhost'
+CREATE USER clerk1@'localhost'
+IDENTIFIED BY "s3cret";
+CREATE USER clerk1
 IDENTIFIED BY "s3cret";
 
 GRANT musicstore_clerk
-TO musicstore_test@'localhost';
+TO clerk1@'localhost';
+GRANT musicstore_clerk
+TO clerk1;
 
 FLUSH PRIVILEGES;
 SET DEFAULT ROLE ALL TO 

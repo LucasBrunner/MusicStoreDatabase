@@ -1,7 +1,6 @@
 package cen4333.group2;
 
 import cen4333.group2.errors.NoItemsException;
-import cen4333.group2.nodes.InsertFakeDataNode;
 import cen4333.group2.nodes.LoginNode;
 import cen4333.group2.nodes.QuitNode;
 import cen4333.group2.utility.ObjectSelector;
@@ -14,8 +13,7 @@ public class Main {
       try {
         ObjectSelector.printAndGetSelection(new Node[] {
           new LoginNode(),
-          new QuitNode(),
-          new InsertFakeDataNode()
+          new QuitNode()
         }).runNode();
 
       } catch (NoItemsException e) {}

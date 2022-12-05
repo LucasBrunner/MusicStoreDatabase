@@ -27,7 +27,7 @@ public class SelectPurchasesOfCustomerNode extends Node {
     int pageSize = GetIter.getResultsAmount();
     while (true) {
       try {
-        DataWithId<PurchaseAndCustomer> selectedPurchase = new GetIter<PurchaseAndCustomer>(
+          DataWithId<PurchaseAndCustomer> selectedPurchase = new GetIter<PurchaseAndCustomer>(
           "WHERE `CustomerID` = " + customerWithId.id,
           new PurchaseAndCustomer(),
           pageSize
