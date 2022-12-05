@@ -56,7 +56,7 @@ public class DelayedUserInputString {
           System.out.print(prompt);
           return String.format(
             outerStringValue, 
-            UserInput.getSqlDate("yyyy-mm-dd").toString()
+            UserInput.getSqlDate("YYYY-MM-DD").toString()
           );
       default:
         return "";

@@ -32,7 +32,7 @@ public class SelectRentalNode extends Node {
     additionalOptions.add(new ObjectWithValue<String, DelayedUserInputString>(
       "Space", 
       new DelayedUserInputString(
-        "WHERE `Space` = %s", 
+        "WHERE `Name` = \"%s\"", 
         "Enter the name to search: ",
         UserInputType.STRING
       )

@@ -14,7 +14,7 @@ import cen4333.group2.sqlutilities.Post;
 import cen4333.group2.sqlutilities.PrimaryKey;
 import cen4333.group2.sqlutilities.QueryResult;
 
-public class Space implements Prototype<Space>, QueryResult, Get<Space>, Duplicate, PrimaryKey, Delete<Space>, Post<Integer>, DisplayText {
+public class Space implements Prototype<Space>, QueryResult, Get<Space>, Duplicate, PrimaryKey, Delete<Space>, Post<Void>, DisplayText {
 
   public String name;
   public BigDecimal hourlyCost;
@@ -30,7 +30,7 @@ public class Space implements Prototype<Space>, QueryResult, Get<Space>, Duplica
   }
 
   @Override
-  public void generatePostSql(Integer forignData, List<String> sqlCommands) {  
+  public void generatePostSql(Void forignData, List<String> sqlCommands) {  
     sqlCommands.add(String.format(
       """
       INSERT INTO `space` (

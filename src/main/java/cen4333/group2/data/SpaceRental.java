@@ -9,7 +9,6 @@ import java.time.Instant;
 import java.util.List;
 
 import cen4333.group2.data.datacontainers.DataWithId;
-import cen4333.group2.data.datacontainers.ObjectWithValue;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 import cen4333.group2.data.datainterfaces.Prototype;
@@ -17,9 +16,8 @@ import cen4333.group2.sqlutilities.Get;
 import cen4333.group2.sqlutilities.Post;
 import cen4333.group2.sqlutilities.PrimaryKey;
 import cen4333.group2.sqlutilities.QueryResult;
-import cen4333.group2.utility.DelayedUserInputString;
 
-public class SpaceRental implements QueryResult, Get<SpaceRental>, Prototype<SpaceRental>, Duplicate, Post<Integer>, PrimaryKey, DisplayText {
+public class SpaceRental implements QueryResult, Get<SpaceRental>, Prototype<SpaceRental>, Duplicate, Post<Void>, PrimaryKey, DisplayText {
 
   public DataWithId<Space> space;
   public DataWithId<Customer> customer;
@@ -50,7 +48,7 @@ public class SpaceRental implements QueryResult, Get<SpaceRental>, Prototype<Spa
   }
 
   @Override
-  public void generatePostSql(Integer forignData, List<String> sqlCommands) {
+  public void generatePostSql(Void forignData, List<String> sqlCommands) {
     sqlCommands.add(String.format(
       """
       INSERT INTO `space_rental`
@@ -64,8 +62,8 @@ public class SpaceRental implements QueryResult, Get<SpaceRental>, Prototype<Spa
       (
         %d,
         %d,
-        %s,
-        %s
+        \"%s\",
+        \"%s\"
       )
       """,
       space.id,
