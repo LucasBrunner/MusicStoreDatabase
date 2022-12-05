@@ -33,6 +33,10 @@ public class Customer implements QueryResult, Get<Customer>, Prototype<Customer>
     return new Customer();
   }
 
+  public static Customer createInstanceStatic() {
+    return new Customer();
+  }
+
   @Override
   public String getSelectFromQuery() {
     return """
