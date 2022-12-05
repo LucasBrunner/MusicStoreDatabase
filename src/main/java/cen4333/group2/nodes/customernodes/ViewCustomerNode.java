@@ -7,6 +7,7 @@ import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.Person;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.NothingNode;
+import cen4333.group2.nodes.personnodes.DeletePersonDataNode;
 import cen4333.group2.nodes.purchasenodes.CreatePurchaseNode;
 import cen4333.group2.nodes.rentalnodes.CreateRentalNode;
 
@@ -55,14 +56,14 @@ public class ViewCustomerNode extends Node {
         new EditCustomerNode(customerWithId),
         new CreatePurchaseNode(customerWithId),
         new SelectPurchasesOfCustomerNode(customerWithId),
-        new DeleteCustomerNode(customerWithId.data),
+        new DeletePersonDataNode(customerWithId.data.person),
         new CreateRentalNode(customerWithId),
         new SelectRentalsOfCustomer(customerWithId),
         new NothingNode()
       });
 
       n.runNode();
-      if (n.getClass() == NothingNode.class || n.getClass() == DeleteCustomerNode.class) {
+      if (n.getClass() == NothingNode.class || n.getClass() == DeletePersonDataNode.class) {
         return false;
       }
     } catch (NoItemsException e) {}

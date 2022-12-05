@@ -60,7 +60,7 @@ public class DataString implements Prototype<DataString>, Duplicate, QueryResult
 
   @Override
   public String getDisplayText() {
-    return displayText + value;
+    return "Type: " + value;
   }
 
   @Override

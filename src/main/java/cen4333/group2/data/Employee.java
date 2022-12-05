@@ -11,13 +11,14 @@ import cen4333.group2.sqlutilities.Delete;
 import cen4333.group2.sqlutilities.Get;
 import cen4333.group2.sqlutilities.Post;
 import cen4333.group2.sqlutilities.PrimaryKey;
+import cen4333.group2.sqlutilities.Put;
 import cen4333.group2.sqlutilities.QueryResult;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datainterfaces.Prototype;
 import cen4333.group2.data.datainterfaces.DisplayText;
 import cen4333.group2.data.datainterfaces.Duplicate;
 
-public class Employee implements Prototype<Employee>, QueryResult, Get<Employee>, Duplicate, PrimaryKey, Delete<Employee>, Post<Integer>, DisplayText {
+public class Employee implements Prototype<Employee>, QueryResult, Get<Employee>, Duplicate, PrimaryKey, Delete<Employee>, Post<Integer>, DisplayText, Put<Employee> {
   public String checkingNumber;
   public DataWithId<Person> person;
 
@@ -66,7 +67,7 @@ public class Employee implements Prototype<Employee>, QueryResult, Get<Employee>
 
     sqlCommands.add(String.format(
       """
-      INSERT INTO `Customer` (
+      INSERT INTO `Employee` (
         `PersonID`,
         `CheckingNumber`
       )
@@ -80,15 +81,19 @@ public class Employee implements Prototype<Employee>, QueryResult, Get<Employee>
     ));
   }
 
-  public void post(DataWithId<Person> personWithId) {
-    post(personWithId.id);
+  public static void post(DataWithId<Person> personWithId, String checkingNumber) {
+    Employee e = new Employee();
+    e.checkingNumber = checkingNumber;
+    e.post(personWithId.id);
   }
 
-  public void post(Person personData) {
+  public static void post(Person personData, String checkingNumber) {
     personData.post(null);
     // This is not multithreading safe. 
     // The LAST_INSERT_ID() MySQL command is session based and currently all sessions use the same connection. 
-    post(Main.globalData.dbConnection.getLastId()); 
+    Employee e = new Employee();
+    e.checkingNumber = checkingNumber;
+    e.post(Main.globalData.dbConnection.getLastId());
   }
 
   @Override
@@ -101,6 +106,7 @@ public class Employee implements Prototype<Employee>, QueryResult, Get<Employee>
     return """
     SELECT
       `EmployeeID`,
+      `CheckingNumber`,
       `PersonID`,
       `FirstName`,
       `LastName`,
@@ -132,5 +138,22 @@ public class Employee implements Prototype<Employee>, QueryResult, Get<Employee>
   @Override
   public String getDisplayText() {
     return "Name: " + person.data != null ? person.data.fullName() : "{Error: no data!}";
+  }
+
+  @Override
+  public void putSql(List<String> sqlCommands, DataWithId<Employee> dataWithId) {
+    sqlCommands.add(String.format(
+      """
+      UPDATE `employee`
+      SET
+        `CheckingNumber` = \"%s\"
+      WHERE `EmployeeID` = %d;
+        
+      """,
+      dataWithId.data.checkingNumber,
+      dataWithId.id
+    ));
+
+    dataWithId.data.person.data.putSql(sqlCommands, dataWithId.data.person);
   }
 }

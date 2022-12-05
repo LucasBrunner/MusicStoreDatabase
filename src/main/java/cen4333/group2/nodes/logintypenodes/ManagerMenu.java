@@ -3,6 +3,8 @@ package cen4333.group2.nodes.logintypenodes;
 import cen4333.group2.Node;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.LogoutNode;
+import cen4333.group2.nodes.employeenodes.CreateEmployeeNode;
+import cen4333.group2.nodes.employeenodes.SearchEmployeesNode;
 import cen4333.group2.nodes.productnodes.CreateDiscountNode;
 import cen4333.group2.nodes.productnodes.CreateProductNode;
 import cen4333.group2.nodes.rentalnodes.CreateSpaceNode;
@@ -23,6 +25,8 @@ public class ManagerMenu extends Node {
           new CreateProductNode(),
           new CreateDiscountNode(),
           new CreateSpaceNode(),
+          new CreateEmployeeNode(),
+          new SearchEmployeesNode(),
           new LogoutNode()
         });
 
