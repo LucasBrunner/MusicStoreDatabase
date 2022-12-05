@@ -3,6 +3,7 @@ package cen4333.group2.nodes.logintypenodes;
 import cen4333.group2.Node;
 import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.LogoutNode;
+import cen4333.group2.nodes.productnodes.CreateDiscountNode;
 import cen4333.group2.nodes.productnodes.CreateProductNode;
 import cen4333.group2.utility.ObjectSelector;
 
@@ -19,6 +20,7 @@ public class ManagerMenu extends Node {
       try {
         Node n = ObjectSelector.printAndGetSelection(new Node[] {
           new CreateProductNode(),
+          new CreateDiscountNode(),
           new LogoutNode()
         });
 

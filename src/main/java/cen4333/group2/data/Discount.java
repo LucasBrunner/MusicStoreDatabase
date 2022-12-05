@@ -10,6 +10,7 @@ import java.util.List;
 import cen4333.group2.sqlutilities.QueryResult;
 import cen4333.group2.sqlutilities.Get;
 import cen4333.group2.sqlutilities.GetIter;
+import cen4333.group2.sqlutilities.Post;
 import cen4333.group2.sqlutilities.PrimaryKey;
 import cen4333.group2.data.datacontainers.DataWithId;
 import cen4333.group2.data.datacontainers.ObjectWithValue;
@@ -20,7 +21,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.utility.ObjectSelector;
 import cen4333.group2.utility.UserInput;
 
-public class Discount implements Prototype<Discount>, Duplicate, QueryResult, Get<Discount>, DisplayText, PrimaryKey {
+public class Discount implements Prototype<Discount>, Duplicate, QueryResult, Get<Discount>, DisplayText, PrimaryKey, Post<Void> {
   public static final Discount CreateInstance_DISCOUNT = new Discount();
 
   public String name;
@@ -208,5 +209,31 @@ public class Discount implements Prototype<Discount>, Duplicate, QueryResult, Ge
   @Override
   public String getPrimaryColumnName() {
     return "DiscountID";
+  }
+
+  @Override
+  public void generatePostSql(Void forignData, List<String> sqlCommands) {
+    sqlCommands.add(String.format(
+      """
+      INSERT INTO `musicstore`.`discount`
+      (
+        `Name`,
+        `StartDate`,
+        `EndDate`,
+        `DiscountJson`
+      )
+      VALUES
+      (
+        \"%s\",
+        \"%s\",
+        \"%s\",
+        \"%s\"
+      ); 
+      """,
+      name,
+      startDate.toString(),
+      endDate.toString(),
+      discountJson
+    ));
   }
 }
