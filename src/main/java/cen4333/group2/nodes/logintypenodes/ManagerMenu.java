@@ -5,6 +5,7 @@ import cen4333.group2.errors.NoItemsException;
 import cen4333.group2.nodes.LogoutNode;
 import cen4333.group2.nodes.productnodes.CreateDiscountNode;
 import cen4333.group2.nodes.productnodes.CreateProductNode;
+import cen4333.group2.nodes.rentalnodes.CreateSpaceNode;
 import cen4333.group2.utility.ObjectSelector;
 
 public class ManagerMenu extends Node {
@@ -21,6 +22,7 @@ public class ManagerMenu extends Node {
         Node n = ObjectSelector.printAndGetSelection(new Node[] {
           new CreateProductNode(),
           new CreateDiscountNode(),
+          new CreateSpaceNode(),
           new LogoutNode()
         });
 
