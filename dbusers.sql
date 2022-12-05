@@ -114,7 +114,7 @@ GRANT SELECT
 ON musicstore.product_type
 TO musicstore_clerk;
 
-# create test user
+# create clerk
 DROP USER IF EXISTS clerk1@'localhost';
 DROP USER IF EXISTS clerk1;
 
@@ -128,8 +128,29 @@ TO clerk1@'localhost';
 GRANT musicstore_clerk
 TO clerk1;
 
-FLUSH PRIVILEGES;
 SET DEFAULT ROLE ALL TO 
 	musicstore_clerk@'localhost',
-	musicstore_test@'localhost';
-SHOW GRANTS FOR musicstore_test@'localhost';
+	musicstore_clerk,
+	clerk1@'localhost',
+  clerk1;
+
+# create manager
+DROP USER IF EXISTS manager1@'localhost';
+DROP USER IF EXISTS manager1;
+
+CREATE USER manager1@'localhost'
+IDENTIFIED BY "supers3cret";
+CREATE USER manager1
+IDENTIFIED BY "supers3cret";
+
+GRANT musicstore_manager
+TO manager1@'localhost';
+GRANT musicstore_manager
+TO manager1;
+
+SET DEFAULT ROLE ALL TO 
+	musicstore_manager,
+	manager1@'localhost',
+  manager1;
+
+FLUSH PRIVILEGES;

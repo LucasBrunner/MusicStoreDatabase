@@ -70,16 +70,12 @@ CREATE TABLE instrument_type(
     PRIMARY KEY(InstrumentTypeID)
 );
 
-INSERT INTO instrument_type (`Type`) VALUES ("default");
-
 CREATE TABLE product_type(
 	ProductTypeID INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `Type` VARCHAR(64),
     
     PRIMARY KEY(ProductTypeID)
 );
-
-INSERT INTO product_type (`Type`) VALUES ("default");
 
 CREATE TABLE product(
 	ProductID INT UNSIGNED NOT NULL AUTO_INCREMENT,
